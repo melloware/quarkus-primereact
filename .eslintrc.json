@@ -5,10 +5,7 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:jest/all",
-        "plugin:jest-dom/recommended",
-        "plugin:react/recommended",
-        "plugin:prettier/recommended"
+        "plugin:react/recommended"
     ],
     "ignorePatterns": [
         "node_modules/",
@@ -19,8 +16,7 @@
     "plugins": [
         "@typescript-eslint",
         "react",
-        "react-hooks",
-        "prettier"
+        "react-hooks"
     ],
     "rules": {
         "@typescript-eslint/no-non-null-assertion": "off",
@@ -40,26 +36,5 @@
         "react": {
             "version": "detect"
         }
-    },
-    "overrides": [
-        {
-            "files": [
-                "src/**/openapi-auth/**"
-            ],
-            "rules": {
-                "@typescript-eslint/no-explicit-any": "off",
-                "@typescript-eslint/ban-ts-comment": "off"
-            }
-        },
-        {
-            "files": [
-                "src/__tests__/**"
-            ],
-            "rules": {
-                "jest/prefer-lowercase-title": "off",
-                "jest/require-hook": "off",
-                "jest/no-hooks": "off"
-            }
-        }
-    ]
+    }
 }

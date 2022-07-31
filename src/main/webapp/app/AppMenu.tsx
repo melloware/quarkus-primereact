@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Badge } from 'primereact/badge';
 import { Ripple } from "primereact/ripple";
 import { classNames } from "primereact/utils";
@@ -42,8 +43,8 @@ const AppSubmenu = (props: { root?: boolean; parentMenuItemActive?: boolean; onR
     }
 
     const renderLinkContent = (item: { to?: To; target?: string | undefined; label: any; url?: string | undefined; items?: any; badge?: any; icon?: any; }) => {
-        let submenuIcon = item.items && <i className="pi pi-fw pi-angle-down menuitem-toggle-icon"></i>;
-        let badge = item.badge && <Badge value={item.badge} />
+        const submenuIcon = item.items && <i className="pi pi-fw pi-angle-down menuitem-toggle-icon"></i>;
+        const badge = item.badge && <Badge value={item.badge} />
 
         return (
             <React.Fragment>
@@ -57,7 +58,7 @@ const AppSubmenu = (props: { root?: boolean; parentMenuItemActive?: boolean; onR
     }
 
     const renderLink = (item: { to: To; target: string | undefined; label: string | undefined; url: string | undefined; }, i: number) => {
-        let content = renderLinkContent(item);
+        const content = renderLinkContent(item);
 
         if (item.to) {
             return (
@@ -79,9 +80,9 @@ const AppSubmenu = (props: { root?: boolean; parentMenuItemActive?: boolean; onR
         }
     }
 
-    let items = props.items && props.items.map((item, i) => {
-        let active = activeIndex === i;
-        let styleClass = classNames(item.badgeStyleClass, { 'layout-menuitem-category': props.root, 'active-menuitem': active && !item.to });
+    const items = props.items && props.items.map((item, i) => {
+        const active = activeIndex === i;
+        const styleClass = classNames(item.badgeStyleClass, { 'layout-menuitem-category': props.root, 'active-menuitem': active && !item.to });
 
         if (props.root) {
             return (

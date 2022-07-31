@@ -1,17 +1,17 @@
-# Quarkus demo: Hibernate ORM with Panache and RESTEasy
+# Quarkus Monorepo
 
 This is a minimal CRUD service exposing a couple of endpoints over REST,
-with a front-end based on Angular so you can play with it from your browser.
+with a front-end based on React so you can play with it from your browser.
 
 While the code is surprisingly simple, under the hood this is using:
 
 - RESTEasy to expose the REST endpoints
 - Hibernate ORM with Panache to perform the CRUD operations on the database
-- A PostgreSQL database; see below to run one via Docker
+- PostgreSQL database; see below to run one via Docker
 - ArC, the CDI inspired dependency injection tool with zero overhead
-- The high performance Agroal connection pool
+- Agroal, The high performance connection pool
 - Infinispan based caching
-- All safely coordinated by the Narayana Transaction Manager
+- Narayana Transaction Manager, For safely coordinated transactions
 
 ## Requirements
 

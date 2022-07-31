@@ -45,7 +45,7 @@ const App = () => {
         document.documentElement.style.fontSize = '14px';
     }, [])
 
-    const onWrapperClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const onWrapperClick = (_event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         if (!menuClick) {
             setOverlayMenuActive(false);
             setMobileMenuActive(false);
@@ -93,6 +93,7 @@ const App = () => {
         event.preventDefault();
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const onMenuItemClick = (event: any) => {
         if (!event.item.items) {
             setOverlayMenuActive(false);

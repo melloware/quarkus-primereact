@@ -17,7 +17,7 @@ import { CarEntity, useDeleteEntityCarsId, useGetEntityCars, usePostEntityCars, 
 
 const Crud = () => {
     // form
-    let defaultValues = {
+    const defaultValues = {
         vin: '',
         make: '',
         model: '',
@@ -150,7 +150,7 @@ const Crud = () => {
                     toast('success', 'Successful', `${car.year} ${car.make} ${car.model} Deleted`);
                     queryClient.invalidateQueries(["list-cars"]);
                 },
-                onError: (error: ErrorType<any>) => {
+                onError: (error: ErrorType<unknown>) => {
                     toast('error', 'Error', JSON.stringify(error.response?.data));
                 }
             }
@@ -179,7 +179,7 @@ const Crud = () => {
                         toast('success', 'Successful', `${car.year} ${car.make} ${car.model} Updated`);
                         queryClient.invalidateQueries(["list-cars"]);
                     },
-                    onError: (error: ErrorType<any>) => {
+                    onError: (error: ErrorType<unknown>) => {
                         toast('error', 'Error', JSON.stringify(error.response?.data));
                     }
                 }
@@ -193,7 +193,7 @@ const Crud = () => {
                         toast('success', 'Successful', `${car.year} ${car.make} ${car.model} Created`);
                         queryClient.invalidateQueries(["list-cars"]);
                     },
-                    onError: (error: ErrorType<any>) => {
+                    onError: (error: ErrorType<unknown>) => {
                         toast('error', 'Error', JSON.stringify(error.response?.data));
                     }
                 }
@@ -216,7 +216,7 @@ const Crud = () => {
     }
 
     const priceBodyTemplate = (item: CarEntity) => {
-        return item.price?.toLocaleString('en-US', { style: 'currency', currency: 'USD' });;
+        return item.price?.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     }
 
     const actionBodyTemplate = (item: CarEntity) => {
