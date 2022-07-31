@@ -1,0 +1,122 @@
+---
+openapi: 3.0.3
+info:
+  title: Quarkus Monorepo
+  description: Quickstart to demo Quarkus/React monorepo
+  contact:
+    name: Melloware
+    url: https://melloware.com
+    email: mellowaredev@gmail.com
+  version: 1.0.0
+paths:
+  /entity/cars:
+    get:
+      tags:
+      - Car Entity Resource
+      parameters:
+      - name: request
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryResponseCarEntity'
+    post:
+      tags:
+      - Car Entity Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarEntity'
+      responses:
+        "200":
+          description: OK
+  /entity/cars/{id}:
+    get:
+      tags:
+      - Car Entity Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarEntity'
+    put:
+      tags:
+      - Car Entity Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarEntity'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarEntity'
+    delete:
+      tags:
+      - Car Entity Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    CarEntity:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        vin:
+          type: string
+        make:
+          type: string
+        model:
+          type: string
+        year:
+          format: int32
+          type: integer
+        color:
+          type: string
+        price:
+          type: number
+    QueryResponseCarEntity:
+      type: object
+      properties:
+        totalRecords:
+          format: int64
+          type: integer
+        records:
+          type: array
+          items:
+            $ref: '#/components/schemas/CarEntity'

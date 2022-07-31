@@ -1,0 +1,172 @@
+import { classNames, DomHandler } from "primereact/utils";
+import React, { useEffect, useState } from 'react';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
+import PrimeReact from 'primereact/api';
+import { AppMenu } from './AppMenu';
+import Crud from './pages/Crud';
+
+import 'primereact/resources/themes/lara-dark-blue/theme.css';
+import 'primeflex/primeflex.css';
+import 'primeicons/primeicons.css';
+import 'primereact/resources/primereact.min.css';
+import './assets/layout/layout.scss';
+import './App.scss';
+
+const App = () => {
+    const [layoutMode] = useState('static');
+    const [layoutColorMode] = useState('dark')
+    const [inputStyle] = useState('outlined');
+    const [ripple] = useState(true);
+    const [staticMenuInactive, setStaticMenuInactive] = useState(true);
+    const [overlayMenuActive, setOverlayMenuActive] = useState(false);
+    const [mobileMenuActive, setMobileMenuActive] = useState(false);
+    const [mobileTopbarMenuActive, setMobileTopbarMenuActive] = useState(false);
+    const location = useLocation();
+
+    PrimeReact.ripple = true;
+
+    let menuClick = false;
+    let mobileTopbarMenuClick = false;
+
+    useEffect(() => {
+        if (mobileMenuActive) {
+            DomHandler.addClass(document.body, "body-overflow-hidden");
+        } else {
+            DomHandler.removeClass(document.body, "body-overflow-hidden");
+        }
+    }, [mobileMenuActive]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [location]);
+
+    useEffect(() => {
+        document.documentElement.style.fontSize = '14px';
+    }, [])
+
+    const onWrapperClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        if (!menuClick) {
+            setOverlayMenuActive(false);
+            setMobileMenuActive(false);
+        }
+
+        if (!mobileTopbarMenuClick) {
+            setMobileTopbarMenuActive(false);
+        }
+
+        mobileTopbarMenuClick = false;
+        menuClick = false;
+    }
+
+    const onToggleMenuClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        menuClick = true;
+
+        if (isDesktop()) {
+            if (layoutMode === 'overlay') {
+                if (mobileMenuActive === true) {
+                    setOverlayMenuActive(true);
+                }
+
+                setOverlayMenuActive((prevState) => !prevState);
+                setMobileMenuActive(false);
+            }
+            else if (layoutMode === 'static') {
+                setStaticMenuInactive((prevState) => !prevState);
+            }
+        }
+        else {
+            setMobileMenuActive((prevState) => !prevState);
+        }
+
+        event.preventDefault();
+    }
+
+    const onSidebarClick = () => {
+        menuClick = true;
+    }
+
+    const onMobileTopbarMenuClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        mobileTopbarMenuClick = true;
+
+        setMobileTopbarMenuActive((prevState) => !prevState);
+        event.preventDefault();
+    }
+
+    const onMenuItemClick = (event: any) => {
+        if (!event.item.items) {
+            setOverlayMenuActive(false);
+            setMobileMenuActive(false);
+        }
+    }
+    const isDesktop = () => {
+        return window.innerWidth >= 992;
+    }
+
+    const menu = [
+        {
+            label: 'Home',
+            items: [
+                { label: 'CRUD', icon: 'pi pi-fw pi-home', to: '/' }
+            ]
+        }
+    ];
+
+    const wrapperClass = classNames('layout-wrapper', {
+        'layout-overlay': layoutMode === 'overlay',
+        'layout-static': layoutMode === 'static',
+        'layout-static-sidebar-inactive': staticMenuInactive && layoutMode === 'static',
+        'layout-overlay-sidebar-active': overlayMenuActive && layoutMode === 'overlay',
+        'layout-mobile-sidebar-active': mobileMenuActive,
+        'p-input-filled': inputStyle === 'filled',
+        'p-ripple-disabled': ripple === false,
+        'layout-theme-light': layoutColorMode === 'light'
+    });
+
+    return (
+        <div className={wrapperClass} onClick={onWrapperClick}>
+            <div className="layout-topbar">
+                <Link to="/" className="layout-topbar-logo">
+                    <img src='static/images/logo-white.svg' alt="Quarkus" />
+                    <span>Quarkus</span>
+                </Link>
+
+                <button type="button" className="p-link  layout-menu-button layout-topbar-button" onClick={onToggleMenuClick}>
+                    <i className="pi pi-bars" />
+                </button>
+
+                <button type="button" className="p-link layout-topbar-menu-button layout-topbar-button" onClick={onMobileTopbarMenuClick}>
+                    <i className="pi pi-ellipsis-v" />
+                </button>
+                <ul className={classNames("layout-topbar-menu lg:flex origin-top", { 'layout-topbar-menu-mobile-active': mobileTopbarMenuActive })}>
+                    <li></li>
+                </ul>
+            </div>
+
+            <div className="layout-sidebar" onClick={onSidebarClick}>
+                <AppMenu model={menu} onMenuItemClick={onMenuItemClick} />
+            </div>
+
+            <div className="layout-main-container">
+                <div className="layout-main">
+                    <Routes>
+                        <Route path="/" element={<Crud />} />
+                    </Routes>
+                </div>
+
+                <div className="layout-footer">
+                    Powered by
+                    <img src='static/images/primereact-logo-light.svg' alt="PrimeReact" height="30" className="ml-2" />
+                </div>
+            </div>
+
+            <CSSTransition classNames="layout-mask" timeout={{ enter: 200, exit: 200 }} in={mobileMenuActive} unmountOnExit>
+                <div className="layout-mask p-component-overlay"></div>
+            </CSSTransition>
+
+        </div>
+    );
+
+}
+
+export default App;

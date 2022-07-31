@@ -1,0 +1,20 @@
+# New SPACE Developers Using Windows: 
+
+
+# This file exists to prevent Windows users from having to manually convert the end of line sequence (EOL) for each text file after initially cloning this repo. This is NOT applicable to Linux users, only to Windows users. 
+# After cloning the repo and ensuring the working tree is clean, run the following commands in order to auto-update the EOL on text files:
+    #   git rm --cached -r .
+    #   git reset --hard
+
+# Text files to be modified from EOL = Carriage Return Line Feed (CRLF) to EOL = Line Feed (LF):
+
+*.js    eol=lf
+*.jsx   eol=lf
+*.json  eol=lf
+*.ts    eol=lf
+*.tsx   eol=lf
+
+# Binary files NOT to be modified:
+
+*.ico     -text diff
+*.png     -text diff
