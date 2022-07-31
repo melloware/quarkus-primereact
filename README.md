@@ -1,6 +1,6 @@
 # Quarkus Monorepo
 
-This is a minimal CRUD service exposing a couple of endpoints over REST,
+This [monorepo](https://en.wikipedia.org/wiki/Monorepo) is a minimal CRUD service exposing a couple of endpoints over REST,
 with a front-end based on React so you can play with it from your browser.
 
 While the code is surprisingly simple, under the hood this is using:
@@ -18,19 +18,12 @@ While the code is surprisingly simple, under the hood this is using:
 To compile and run this demo you will need:
 
 - JDK 11+
-- GraalVM
+- Docker
 
 In addition, you will need either a PostgreSQL database, or Docker to run one.
 
-### Configuring GraalVM and JDK 11+
-
-Make sure that both the `GRAALVM_HOME` and `JAVA_HOME` environment variables have
-been set, and that a JDK 11+ `java` command is on the path.
-
-See the [Building a Native Executable guide](https://quarkus.io/guides/building-native-image)
-for help setting up your environment.
-
 ## Developing
+-------------------------
 
 ### Live coding with Quarkus
 
@@ -46,7 +39,17 @@ In this mode you can make changes to the code and have the changes immediately a
     Hot reload works even when modifying your JPA entities.
     Try it! Even the database schema will be updated on the fly.
 
-## Builds
+To modify the React UI and perform live coding try this out:
+
+```bash
+$ npm install
+$ npm run start
+```
+
+Now open your web browser to http://localhost:3000/ to see it in action.
+
+## Building
+-------------------------
 
 ### Run Quarkus in JVM mode
 
@@ -71,11 +74,14 @@ $ docker run -it --rm=true --name quarkus_postgres -e POSTGRES_USER=quarkus_post
 Connection properties for the Agroal datasource are defined in the standard Quarkus configuration file,
 `src/main/resources/application.properties`.
 
-Then run it:
+Then run it with:
 
 ```bash
 $ java -jar ./target/quarkus-app/quarkus-run.jar
 ```
+Navigate to:
+<http://localhost:3000/>
+
 
     Have a look at how fast it boots.
     Or measure total native memory consumption...
@@ -92,7 +98,7 @@ steps to remove unnecessary codepaths. Use the  `native` profile to compile a
 native executable:
 
 ```bash
-$ mvn clean package -Pnative -Dquarkus.native.container-build=true -Dquarkus.native.builder-image=mandrel
+$ mvn clean package -Dnative
 ```
 
 After getting a cup of coffee, you'll be able to run this binary directly:
@@ -112,7 +118,7 @@ N.B. This implies all dependencies have been compiled to native;
 that's a whole lot of stuff: from the bytecode enhancements that Panache
 applies to your entities, to the lower level essential components such as the PostgreSQL JDBC driver, the Undertow webserver.
 
-## See the demo in your browser
+## See it in your browser
 
 Navigate to:
 
@@ -120,7 +126,7 @@ Navigate to:
 
 Have fun, and join the team of contributors!
 
-## Running the demo in Kubernetes
+## Running in Kubernetes
 
 This section provides extra information for running both the database and the demo on Kubernetes.
 As well as running the DB on Kubernetes, a service needs to be exposed for the demo to connect to the DB.
@@ -128,5 +134,5 @@ As well as running the DB on Kubernetes, a service needs to be exposed for the d
 Then, rebuild demo docker image with a system property that points to the DB.
 
 ```bash
--Dquarkus.datasource.jdbc.url=jdbc:postgresql://<DB_SERVICE_NAME>/quarkus_test
+-Dquarkus.datasource.jdbc.url=jdbc:postgresql://<DB_SERVICE_NAME>/quarkus_postgres
 ```
