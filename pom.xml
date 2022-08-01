@@ -11,7 +11,7 @@
     <url>https://github.com/melloware/quarkus-monorepo</url>
 
     <properties>
-        <quarkus.platform.version>2.11.0.Final</quarkus.platform.version>
+        <quarkus.platform.version>2.11.1.Final</quarkus.platform.version>
         <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
         <compiler-plugin.version>3.8.0</compiler-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
