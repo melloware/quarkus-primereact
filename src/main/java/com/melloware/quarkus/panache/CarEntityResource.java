@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.melloware.quarkus.support.QueryRequest;
 import com.melloware.quarkus.support.QueryResponse;
 
+import io.netty.handler.codec.http.HttpResponseStatus;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -97,7 +98,7 @@ public class CarEntityResource {
             throw new WebApplicationException("Id was invalidly set on request.", 422);
         }
         car.persist();
-        return Response.ok(car).status(201).build();
+        return Response.ok(car).status(HttpResponseStatus.CREATED.code()).build();
     }
 
     @PUT
@@ -129,6 +130,7 @@ public class CarEntityResource {
             throw new WebApplicationException("Car with id of " + id + " does not exist.", 404);
         }
         entity.delete();
-        return Response.status(204).build();
+        return Response.status(HttpResponseStatus.NO_CONTENT.code()).build();
     }
+
 }
