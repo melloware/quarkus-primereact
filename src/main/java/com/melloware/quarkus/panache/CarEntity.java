@@ -28,7 +28,7 @@ public class CarEntity extends PanacheEntity {
     public String make;
     @NotBlank(message = "Model may not be blank")
     public String model;
-    @Min(value = 1970)
+    @Min(value = 1960)
     public int year;
     @NotBlank(message = "Color may not be blank")
     public String color;
