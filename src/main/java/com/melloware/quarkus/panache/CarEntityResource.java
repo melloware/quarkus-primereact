@@ -46,42 +46,6 @@ public class CarEntityResource {
     ObjectMapper objectMapper;
 
     @GET
-    public QueryResponse<CarEntity> list(@QueryParam("request") String lazyRequest) throws JsonProcessingException {
-        final QueryResponse<CarEntity> response = new QueryResponse<>();
-        if (lazyRequest == null || lazyRequest.length() == 0) {
-            List<CarEntity> results = CarEntity.listAll(Sort.by("make"));
-            response.setTotalRecords(results.size());
-            response.setRecords(results);
-            return response;
-        }
-
-        final QueryRequest request = objectMapper.readValue(lazyRequest, QueryRequest.class);
-        LOG.info(request);
-
-        // sorts
-        final Sort sort = request.calculateSort();
-
-        // filters
-        final Pair<String, Map<String, QueryRequest.MultiFilterMeta>> filterMeta = request.calculateFilters(sort);
-        final String filterQuery = filterMeta.getLeft();
-        final Map<String, QueryRequest.MultiFilterMeta> filters = filterMeta.getRight();
-
-        PanacheQuery<CarEntity> query = CarEntity.findAll(sort);
-        if (!filters.isEmpty()) {
-            final Map<String, Object> map = filters.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getSqlValue()));
-            query = CarEntity.find(filterQuery, sort, map);
-        }
-
-        // range
-        query.range(request.getFirst(), request.getFirst() + request.getRows());
-
-        // response
-        response.setTotalRecords(query.count());
-        response.setRecords(query.list());
-        return response;
-    }
-
-    @GET
     @Path("{id}")
     public CarEntity getSingle(@Min(value = 0) Long id) {
         CarEntity entity = CarEntity.findById(id);
@@ -133,4 +97,39 @@ public class CarEntityResource {
         return Response.status(HttpResponseStatus.NO_CONTENT.code()).build();
     }
 
+    @GET
+    public QueryResponse<CarEntity> list(@QueryParam("request") String lazyRequest) throws JsonProcessingException {
+        final QueryResponse<CarEntity> response = new QueryResponse<>();
+        if (lazyRequest == null || lazyRequest.length() == 0) {
+            List<CarEntity> results = CarEntity.listAll(Sort.by("make"));
+            response.setTotalRecords(results.size());
+            response.setRecords(results);
+            return response;
+        }
+
+        final QueryRequest request = objectMapper.readValue(lazyRequest, QueryRequest.class);
+        LOG.info(request);
+
+        // sorts
+        final Sort sort = request.calculateSort();
+
+        // filters
+        final Pair<String, Map<String, QueryRequest.MultiFilterMeta>> filterMeta = request.calculateFilters(sort);
+        final String filterQuery = filterMeta.getLeft();
+        final Map<String, QueryRequest.MultiFilterMeta> filters = filterMeta.getRight();
+
+        PanacheQuery<CarEntity> query = CarEntity.findAll(sort);
+        if (!filters.isEmpty()) {
+            final Map<String, Object> map = filters.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getSqlValue()));
+            query = CarEntity.find(filterQuery, sort, map);
+        }
+
+        // range
+        query.range(request.getFirst(), request.getFirst() + request.getRows());
+
+        // response
+        response.setTotalRecords(query.count());
+        response.setRecords(query.list());
+        return response;
+    }
 }
