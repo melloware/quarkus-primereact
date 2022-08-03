@@ -4,15 +4,15 @@ const glob = require('glob-all');
 const paths = require("react-scripts/config/paths");
 const path = require('path');
 
+// plugins
+const CspHtmlWebpackPlugin = require("@melloware/csp-webpack-plugin");
+const PurgecssPlugin = require('purgecss-webpack-plugin');
+
 // paths
 paths.appSrc = path.resolve(__dirname, 'src/main/webapp/app');
 paths.appIndexJs = path.resolve(__dirname, 'src/main/webapp/app/index.tsx');
 paths.appPublic = path.resolve(__dirname, 'src/main/webapp/public');
 paths.appHtml = path.resolve(__dirname, 'src/main/webapp/public/index.html');
-
-// plugins
-const CspHtmlWebpackPlugin = require("@melloware/csp-webpack-plugin");
-const PurgecssPlugin = require('purgecss-webpack-plugin');
 
 // Content Security Policy
 const cspConfigPolicy = {
@@ -40,7 +40,7 @@ const purgeCssPlugin = new PurgecssPlugin({
       standard: [],
       deep: [],
       greedy: [/p-/,/pi-/, /col-/, /layout/]
-    } 
+    }
 });
 
 // add all plugins to Webpack pipeline in correct order

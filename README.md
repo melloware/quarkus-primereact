@@ -1,3 +1,6 @@
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Actions CI](https://github.com/primefaces/primefaces/workflows/CI/badge.svg)](https://github.com/melloware/quarkus-monorepo/actions/workflows/build.yml)
+
 # Quarkus Monorepo
 
 This [monorepo](https://en.wikipedia.org/wiki/Monorepo) is a minimal CRUD service exposing a couple of endpoints over REST,
@@ -77,7 +80,7 @@ Connection properties for the Agroal datasource are defined in the standard Quar
 Then run it with:
 
 ```bash
-$ java -jar ./target/quarkus-app/quarkus-run.jar
+$ java -jar ./target/quarkus-app/quarkus-run.jar -Dquarkus.datasource.jdbc.url=jdbc:postgresql://localhost/quarkus_postgres
 ```
 Navigate to:
 <http://localhost:3000/>
