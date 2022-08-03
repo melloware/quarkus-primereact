@@ -11,7 +11,7 @@ import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.min.css';
 import './assets/layout/layout.scss';
-import './App.scss';
+import './App.css';
 
 const App = () => {
     const [layoutMode] = useState('static');
@@ -150,7 +150,7 @@ const App = () => {
         <div className={wrapperClass} onClick={onWrapperClick}>
             <div className="layout-topbar">
                 <Link to="/" className="layout-topbar-logo">
-                    <img src='static/images/logo-white.svg' alt="Quarkus" />
+                    <img src='static/images/quarkus.svg' alt="Quarkus" />
                     <span>Quarkus</span>
                 </Link>
 
@@ -162,7 +162,11 @@ const App = () => {
                     <i className="pi pi-ellipsis-v" />
                 </button>
                 <ul className={classNames("layout-topbar-menu lg:flex origin-top", { 'layout-topbar-menu-mobile-active': mobileTopbarMenuActive })}>
-                    <li></li>
+                    <li>
+                        <a href="https://reactjs.org" target="_blank" rel="noreferrer">
+                            <img src="static/images/react.svg" className="react-logo" alt="React JS" />
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -180,7 +184,7 @@ const App = () => {
                 <div className="layout-footer">
                     Powered by
                     <a href="https://primefaces.org/primereact/" target='_blank' rel="noreferrer">
-                        <img src='static/images/primereact-logo-light.svg' alt="PrimeReact" height="30" className="ml-2" />
+                        <img src='static/images/primereact.svg' alt="PrimeReact" height="30" className="ml-2" />
                     </a>
                 </div>
             </div>

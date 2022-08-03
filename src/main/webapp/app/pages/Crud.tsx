@@ -28,15 +28,15 @@ const Crud = () => {
     const form = useForm({ defaultValues: defaultValues });
     const errors = form.formState.errors;
 
-    // models
+    // refs
+    const toastRef = useRef<Toast>(null);
+    const datatable = useRef<DataTable>(null);
+
+    // state
     const [cars, setCars] = useState<CarEntity[]>([]);
     const [car, setCar] = useState<CarEntity>(defaultValues);
     const [deleteCarDialog, setDeleteCarDialog] = useState(false);
     const [editCarDialog, setEditCarDialog] = useState(false);
-    const toastRef = useRef<Toast>(null);
-    const datatable = useRef<DataTable>(null);
-
-    // lazy table
     const [totalRecords, setTotalRecords] = useState(0);
     const [lazyParams, setLazyParams] = useState<DataTablePFSEvent>({
         first: 0,
@@ -55,6 +55,9 @@ const Crud = () => {
 
     // queries
     const queryClient = useQueryClient();
+    const deleteCarMutation = useDeleteEntityCarsId();
+    const createCarMutation = usePostEntityCars();
+    const updateCarMutation = usePutEntityCarsId();
     const queryList = useGetEntityCars(
         { request: JSON.stringify(lazyParams) },
         {
@@ -66,9 +69,6 @@ const Crud = () => {
             }
         }
     );
-    const deleteCarMutation = useDeleteEntityCarsId();
-    const createCarMutation = usePostEntityCars();
-    const updateCarMutation = usePutEntityCarsId();
 
     useEffect(() => {
         if (queryList.isError) {
@@ -103,6 +103,21 @@ const Crud = () => {
         toastRef.current?.show({ severity: severity, summary: summary, detail: detail, life: 4000 });
     }
 
+    const confirmDeleteCar = (item: CarEntity) => {
+        setCar(item);
+        setDeleteCarDialog(true);
+    }
+
+    const hideDeleteCarDialog = () => {
+        setDeleteCarDialog(false);
+        onReset(defaultValues);
+    }
+
+    const hideEditDialog = () => {
+        setEditCarDialog(false);
+        onReset(defaultValues);
+    }
+
     const getFormErrorMessage = (fieldState: ControllerFieldState, fieldName?: string) => {
         if (!fieldState || !fieldState.error) {
             return null;
@@ -125,49 +140,6 @@ const Crud = () => {
         }
         return <small className="p-error">{message}</small>
     };
-
-    const confirmDeleteCar = (item: CarEntity) => {
-        setCar(item);
-        setDeleteCarDialog(true);
-    }
-
-    const hideDeleteCarDialog = () => {
-        setDeleteCarDialog(false);
-        handleReset(defaultValues);
-    }
-
-    const hideEditDialog = () => {
-        setEditCarDialog(false);
-        handleReset(defaultValues);
-    }
-
-    const deleteCar = () => {
-        deleteCarMutation.mutate(
-            { id: car.id! },
-            {
-                onSuccess: () => {
-                    hideDeleteCarDialog();
-                    toast('success', 'Successful', `${car.year} ${car.make} ${car.model} Deleted`);
-                    queryClient.invalidateQueries(["list-cars"]);
-                },
-                onError: (error: ErrorType<unknown>) => {
-                    toast('error', 'Error', JSON.stringify(error.response?.data));
-                }
-            }
-        );
-    }
-
-    const handleReset = (data: CarEntity) => {
-        setCar(data);
-        form.reset(data, {
-            keepErrors: false,
-            keepDirty: false,
-            keepIsSubmitted: false,
-            keepTouched: false,
-            keepIsValid: false,
-            keepSubmitCount: false,
-        });
-    }
 
     const onSubmit = (car: CarEntity) => {
         if (car.id) {
@@ -201,18 +173,46 @@ const Crud = () => {
         }
     };
 
+    const onReset = (data: CarEntity) => {
+        setCar(data);
+        form.reset(data, {
+            keepErrors: false,
+            keepDirty: false,
+            keepIsSubmitted: false,
+            keepTouched: false,
+            keepIsValid: false,
+            keepSubmitCount: false,
+        });
+    }
+
     const editCar = (car: CarEntity) => {
         setEditCarDialog(true);
-        handleReset({...car});
+        onReset({ ...car });
     }
 
     const createCar = () => {
         setEditCarDialog(true);
-        handleReset(defaultValues);
+        onReset(defaultValues);
+    }
+
+    const deleteCar = () => {
+        deleteCarMutation.mutate(
+            { id: car.id! },
+            {
+                onSuccess: () => {
+                    hideDeleteCarDialog();
+                    toast('success', 'Successful', `${car.year} ${car.make} ${car.model} Deleted`);
+                    queryClient.invalidateQueries(["list-cars"]);
+                },
+                onError: (error: ErrorType<unknown>) => {
+                    toast('error', 'Error', JSON.stringify(error.response?.data));
+                }
+            }
+        );
     }
 
     const colorBodyTemplate = (item: CarEntity) => {
-        return <div className='color-swatch' style={{ backgroundColor: `#${item.color}`, color: `#${item.color}`, width: 'auto' }}><p>#{item.color}</p></div>;
+        return <div className='color-swatch' style={{ backgroundColor: `#${item.color}`, width: 'auto' }}><span>{item.color}</span></div>;
     }
 
     const priceBodyTemplate = (item: CarEntity) => {
@@ -221,10 +221,10 @@ const Crud = () => {
 
     const actionBodyTemplate = (item: CarEntity) => {
         return (
-            <>
+            <div>
                 <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editCar(item)} />
                 <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => confirmDeleteCar(item)} />
-            </>
+            </div>
         );
     }
 
@@ -235,41 +235,35 @@ const Crud = () => {
         </>
     );
 
-    const leftToolbarTemplate = () => {
-        return (
-            <>
-                <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={createCar} />
-            </>
-        )
-    }
+    const leftToolbarTemplate = (
+        <>
+            <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" onClick={createCar} />
+        </>
+    );
 
-    const rightToolbarTemplate = () => {
-        return (
-            <>
-                <Button label="Export" icon="pi pi-download" onClick={exportCSV} />
-            </>
-        )
-    }
+    const rightToolbarTemplate = (
+        <>
+            <Button label="Export" icon="pi pi-download" onClick={exportCSV} />
+        </>
+    );
 
     return (
         <div>
             <div className="card">
-                <Toast ref={toastRef} />
-
                 <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
 
-                <DataTable ref={datatable} value={cars} lazy filterDisplay="row" filterDelay={500} responsiveLayout="scroll" dataKey="id"
+                <DataTable ref={datatable} value={cars} lazy dataKey="id"
                     paginator paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                     currentPageReportTemplate="{first} to {last} of {totalRecords} cars"
+                    responsiveLayout="stack" breakpoint="768px" filterDisplay="row" filterDelay={500}
                     first={lazyParams.first} rows={lazyParams.rows} rowsPerPageOptions={[5, 10, 25]} totalRecords={totalRecords}
-                    onPage={onPage}
-                    onSort={onSort} sortMode="multiple" multiSortMeta={lazyParams.multiSortMeta}
-                    onFilter={onFilter} filters={lazyParams.filters} loading={queryList.isFetching} exportFilename="cars">
+                    onPage={onPage} onSort={onSort} onFilter={onFilter} sortMode="multiple" multiSortMeta={lazyParams.multiSortMeta}
+                    filters={lazyParams.filters} loading={queryList.isFetching} exportFilename="cars">
                     <Column field="vin" header="VIN" sortable filter filterPlaceholder="VIN" />
                     <Column field="year" header="Year" sortable />
                     <Column field="make" header="Make" sortable filter filterPlaceholder="Make" />
                     <Column field="model" header="Model" sortable filter filterPlaceholder="Model" />
-                    <Column field="color" header="Color" sortable filter filterPlaceholder="Color" body={colorBodyTemplate} align='center' style={{ maxWidth: '8rem' }} />
+                    <Column field="color" header="Color" sortable filter filterPlaceholder="Color" body={colorBodyTemplate} align='center' style={{ width: '10rem' }} />
                     <Column field="price" header="Price" sortable body={priceBodyTemplate} align='right' />
                     <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '10rem' }} align='right'></Column>
                 </DataTable>
@@ -320,7 +314,7 @@ const Crud = () => {
                             <Controller name="color" control={form.control} rules={{ required: 'Color is required.' }} render={({ field, fieldState }) => (
                                 <>
                                     <label htmlFor={field.name} className={classNames({ 'p-error': errors.color })}>Color*</label>
-                                    <ColorPicker id={field.name} {...field} className={classNames({ 'p-invalid': fieldState.error })} defaultColor="ffffff"/>
+                                    <ColorPicker id={field.name} {...field} className={classNames({ 'p-invalid': fieldState.error })} defaultColor="ffffff" />
                                     {getFormErrorMessage(fieldState, field.name)}
                                 </>
                             )} />
@@ -350,6 +344,8 @@ const Crud = () => {
                     {car && <span>Are you sure you want to delete <b>{car.year} {car.make} {car.model}</b>?</span>}
                 </div>
             </Dialog>
+
+            <Toast ref={toastRef} />
         </div>
     );
 }

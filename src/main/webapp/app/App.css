@@ -1,0 +1,28 @@
+body .color-swatch > p {
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
+}
+
+body .p-colorpicker-preview {
+    padding: 1.3rem;
+}
+
+.react-logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    animation: react-logo-spin infinite 20s linear;
+}
+
+.react-logo:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes react-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

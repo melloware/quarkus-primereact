@@ -51,6 +51,8 @@ $ npm run start
 
 Now open your web browser to http://localhost:3000/ to see it in action.
 
+[![Quarkus Monorepo](https://github.com/melloware/quarkus-monorepo/blob/main/src/test/resources/quarkus-monorepo-screen.png)](https://github.com/melloware/quarkus-monorepo)
+
 ## Building
 -------------------------
 
