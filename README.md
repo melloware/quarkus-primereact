@@ -8,13 +8,14 @@ with a front-end based on React so you can play with it from your browser.
 
 While the code is surprisingly simple, under the hood this is using:
 
-- RESTEasy to expose the REST endpoints
+- RESTEasy to expose the REST endpoints and documented with OpenAPI
 - Hibernate ORM with Panache to perform the CRUD operations on the database
 - PostgreSQL database; see below to run one via Docker
-- ArC, the CDI inspired dependency injection tool with zero overhead
-- Agroal, The high performance connection pool
-- Infinispan based caching
-- Narayana Transaction Manager, For safely coordinated transactions
+- Liquibase to automatically update database
+- React + PrimeReact for a top notch user interface
+- TanStack Query for powerful asynchronous state management for TypeScript
+- Orval to generate TanStack Query client Typescript from OpenAPI definition
+- React Hook Forms to validate user input data
 
 ## Requirements
 

@@ -117,6 +117,7 @@ const App = () => {
                 { label: 'Quarkus', icon: 'pi pi-fw pi-server', url: 'https://quarkus.io/', target: '_blank' },
                 { label: 'Hibernate/Panache', icon: 'pi pi-fw pi-database', url: 'https://quarkus.io/guides/hibernate-orm-panache', target: '_blank' },
                 { label: 'PostgreSQL', icon: 'pi pi-fw pi-database', url: 'https://www.postgresql.org/', target: '_blank' },
+                { label: 'Liquibase', icon: 'pi pi-fw pi-database', url: 'https://www.liquibase.com/', target: '_blank' },
                 { label: 'OpenAPI', icon: 'pi pi-fw pi-server', url: 'https://www.openapis.org/', target: '_blank' },
                 { label: 'Docker', icon: 'pi pi-fw pi-server', url: 'https://www.docker.com/', target: '_blank' },
                 { label: 'GraalVM', icon: 'pi pi-fw pi-server', url: 'https://www.graalvm.org/', target: '_blank' }
@@ -127,10 +128,9 @@ const App = () => {
             items: [
                 { label: 'React JS', icon: 'pi pi-fw pi-globe', url: 'https://reactjs.org/', target: '_blank' },
                 { label: 'PrimeReact', icon: 'pi pi-fw pi-globe', url: 'https://primefaces.org/primereact/', target: '_blank' },
+                { label: 'TanStack Query', icon: 'pi pi-fw pi-globe', url: 'https://tanstack.com/query/v4/', target: '_blank' },
                 { label: 'Orval', icon: 'pi pi-fw pi-globe', url: 'https://orval.dev/', target: '_blank' },
-                { label: 'React Query', icon: 'pi pi-fw pi-globe', url: 'https://tanstack.com/query/v4/', target: '_blank' },
                 { label: 'React Hook Form', icon: 'pi pi-fw pi-globe', url: 'https://react-hook-form.com/', target: '_blank' }
-
             ]
         }
     ];
