@@ -27,7 +27,6 @@ To compile and run this demo you will need:
 In addition, you will need either a PostgreSQL database, or Docker to run one.
 
 ## Developing
--------------------------
 
 ### Live coding with Quarkus
 
@@ -38,10 +37,9 @@ live coding. To try this out:
 $ ./mvnw compile quarkus:dev
 ```
 
-In this mode you can make changes to the code and have the changes immediately applied, by just refreshing your browser.
+Watch as it starts up a temporary PostreSQL database just for this session. In this mode you can make changes to the code and have the changes immediately applied, by just refreshing your browser.
 
-    Hot reload works even when modifying your JPA entities.
-    Try it! Even the database schema will be updated on the fly.
+    Hot reload works add a new REST endpoint and see it update in realtime. Try it!
 
 To modify the React UI and perform live coding try this out:
 
@@ -55,7 +53,6 @@ Now open your web browser to http://localhost:3000/ to see it in action.
 [![Quarkus Monorepo](https://github.com/melloware/quarkus-monorepo/blob/main/src/test/resources/quarkus-monorepo-screen.png)](https://github.com/melloware/quarkus-monorepo)
 
 ## Building
--------------------------
 
 ### Run Quarkus in JVM mode
 
@@ -116,9 +113,8 @@ $ docker run -i --rm -p 8080:8080 melloware/quarkus-monorepo
 
     Please brace yourself: don't choke on that fresh cup of coffee you just got.
     
-    Now observe the time it took to boot, and remember: that time was mostly spent to generate the tables in your database and import the initial data.
-    
-    Next, maybe you're ready to measure how much memory this service is consuming.
+    Now observe the time it took to boot, and remember: that time was mostly spent to generate 
+    the tables in your database and import the initial data.
 
 N.B. This implies all dependencies have been compiled to native;
 that's a whole lot of stuff: from the bytecode enhancements that Panache
@@ -129,8 +125,6 @@ applies to your entities, to the lower level essential components such as the Po
 Navigate to:
 
 <http://localhost:8080/index.html>
-
-Have fun, and join the team of contributors!
 
 ## Running in Kubernetes
 
