@@ -4,6 +4,7 @@ import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import PrimeReact from 'primereact/api';
 import { AppMenu } from './AppMenu';
+import SidebarMenuItem from "./SidebarMenuItem"
 import Crud from './pages/Crud';
 
 import 'primereact/resources/themes/lara-dark-blue/theme.css';
@@ -93,9 +94,8 @@ const App = () => {
         event.preventDefault();
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const onMenuItemClick = (event: any) => {
-        if (!event.item.items) {
+    const onMenuItemClick = (event?: { originalEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>; item: SidebarMenuItem; }) => {
+        if (!event?.item) {
             setOverlayMenuActive(false);
             setMobileMenuActive(false);
         }
@@ -133,7 +133,7 @@ const App = () => {
                 { label: 'React Hook Form', icon: 'pi pi-fw pi-globe', url: 'https://react-hook-form.com/', target: '_blank' }
             ]
         }
-    ];
+    ] as SidebarMenuItem[];
 
     const wrapperClass = classNames('layout-wrapper', {
         'layout-overlay': layoutMode === 'overlay',

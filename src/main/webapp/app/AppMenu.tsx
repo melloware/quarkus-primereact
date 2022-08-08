@@ -3,14 +3,24 @@ import { Badge } from 'primereact/badge';
 import { Ripple } from "primereact/ripple";
 import { classNames } from "primereact/utils";
 import React, { KeyboardEvent, useState } from 'react';
-import { NavLink, To } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
+import SidebarMenuItem from './SidebarMenuItem';
 
-const AppSubmenu = (props: { root?: boolean; parentMenuItemActive?: boolean; onRootMenuitemClick?: (arg0: { originalEvent: any; }) => void; onMenuItemClick?: (arg0?: { originalEvent: any; item: any; }) => void; menuActive?: boolean | null; menuMode?: string; mobileMenuActive?: boolean; items?: any[]; className?: string, role?:string }) => {
+const AppSubmenu = (props: {
+    root?: boolean; parentMenuItemActive?: boolean;
+    onRootMenuitemClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, item: SidebarMenuItem, index: number) => void;
+    onMenuItemClick?: (event?: { originalEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>; item: SidebarMenuItem; }) => void;
+    menuMode?: string;
+    mobileMenuActive?: boolean;
+    items?: SidebarMenuItem[] | undefined;
+    className?: string,
+    role?: string
+}) => {
 
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
-    const onMenuItemClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, item: { to?: To; target?: string | undefined; label?: string | undefined; url?: string | undefined; disabled?: any; command?: any; }, index: number) => {
+    const onMenuItemClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, item: SidebarMenuItem, index: number) => {
         //avoid processing disabled items
         if (item.disabled) {
             event.preventDefault();
@@ -35,14 +45,14 @@ const AppSubmenu = (props: { root?: boolean; parentMenuItemActive?: boolean; onR
         }
     }
 
-    const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    const onKeyDown = (event: KeyboardEvent<HTMLAnchorElement>) => {
         if (event.code === 'Enter' || event.code === 'Space') {
             event.preventDefault();
-            event.target.click();
+            event.currentTarget.click();
         }
     }
 
-    const renderLinkContent = (item: { to?: To; target?: string | undefined; label: any; url?: string | undefined; items?: any; badge?: any; icon?: any; }) => {
+    const renderLinkContent = (item: SidebarMenuItem) => {
         const submenuIcon = item.items && <i className="pi pi-fw pi-angle-down menuitem-toggle-icon"></i>;
         const badge = item.badge && <Badge value={item.badge} />
 
@@ -57,7 +67,7 @@ const AppSubmenu = (props: { root?: boolean; parentMenuItemActive?: boolean; onR
         );
     }
 
-    const renderLink = (item: { to: To; target: string | undefined; label: string | undefined; url: string | undefined; }, i: number) => {
+    const renderLink = (item: SidebarMenuItem, i: number) => {
         const content = renderLinkContent(item);
 
         if (item.to) {
@@ -66,7 +76,7 @@ const AppSubmenu = (props: { root?: boolean; parentMenuItemActive?: boolean; onR
                     const linkClasses = ["p-ripple"];
                     if (isActive) linkClasses.push("router-link-active router-link-exact-active");
                     return linkClasses.join(" "); // returns "registerButton" or "registerButton active
-                    }} to={item.to} onClick={(e) => onMenuItemClick(e, item, i)} target={item.target}>
+                }} to={item.to} onClick={(e) => onMenuItemClick(e, item, i)} target={item.target}>
                     {content}
                 </NavLink>
             )
@@ -109,7 +119,7 @@ const AppSubmenu = (props: { root?: boolean; parentMenuItemActive?: boolean; onR
     return items ? <ul className={props.className} role="menu">{items}</ul> : null;
 }
 
-export const AppMenu = (props: { model: any[] | undefined; onMenuItemClick: ((event?: any) => void) | undefined; }) => {
+export const AppMenu = (props: { model: SidebarMenuItem[] | undefined; onMenuItemClick: ((event?: { originalEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>; item: SidebarMenuItem; }) => void) | undefined; }) => {
 
     return (
         <div className="layout-menu-container">
