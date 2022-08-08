@@ -5,22 +5,22 @@ import { classNames } from "primereact/utils";
 import React, { KeyboardEvent, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import SidebarMenuItem from './SidebarMenuItem';
+import AppMenuItem from './AppMenuItem';
 
 const AppSubmenu = (props: {
     root?: boolean; parentMenuItemActive?: boolean;
-    onRootMenuitemClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, item: SidebarMenuItem, index: number) => void;
-    onMenuItemClick?: (event?: { originalEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>; item: SidebarMenuItem; }) => void;
+    onRootMenuitemClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, item: AppMenuItem, index: number) => void;
+    onMenuItemClick?: (event?: { originalEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>; item: AppMenuItem; }) => void;
     menuMode?: string;
     mobileMenuActive?: boolean;
-    items?: SidebarMenuItem[] | undefined;
+    items?: AppMenuItem[] | undefined;
     className?: string,
     role?: string
 }) => {
 
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
-    const onMenuItemClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, item: SidebarMenuItem, index: number) => {
+    const onMenuItemClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, item: AppMenuItem, index: number) => {
         //avoid processing disabled items
         if (item.disabled) {
             event.preventDefault();
@@ -52,7 +52,7 @@ const AppSubmenu = (props: {
         }
     }
 
-    const renderLinkContent = (item: SidebarMenuItem) => {
+    const renderLinkContent = (item: AppMenuItem) => {
         const submenuIcon = item.items && <i className="pi pi-fw pi-angle-down menuitem-toggle-icon"></i>;
         const badge = item.badge && <Badge value={item.badge} />
 
@@ -67,7 +67,7 @@ const AppSubmenu = (props: {
         );
     }
 
-    const renderLink = (item: SidebarMenuItem, i: number) => {
+    const renderLink = (item: AppMenuItem, i: number) => {
         const content = renderLinkContent(item);
 
         if (item.to) {
@@ -119,7 +119,7 @@ const AppSubmenu = (props: {
     return items ? <ul className={props.className} role="menu">{items}</ul> : null;
 }
 
-export const AppMenu = (props: { model: SidebarMenuItem[] | undefined; onMenuItemClick: ((event?: { originalEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>; item: SidebarMenuItem; }) => void) | undefined; }) => {
+export const AppMenu = (props: { model: AppMenuItem[] | undefined; onMenuItemClick: ((event?: { originalEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>; item: AppMenuItem; }) => void) | undefined; }) => {
 
     return (
         <div className="layout-menu-container">

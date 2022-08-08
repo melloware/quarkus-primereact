@@ -11,11 +11,11 @@ import { Toolbar } from 'primereact/toolbar';
 import { classNames } from 'primereact/utils';
 import { useEffect, useRef, useState } from 'react';
 import { Controller, ControllerFieldState, useForm } from 'react-hook-form';
-import { ErrorType } from '../service/AxiosMutator';
-import { CarEntity, useDeleteEntityCarsId, useGetEntityCars, usePostEntityCars, usePutEntityCarsId } from '../service/CarService';
+import { ErrorType } from './service/AxiosMutator';
+import { CarEntity, useDeleteEntityCarsId, useGetEntityCars, usePostEntityCars, usePutEntityCarsId } from './service/CarService';
 
 
-const Crud = () => {
+const CrudPage = () => {
     // form
     const defaultValues = {
         vin: '',
@@ -350,4 +350,4 @@ const Crud = () => {
     );
 }
 
-export default Crud;
+export default CrudPage;

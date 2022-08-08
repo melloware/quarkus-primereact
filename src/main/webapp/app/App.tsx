@@ -4,8 +4,8 @@ import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import PrimeReact from 'primereact/api';
 import { AppMenu } from './AppMenu';
-import SidebarMenuItem from "./SidebarMenuItem"
-import Crud from './pages/Crud';
+import AppMenuItem from "./AppMenuItem"
+import CrudPage from './CrudPage';
 
 import 'primereact/resources/themes/lara-dark-blue/theme.css';
 import 'primeflex/primeflex.css';
@@ -94,7 +94,7 @@ const App = () => {
         event.preventDefault();
     }
 
-    const onMenuItemClick = (event?: { originalEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>; item: SidebarMenuItem; }) => {
+    const onMenuItemClick = (event?: { originalEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>; item: AppMenuItem; }) => {
         if (!event?.item) {
             setOverlayMenuActive(false);
             setMobileMenuActive(false);
@@ -133,7 +133,7 @@ const App = () => {
                 { label: 'React Hook Form', icon: 'pi pi-fw pi-globe', url: 'https://react-hook-form.com/', target: '_blank' }
             ]
         }
-    ] as SidebarMenuItem[];
+    ] as AppMenuItem[];
 
     const wrapperClass = classNames('layout-wrapper', {
         'layout-overlay': layoutMode === 'overlay',
@@ -177,7 +177,7 @@ const App = () => {
             <div className="layout-main-container">
                 <div className="layout-main">
                     <Routes>
-                        <Route path="/" element={<Crud />} />
+                        <Route path="/" element={<CrudPage />} />
                     </Routes>
                 </div>
 
