@@ -1,10 +1,10 @@
+import PrimeReact from 'primereact/api';
 import { classNames, DomHandler } from "primereact/utils";
 import React, { useEffect, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import PrimeReact from 'primereact/api';
 import { AppMenu } from './AppMenu';
-import AppMenuItem from "./AppMenuItem"
+import { AppMenuItem, AppMenuItemClickParams } from "./AppMenuItem";
 import CrudPage from './CrudPage';
 
 import 'primereact/resources/themes/lara-dark-blue/theme.css';
@@ -13,6 +13,7 @@ import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.min.css';
 import './assets/layout/layout.scss';
 import './App.css';
+
 
 const App = () => {
     const [layoutMode] = useState('static');
@@ -94,7 +95,7 @@ const App = () => {
         event.preventDefault();
     }
 
-    const onMenuItemClick = (event?: { originalEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>; item: AppMenuItem; }) => {
+    const onMenuItemClick = (event?: AppMenuItemClickParams) => {
         if (!event?.item) {
             setOverlayMenuActive(false);
             setMobileMenuActive(false);

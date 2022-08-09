@@ -5,12 +5,12 @@ import { classNames } from "primereact/utils";
 import React, { KeyboardEvent, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-import AppMenuItem from './AppMenuItem';
+import { AppMenuItem, AppMenuItemClickParams } from './AppMenuItem';
 
 const AppSubmenu = (props: {
     root?: boolean; parentMenuItemActive?: boolean;
     onRootMenuitemClick?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, item: AppMenuItem, index: number) => void;
-    onMenuItemClick?: (event?: { originalEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>; item: AppMenuItem; }) => void;
+    onMenuItemClick?: (event?: AppMenuItemClickParams) => void;
     menuMode?: string;
     mobileMenuActive?: boolean;
     items?: AppMenuItem[] | undefined;
@@ -20,27 +20,28 @@ const AppSubmenu = (props: {
 
     const [activeIndex, setActiveIndex] = useState<number | null>(null)
 
-    const onMenuItemClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, item: AppMenuItem, index: number) => {
+    const onMenuItemClick = (event: AppMenuItemClickParams) => {
         //avoid processing disabled items
-        if (item.disabled) {
-            event.preventDefault();
+        if (event.item.disabled) {
+            event.originalEvent.preventDefault();
             return true;
         }
 
         //execute command
-        if (item.command) {
-            item.command({ originalEvent: event, item: item });
+        if (event.item.command) {
+            event.item.command({ originalEvent: event.originalEvent, item: event.item });
         }
 
-        if (index === activeIndex)
+        if (event.index === activeIndex)
             setActiveIndex(null);
         else
-            setActiveIndex(index);
+            setActiveIndex(event.index);
 
         if (props.onMenuItemClick) {
             props.onMenuItemClick({
-                originalEvent: event,
-                item: item
+                originalEvent: event.originalEvent,
+                item: event.item,
+                index: event.index
             });
         }
     }
@@ -76,14 +77,14 @@ const AppSubmenu = (props: {
                     const linkClasses = ["p-ripple"];
                     if (isActive) linkClasses.push("router-link-active router-link-exact-active");
                     return linkClasses.join(" "); // returns "registerButton" or "registerButton active
-                }} to={item.to} onClick={(e) => onMenuItemClick(e, item, i)} target={item.target}>
+                }} to={item.to} onClick={(e) => onMenuItemClick({originalEvent: e, item, index: i})} target={item.target}>
                     {content}
                 </NavLink>
             )
         }
         else {
             return (
-                <a tabIndex={0} aria-label={item.label} onKeyDown={onKeyDown} role="menuitem" href={item.url} className="p-ripple" onClick={(e) => onMenuItemClick(e, item, i)} target={item.target}>
+                <a tabIndex={0} aria-label={item.label} onKeyDown={onKeyDown} role="menuitem" href={item.url} className="p-ripple" onClick={(e) => onMenuItemClick({originalEvent: e, item, index: i})} target={item.target}>
                     {content}
                 </a>
             );
@@ -119,7 +120,7 @@ const AppSubmenu = (props: {
     return items ? <ul className={props.className} role="menu">{items}</ul> : null;
 }
 
-export const AppMenu = (props: { model: AppMenuItem[] | undefined; onMenuItemClick: ((event?: { originalEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>; item: AppMenuItem; }) => void) | undefined; }) => {
+export const AppMenu = (props: { model: AppMenuItem[] | undefined; onMenuItemClick: ((event?: AppMenuItemClickParams) => void) | undefined; }) => {
 
     return (
         <div className="layout-menu-container">
