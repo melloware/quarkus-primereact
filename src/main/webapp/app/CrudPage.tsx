@@ -4,15 +4,16 @@ import { ColorPicker } from 'primereact/colorpicker';
 import { Column } from 'primereact/column';
 import { DataTable, DataTablePFSEvent } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
+import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { Toast, ToastSeverityType } from 'primereact/toast';
 import { Toolbar } from 'primereact/toolbar';
 import { classNames } from 'primereact/utils';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Controller, ControllerFieldState, useForm } from 'react-hook-form';
 import { ErrorType } from './service/AxiosMutator';
-import { CarEntity, useDeleteEntityCarsId, useGetEntityCars, usePostEntityCars, usePutEntityCarsId } from './service/CarService';
+import { Car, useDeleteEntityCarsId, useGetEntityCars, useGetEntityCarsManufacturers, usePostEntityCars, usePutEntityCarsId } from './service/CarService';
 
 
 const CrudPage = () => {
@@ -24,7 +25,7 @@ const CrudPage = () => {
         color: '',
         year: 2022,
         price: 0
-    } as CarEntity;
+    } as Car;
     const form = useForm({ defaultValues: defaultValues });
     const errors = form.formState.errors;
 
@@ -33,8 +34,9 @@ const CrudPage = () => {
     const datatable = useRef<DataTable>(null);
 
     // state
-    const [cars, setCars] = useState<CarEntity[]>([]);
-    const [car, setCar] = useState<CarEntity>(defaultValues);
+    const [cars, setCars] = useState<Car[]>([]);
+    const [car, setCar] = useState<Car>(defaultValues);
+    const [manufacturers, setManufacturers] = useState<string[]>([]);
     const [deleteCarDialog, setDeleteCarDialog] = useState(false);
     const [editCarDialog, setEditCarDialog] = useState(false);
     const [totalRecords, setTotalRecords] = useState(0);
@@ -49,7 +51,8 @@ const CrudPage = () => {
             'vin': { value: '', matchMode: 'contains' },
             'make': { value: '', matchMode: 'contains' },
             'model': { value: '', matchMode: 'contains' },
-            'color': { value: '', matchMode: 'contains' }
+            'color': { value: '', matchMode: 'contains' },
+            'year': { value: '', matchMode: 'gte' }
         }
     });
 
@@ -69,6 +72,16 @@ const CrudPage = () => {
             }
         }
     );
+    const queryManufacturers = useGetEntityCarsManufacturers(
+        {
+            query: {
+                queryKey: ["unique-manufacturers"],
+                refetchOnWindowFocus: false,
+                retry: false,
+                cacheTime: Infinity
+            }
+        }
+    );
 
     useEffect(() => {
         if (queryList.isError) {
@@ -80,7 +93,16 @@ const CrudPage = () => {
             setTotalRecords(results.totalRecords!);
             setCars(results.records!);
         }
-    }, [queryList.data]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [queryList.data]);
+
+    useEffect(() => {
+        if (queryManufacturers.isError) {
+            setManufacturers([]);
+        }
+        if (queryManufacturers.isSuccess) {
+            setManufacturers(queryManufacturers.data);
+        }
+    }, [queryManufacturers.data]);
 
     const onPage = (event: DataTablePFSEvent) => {
         setLazyParams(event);
@@ -103,7 +125,7 @@ const CrudPage = () => {
         toastRef.current?.show({ severity: severity, summary: summary, detail: detail, life: 4000 });
     }
 
-    const confirmDeleteCar = (item: CarEntity) => {
+    const confirmDeleteCar = (item: Car) => {
         setCar(item);
         setDeleteCarDialog(true);
     }
@@ -141,7 +163,7 @@ const CrudPage = () => {
         return <small className="p-error">{message}</small>
     };
 
-    const onSubmit = (car: CarEntity) => {
+    const onSubmit = (car: Car) => {
         if (car.id) {
             updateCarMutation.mutate(
                 { id: car.id!, data: car },
@@ -173,7 +195,7 @@ const CrudPage = () => {
         }
     };
 
-    const onReset = (data: CarEntity) => {
+    const onReset = (data: Car) => {
         setCar(data);
         form.reset(data, {
             keepErrors: false,
@@ -185,7 +207,7 @@ const CrudPage = () => {
         });
     }
 
-    const editCar = (car: CarEntity) => {
+    const editCar = (car: Car) => {
         setEditCarDialog(true);
         onReset({ ...car });
     }
@@ -211,15 +233,15 @@ const CrudPage = () => {
         );
     }
 
-    const colorBodyTemplate = (item: CarEntity) => {
+    const colorBodyTemplate = (item: Car) => {
         return <div className='color-swatch' style={{ backgroundColor: `#${item.color}`, width: 'auto' }}><span>{item.color}</span></div>;
     }
 
-    const priceBodyTemplate = (item: CarEntity) => {
+    const priceBodyTemplate = (item: Car) => {
         return item.price?.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     }
 
-    const actionBodyTemplate = (item: CarEntity) => {
+    const actionBodyTemplate = (item: Car) => {
         return (
             <div>
                 <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editCar(item)} />
@@ -260,11 +282,11 @@ const CrudPage = () => {
                     onPage={onPage} onSort={onSort} onFilter={onFilter} sortMode="multiple" multiSortMeta={lazyParams.multiSortMeta}
                     filters={lazyParams.filters} loading={queryList.isFetching} exportFilename="cars">
                     <Column field="vin" header="VIN" sortable filter filterPlaceholder="VIN" />
-                    <Column field="year" header="Year" sortable />
+                    <Column field="year" header="Year" sortable dataType='numeric' filter/>
                     <Column field="make" header="Make" sortable filter filterPlaceholder="Make" />
                     <Column field="model" header="Model" sortable filter filterPlaceholder="Model" />
                     <Column field="color" header="Color" sortable filter filterPlaceholder="Color" body={colorBodyTemplate} align='center' style={{ width: '10rem' }} />
-                    <Column field="price" header="Price" sortable body={priceBodyTemplate} align='right' />
+                    <Column field="price" header="Price" sortable body={priceBodyTemplate} align='right' dataType='numeric'/>
                     <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '10rem' }} align='right'></Column>
                 </DataTable>
             </div>
@@ -285,7 +307,7 @@ const CrudPage = () => {
                             <Controller name="make" control={form.control} rules={{ required: 'Make is required.' }} render={({ field, fieldState }) => (
                                 <>
                                     <label htmlFor={field.name} className={classNames({ 'p-error': errors.make })}>Make*</label>
-                                    <InputText id={field.name} {...field} className={classNames({ 'p-invalid': fieldState.error })} />
+                                    <Dropdown id={field.name} value={field.value} onChange={(e) => field.onChange(e.value)} options={manufacturers} className={classNames({ 'p-invalid': fieldState.error })}/>
                                     {getFormErrorMessage(fieldState, field.name)}
                                 </>
                             )} />
@@ -350,4 +372,4 @@ const CrudPage = () => {
     );
 }
 
-export default CrudPage;
+export default React.memo(CrudPage);

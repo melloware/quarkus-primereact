@@ -1,18 +1,22 @@
 ---
 openapi: 3.0.3
 info:
-  title: Quarkus Monorepo
-  description: Quickstart to demo Quarkus/React monorepo
+  title: Quarkus React Monorepo
+  description: Quarkus monorepo demonstrating Panache REST server with PrimeReact
+    UI client
   contact:
     name: Melloware
     url: https://melloware.com
     email: mellowaredev@gmail.com
   version: 1.0.0
+tags:
+- name: Car Resource
+  description: CRUD operations for the Car entity.
 paths:
   /entity/cars:
     get:
       tags:
-      - Car Entity Resource
+      - Car Resource
       parameters:
       - name: request
         in: query
@@ -24,28 +28,42 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/QueryResponseCarEntity'
+                $ref: '#/components/schemas/QueryResponseCar'
     post:
       tags:
-      - Car Entity Resource
+      - Car Resource
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CarEntity'
+              $ref: '#/components/schemas/Car'
       responses:
         "200":
           description: OK
+  /entity/cars/manufacturers:
+    get:
+      tags:
+      - Car Resource
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
   /entity/cars/{id}:
     get:
       tags:
-      - Car Entity Resource
+      - Car Resource
       parameters:
       - name: id
         in: path
         required: true
         schema:
           format: int64
+          minimum: 0
           type: integer
       responses:
         "200":
@@ -53,64 +71,92 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CarEntity'
+                $ref: '#/components/schemas/Car'
     put:
       tags:
-      - Car Entity Resource
+      - Car Resource
       parameters:
       - name: id
         in: path
         required: true
         schema:
           format: int64
+          minimum: 0
           type: integer
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CarEntity'
+              $ref: '#/components/schemas/Car'
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CarEntity'
+                $ref: '#/components/schemas/Car'
     delete:
       tags:
-      - Car Entity Resource
+      - Car Resource
       parameters:
       - name: id
         in: path
         required: true
         schema:
           format: int64
+          minimum: 0
           type: integer
       responses:
         "200":
           description: OK
 components:
   schemas:
-    CarEntity:
+    Car:
+      description: Entity that represents a car.
+      required:
+      - vin
+      - make
+      - model
+      - year
+      - color
+      - price
       type: object
       properties:
         id:
           format: int64
           type: integer
         vin:
+          description: VIN number
+          pattern: \S
           type: string
+          example: WVGEF9BP4DD085048
         make:
+          description: Manufacturer
+          pattern: \S
           type: string
+          example: BMW
         model:
+          description: Model Number
+          pattern: \S
           type: string
+          example: 330ix
         year:
           format: int32
+          description: Year of manufacture
+          minimum: 1960
           type: integer
+          example: 1974
         color:
+          description: HTML color of the car
+          pattern: \S
           type: string
+          example: 891d4c
         price:
+          description: Price
+          minimum: 0
           type: number
-    QueryResponseCarEntity:
+          example: 9999.99
+    QueryResponseCar:
       type: object
       properties:
         totalRecords:
@@ -119,4 +165,4 @@ components:
         records:
           type: array
           items:
-            $ref: '#/components/schemas/CarEntity'
+            $ref: '#/components/schemas/Car'

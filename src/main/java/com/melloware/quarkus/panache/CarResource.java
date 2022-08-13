@@ -20,15 +20,16 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.melloware.quarkus.support.QueryRequest;
 import com.melloware.quarkus.support.QueryResponse;
 
-import io.netty.handler.codec.http.HttpResponseStatus;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Sort;
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -40,38 +41,46 @@ import lombok.extern.jbosslog.JBossLog;
 @Consumes(MediaType.APPLICATION_JSON)
 @JBossLog
 @RegisterForReflection
-public class CarEntityResource {
+@Tag(name = "Car Resource", description = "CRUD operations for the Car entity.")
+public class CarResource {
 
     @Inject
     ObjectMapper objectMapper;
 
     @GET
     @Path("{id}")
-    public CarEntity getSingle(@Min(value = 0) Long id) {
-        CarEntity entity = CarEntity.findById(id);
+    public Car getSingle(@Min(value = 0) Long id) {
+        Car entity = Car.findById(id);
         if (entity == null) {
-            throw new WebApplicationException("Car with id of " + id + " does not exist.", 404);
+            throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
         }
         return entity;
     }
 
+    @GET
+    @Path("/manufacturers")
+    public List<String> getManufacturers() {
+        return Car.getEntityManager().createQuery("select distinct make from Car order by make").getResultList();
+    }
+
     @POST
     @Transactional
-    public Response create(@Valid CarEntity car) {
+    public Response create(@Valid Car car) {
         if (car.id != null) {
+            // 422 Unprocessable Entity
             throw new WebApplicationException("Id was invalidly set on request.", 422);
         }
         car.persist();
-        return Response.ok(car).status(HttpResponseStatus.CREATED.code()).build();
+        return Response.ok(car).status(Status.CREATED).build();
     }
 
     @PUT
     @Path("{id}")
     @Transactional
-    public CarEntity update(@Min(value = 0) Long id, @Valid CarEntity car) {
-        CarEntity entity = CarEntity.findById(id);
+    public Car update(@Min(value = 0) Long id, @Valid Car car) {
+        Car entity = Car.findById(id);
         if (entity == null) {
-            throw new WebApplicationException("Car with id of " + id + " does not exist.", 404);
+            throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
         }
 
         // would normally use ModelMapper here: https://modelmapper.org/
@@ -89,19 +98,19 @@ public class CarEntityResource {
     @Path("{id}")
     @Transactional
     public Response delete(@Min(value = 0) Long id) {
-        CarEntity entity = CarEntity.findById(id);
+        Car entity = Car.findById(id);
         if (entity == null) {
-            throw new WebApplicationException("Car with id of " + id + " does not exist.", 404);
+            throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
         }
         entity.delete();
-        return Response.status(HttpResponseStatus.NO_CONTENT.code()).build();
+        return Response.status(Status.NO_CONTENT).build();
     }
 
     @GET
-    public QueryResponse<CarEntity> list(@QueryParam("request") String lazyRequest) throws JsonProcessingException {
-        final QueryResponse<CarEntity> response = new QueryResponse<>();
+    public QueryResponse<Car> list(@QueryParam("request") String lazyRequest) throws JsonProcessingException {
+        final QueryResponse<Car> response = new QueryResponse<>();
         if (lazyRequest == null || lazyRequest.length() == 0) {
-            List<CarEntity> results = CarEntity.listAll(Sort.by("make"));
+            List<Car> results = Car.listAll(Sort.by("make"));
             response.setTotalRecords(results.size());
             response.setRecords(results);
             return response;
@@ -118,10 +127,10 @@ public class CarEntityResource {
         final String filterQuery = filterMeta.getLeft();
         final Map<String, QueryRequest.MultiFilterMeta> filters = filterMeta.getRight();
 
-        PanacheQuery<CarEntity> query = CarEntity.findAll(sort);
+        PanacheQuery<Car> query = Car.findAll(sort);
         if (!filters.isEmpty()) {
             final Map<String, Object> map = filters.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getSqlValue()));
-            query = CarEntity.find(filterQuery, sort, map);
+            query = Car.find(filterQuery, sort, map);
         }
 
         // range

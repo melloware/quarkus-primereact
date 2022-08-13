@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import io.quarkus.panache.common.Sort;
@@ -56,7 +58,7 @@ public class QueryRequest {
 
     public Pair<String, Map<String, MultiFilterMeta>> calculateFilters(Sort sort) {
         Map<String, QueryRequest.MultiFilterMeta> filters = getFilters();
-        filters.entrySet().removeIf(e -> e.getValue().getValue() == null || e.getValue().getValue().length() == 0);
+        filters.entrySet().removeIf(e -> StringUtils.isBlank(Objects.toString(e.getValue().getValue(), null)));
         String filterQuery = filters.entrySet().stream()
             .map(entry -> entry.getKey() + entry.getValue().getSqlClause() + " :" + entry.getKey())
             .collect(Collectors.joining(" and "));
@@ -80,7 +82,7 @@ public class QueryRequest {
     @NoArgsConstructor
     @RegisterForReflection
     public static class MultiFilterMeta {
-        private String value;
+        private Object value;
         private String matchMode;
 
         public String getSqlClause() {
@@ -91,12 +93,20 @@ public class QueryRequest {
                     return "!=";
                 case "notContains":
                     return " not like ";
+                case "gt":
+                    return ">";
+                case "gte":
+                    return ">=";
+                case "lt":
+                    return "<";
+                case "lte":
+                    return "<=";
                 default:
                     return " like ";
             }
         }
 
-        public String getSqlValue() {
+        public Object getSqlValue() {
             switch (matchMode) {
                 case "contains":
                 case "notContains":
@@ -105,6 +115,12 @@ public class QueryRequest {
                     return value + "%";
                 case "endsWith":
                     return "%" + value;
+                case "gt":
+                case "gte":
+                case "lt":
+                case "lte":
+                    // TODO: BigDecimal not supported yet
+                    return Integer.parseInt((String) value);
                 default:
                     return value;
             }
