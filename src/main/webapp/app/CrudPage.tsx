@@ -78,7 +78,8 @@ const CrudPage = () => {
                 queryKey: ["unique-manufacturers"],
                 refetchOnWindowFocus: false,
                 retry: false,
-                cacheTime: Infinity
+                cacheTime: Infinity,
+                staleTime: Infinity
             }
         }
     );
