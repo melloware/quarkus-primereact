@@ -39,7 +39,8 @@ $ ./mvnw compile quarkus:dev
 
 Watch as it starts up a temporary PostreSQL database just for this session. In this mode you can make changes to the code and have the changes immediately applied, by just refreshing your browser.
 
-    Hot reload works add a new REST endpoint and see it update in realtime. Try it!
+> **⚠️**
+Hot reload works add a new REST endpoint and see it update in realtime. Try it!
 
 To modify the React UI and perform live coding try this out:
 
@@ -67,8 +68,7 @@ $ npm run build
 $ ./mvnw package
 ```
 
-Next we need to make sure you have a PostgreSQL instance running (Quarkus automatically starts one for dev and test mode). To set up a PostgreSQL database with
-Docker:
+Next we need to make sure you have a PostgreSQL instance running (Quarkus automatically starts one for dev and test mode). To set up a PostgreSQL database with Docker:
 
 ```bash
 $ docker run -it --rm=true --name quarkus_postgres -e POSTGRES_USER=quarkus_postgres -e POSTGRES_PASSWORD=quarkus_postgres -e POSTGRES_DB=quarkus_postgres -p 5432:5432 postgres:14
@@ -85,9 +85,8 @@ $ java -jar ./target/quarkus-app/quarkus-run.jar -Dquarkus.datasource.jdbc.url=j
 Navigate to:
 <http://localhost:3000/>
 
-
-    Have a look at how fast it boots.
-    Or measure total native memory consumption...
+> **⚠️**
+Have a look at how fast it boots. Or measure total native memory consumption...
 
 ### Run Quarkus as a native application
 
@@ -111,10 +110,8 @@ $ docker build -f src/main/docker/Dockerfile.native -t melloware/quarkus-monorep
 $ docker run -i --rm -p 8080:8080 melloware/quarkus-monorepo
 ```
 
-    Please brace yourself: don't choke on that fresh cup of coffee you just got.
-    
-    Now observe the time it took to boot, and remember: that time was mostly spent to generate 
-    the tables in your database and import the initial data.
+> **⚠️**
+Please brace yourself: don't choke on that fresh cup of coffee you just got. Now observe the time it took to boot, and remember: that time was mostly spent to generate the tables in your database and import the initial data.
 
 N.B. This implies all dependencies have been compiled to native;
 that's a whole lot of stuff: from the bytecode enhancements that Panache
