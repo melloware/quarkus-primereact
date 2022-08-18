@@ -85,7 +85,7 @@ $ java -jar ./target/quarkus-app/quarkus-run.jar -Dquarkus.datasource.jdbc.url=j
 Navigate to:
 <http://localhost:3000/>
 
-> **⚠️**
+> :bulb:
 Have a look at how fast it boots. Or measure total native memory consumption...
 
 ### Run Quarkus as a native application
@@ -110,7 +110,7 @@ $ docker build -f src/main/docker/Dockerfile.native -t melloware/quarkus-monorep
 $ docker run -i --rm -p 8080:8080 melloware/quarkus-monorepo
 ```
 
-> **⚠️**
+> :bulb:
 Please brace yourself: don't choke on that fresh cup of coffee you just got. Now observe the time it took to boot, and remember: that time was mostly spent to generate the tables in your database and import the initial data.
 
 N.B. This implies all dependencies have been compiled to native;
