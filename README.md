@@ -119,9 +119,7 @@ applies to your entities, to the lower level essential components such as the Po
 
 ## See it in your browser
 
-Navigate to:
-
-<http://localhost:8080/index.html>
+Navigate to: <http://localhost:8080/index.html>
 
 ## Running in Kubernetes
 
