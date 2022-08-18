@@ -19,7 +19,7 @@
         "primereact": "8.3.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-hook-form": "7.34.1",
+        "react-hook-form": "7.34.2",
         "react-router-dom": "6.3.0",
         "react-transition-group": "4.4.5",
         "trusted-types": "2.0.0"
