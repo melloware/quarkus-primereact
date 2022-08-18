@@ -39,7 +39,7 @@ $ ./mvnw compile quarkus:dev
 
 Watch as it starts up a temporary PostreSQL database just for this session. In this mode you can make changes to the code and have the changes immediately applied, by just refreshing your browser.
 
-> **⚠️**
+> :bulb:
 Hot reload works add a new REST endpoint and see it update in realtime. Try it!
 
 To modify the React UI and perform live coding try this out:
