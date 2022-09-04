@@ -149,7 +149,7 @@ const CrudPage = () => {
 		onReset(defaultValues);
 	};
 
-	const getFormErrorMessage = (fieldState: ControllerFieldState, fieldName?: string) => {
+	const getFormErrorMessage = (fieldState: ControllerFieldState, fieldName?: string, max?: number, min?: number): JSX.Element | null => {
 		if (!fieldState || !fieldState.error) {
 			return null;
 		}
@@ -158,13 +158,16 @@ const CrudPage = () => {
 		let message;
 		switch (error.type) {
 			case 'required':
-				message = fieldState.error.message;
+				message = `${name} is required`;
 				break;
 			case 'min':
-				message = `${name} less than minimum allowed value`;
+				message = `${name} less than minimum allowed value of ${min}`;
 				break;
 			case 'max':
-				message = `${name} more than maximum allowed value`;
+				message = `${name} more than maximum allowed value of ${max}`;
+				break;
+			case 'maxLength':
+				message = `${name} more than maximum ${max} allowed characters`;
 				break;
 			default:
 				break;
@@ -324,14 +327,14 @@ const CrudPage = () => {
 						<Controller
 							name="vin"
 							control={form.control}
-							rules={{ required: 'VIN is required.' }}
+							rules={{ required: 'VIN is required.', maxLength: 17 }}
 							render={({ field, fieldState }) => (
 								<>
 									<label htmlFor={field.name} className={classNames({ 'p-error': errors.vin })}>
 										VIN*
 									</label>
 									<InputText id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.error })} />
-									{getFormErrorMessage(fieldState, field.name)}
+									{getFormErrorMessage(fieldState, field.name, 17)}
 								</>
 							)}
 						/>
@@ -395,7 +398,7 @@ const CrudPage = () => {
 											useGrouping={false}
 											inputClassName={classNames({ 'p-invalid': fieldState.error })}
 										/>
-										{getFormErrorMessage(fieldState, field.name)}
+										{getFormErrorMessage(fieldState, field.name, 2050, 1960)}
 									</>
 								)}
 							/>
@@ -444,7 +447,7 @@ const CrudPage = () => {
 										locale="en-US"
 										inputClassName={classNames({ 'p-invalid': fieldState.error })}
 									/>
-									{getFormErrorMessage(fieldState, field.name)}
+									{getFormErrorMessage(fieldState, field.name, 250000, 0)}
 								</>
 							)}
 						/>
