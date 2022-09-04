@@ -1,4 +1,4 @@
-import Axios, { AxiosError, AxiosRequestConfig } from "axios";
+import Axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 export const AXIOS_INSTANCE = Axios.create({ baseURL: process.env.REACT_APP_API_SERVER! });
 
@@ -13,7 +13,7 @@ export const useAxiosMutator = <T>(): ((config: AxiosRequestConfig) => Promise<T
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		promise.cancel = () => {
-			source.cancel("Query was cancelled by React Query!");
+			source.cancel('Query was cancelled by React Query!');
 		};
 
 		return promise;
