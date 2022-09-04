@@ -19,7 +19,6 @@ nb-configuration.xml
 # SASS
 .sass-cache
 sassdoc
-.vscode
 
 # NODDE
 /node_modules

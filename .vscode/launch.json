@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "msedge",
+            "request": "launch",
+            "name": "Launch Edge against localhost",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "command": "npm start",
+            "name": "NPM Start",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "command": "npm test",
+            "name": "NPM Test",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
+            "command": "npm run sass",
+            "name": "SASS Watch",
+            "request": "launch",
+            "type": "node-terminal"
+        }
+    ]
+}
