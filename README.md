@@ -2,7 +2,7 @@
 [![Actions CI](https://github.com/primefaces/primefaces/workflows/CI/badge.svg)](https://github.com/melloware/quarkus-monorepo/actions/workflows/build.yml)
 # Quarkus Monorepo
 
-<img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webapp/public/static/images/quarkus.svg" height="50"><img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webapp/public/static/images/plus-sign.svg" height="50"><img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webapp/public/static/images/primereact-dark.svg" height="50">
+<img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webapp/public/static/images/quarkus.svg" height="50" style="margin-right: 12px"><img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webapp/public/static/images/plus-sign.svg" height="50" style="margin-right: 12px"><img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webapp/public/static/images/primereact-dark.svg" height="50" style="margin-right: 12px">
 
 This [monorepo](https://en.wikipedia.org/wiki/Monorepo) is a minimal CRUD service exposing a couple of endpoints over REST,
 with a front-end based on React so you can play with it from your browser.
