@@ -1,7 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Actions CI](https://github.com/primefaces/primefaces/workflows/CI/badge.svg)](https://github.com/melloware/quarkus-monorepo/actions/workflows/build.yml)
-<img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webapp/public/static/images/quarkus.svg" height="50">
-<img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webapp/public/static/images/primereact.svg" height="50">
+<img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webapp/public/static/images/quarkus.svg" height="50"><strong> + </strong><img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webapp/public/static/images/primereact-dark.svg" height="50">
 
 
 # Quarkus Monorepo
