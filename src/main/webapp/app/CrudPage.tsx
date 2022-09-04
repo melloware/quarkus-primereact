@@ -349,10 +349,9 @@ const CrudPage = () => {
 										</label>
 										<Dropdown
 											id={field.name}
-											value={field.value}
-											onChange={(e) => field.onChange(e.value)}
 											options={manufacturers}
 											className={classNames({ 'p-invalid': fieldState.error })}
+											{...field}
 										/>
 										{getFormErrorMessage(fieldState, field.name)}
 									</>
