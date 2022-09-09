@@ -104,11 +104,10 @@ native executable:
 $ mvn clean package -Dnative
 ```
 
-After getting a cup of coffee, you'll be able to run this binary directly:
+After getting a cup of coffee, you'll be able to run this binary directly where ${version} is the current project version:
 
 ```bash
-$ docker build -f src/main/docker/Dockerfile.native -t melloware/quarkus-monorepo .
-$ docker run -i --rm -p 8080:8080 melloware/quarkus-monorepo
+$ docker run -i --rm -p 8080:8080 melloware/quarkus-monorepo:${version}
 ```
 
 > :bulb:

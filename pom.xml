@@ -81,33 +81,30 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>io.fabric8</groupId>
-					<artifactId>docker-maven-plugin</artifactId>
-					<version>0.40.2</version>
-					<executions>
-						<execution>
-							<id>docker</id>
-							<phase>package</phase>
-							<goals>
-								<goal>build</goal>
-							</goals>
-						</execution>
-					</executions>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>3.1.0</version>
 					<configuration>
-						<images>
-							<image>
-								<name>melloware/quarkus-monorepo</name>
-								<build>
-									<contextDir>${project.basedir}</contextDir>
-									<dockerFile>${project.basedir}/src/main/docker/Dockerfile.native</dockerFile>
-								</build>
-								<run>
-									<ports>
-										<port>8080:8080</port>
-									</ports>
-								</run>
-							</image>
-						</images>
+						<executable>docker</executable>
+						<workingDirectory>${project.basedir}</workingDirectory>
+						<arguments>
+							<argument>build</argument>
+							<argument>-f</argument>
+							<argument>src/main/docker/Dockerfile.jvm</argument>
+							<argument>-t</argument>
+							<argument>melloware/${project.artifactId}:latest</argument>
+							<argument>.</argument>
+						</arguments>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>com.github.eirslett</groupId>
+					<artifactId>frontend-maven-plugin</artifactId>
+					<version>1.12.1</version>
+					<configuration>
+						<nodeVersion>v18.8.0</nodeVersion>
+						<npmVersion>8.19.1</npmVersion>
+						<installDirectory>${project.basedir}/target/node</installDirectory>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -164,7 +161,6 @@
 					<plugin>
 						<groupId>com.github.eirslett</groupId>
 						<artifactId>frontend-maven-plugin</artifactId>
-						<version>1.12.1</version>
 						<executions>
 							<!-- Install node -->
 							<execution>
@@ -198,11 +194,38 @@
 								</configuration>
 							</execution>
 						</executions>
-						<configuration>
-							<nodeVersion>v18.8.0</nodeVersion>
-							<npmVersion>8.19.1</npmVersion>
-							<installDirectory>${project.basedir}/target/node</installDirectory>
-						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<!-- Optionally activate this profile to compile the demo into JVM docker image! -->
+			<id>docker</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<executions>
+							<!-- $ docker build -f src/main/docker/Dockerfile.jvm -t melloware/quarkus-monorepo:latest . -->
+							<execution>
+								<id>docker-build</id>
+								<phase>package</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<arguments>
+										<argument>build</argument>
+										<argument>-f</argument>
+										<argument>src/main/docker/Dockerfile.jvm</argument>
+										<argument>-t</argument>
+										<argument>melloware/${project.artifactId}:latest</argument>
+										<argument>.</argument>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>
@@ -223,17 +246,28 @@
 			<build>
 				<plugins>
 					<plugin>
-						<groupId>io.fabric8</groupId>
-						<artifactId>docker-maven-plugin</artifactId>
-						<configuration>
-							<images>
-								<image>
-									<build>
-										<dockerFile>${project.basedir}/src/main/docker/Dockerfile.native</dockerFile>
-									</build>
-								</image>
-							</images>
-						</configuration>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>exec-maven-plugin</artifactId>
+						<executions>
+							<!-- $ docker build -f src/main/docker/Dockerfile.native -t melloware/quarkus-monorepo:version . -->
+							<execution>
+								<id>docker-build</id>
+								<phase>package</phase>
+								<goals>
+									<goal>exec</goal>
+								</goals>
+								<configuration>
+									<arguments>
+										<argument>build</argument>
+										<argument>-f</argument>
+										<argument>src/main/docker/Dockerfile.native</argument>
+										<argument>-t</argument>
+										<argument>melloware/${project.artifactId}:${project.version}</argument>
+										<argument>.</argument>
+									</arguments>
+								</configuration>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>
