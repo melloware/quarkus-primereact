@@ -37,7 +37,7 @@
         "eslint-config-prettier": "latest",
         "eslint-plugin-prettier": "latest",
         "glob-all": "3.3.0",
-        "orval": "6.9.6",
+        "orval": "6.10.0",
         "prettier": "latest",
         "purgecss-webpack-plugin": "latest",
         "react-app-rewired": "latest",
