@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { FilterMatchMode } from 'primereact/api';
 import { Button } from 'primereact/button';
 import { ColorPicker } from 'primereact/colorpicker';
 import { Column } from 'primereact/column';
@@ -57,11 +58,11 @@ const CrudPage = () => {
 			{ field: 'model', order: 1 }
 		],
 		filters: {
-			vin: { value: '', matchMode: 'contains' },
-			make: { value: '', matchMode: 'contains' },
-			model: { value: '', matchMode: 'contains' },
-			color: { value: '', matchMode: 'contains' },
-			year: { value: '', matchMode: 'gte' }
+			vin: { value: '', matchMode: FilterMatchMode.CONTAINS },
+			make: { value: '', matchMode: FilterMatchMode.CONTAINS },
+			model: { value: '', matchMode: FilterMatchMode.CONTAINS },
+			color: { value: '', matchMode: FilterMatchMode.CONTAINS },
+			year: { value: '', matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO }
 		}
 	});
 
