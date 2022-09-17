@@ -13,7 +13,7 @@ While the code is surprisingly simple, under the hood this is using:
 - Hibernate ORM with Panache to perform the CRUD operations on the database
 - PostgreSQL database; see below to run one via Docker
 - Liquibase to automatically update database
-- React + PrimeReact for a top notch user interface
+- React + PrimeReact for a top notch user interface including lazy datatable
 - TanStack Query for powerful asynchronous state management for TypeScript
 - Orval to generate TanStack Query client Typescript from OpenAPI definition
 - React Hook Forms to validate user input data
