@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { FilterMatchMode } from 'primereact/api';
+import { FilterMatchMode, SortOrder } from 'primereact/api';
 import { Button } from 'primereact/button';
 import { ColorPicker } from 'primereact/colorpicker';
 import { Column } from 'primereact/column';
@@ -51,11 +51,11 @@ const CrudPage = () => {
 		first: 0,
 		rows: 5,
 		page: 1,
-		sortField: '',
-		sortOrder: 1,
+		sortField: '', // single sort only
+		sortOrder: SortOrder.UNSORTED, // single sort only
 		multiSortMeta: [
-			{ field: 'make', order: 1 },
-			{ field: 'model', order: 1 }
+			{ field: 'make', order: SortOrder.ASC },
+			{ field: 'model', order: SortOrder.ASC }
 		],
 		filters: {
 			vin: { value: '', matchMode: FilterMatchMode.CONTAINS },
