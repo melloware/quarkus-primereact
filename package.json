@@ -39,7 +39,7 @@
         "glob-all": "3.3.0",
         "orval": "6.10.1",
         "prettier": "latest",
-        "purgecss-webpack-plugin": "4.1.3",
+        "purgecss-webpack-plugin": "5.0.0",
         "react-app-rewired": "latest",
         "react-scripts": "latest",
         "sass": "latest",
