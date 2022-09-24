@@ -10,7 +10,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -113,7 +112,7 @@ public class QueryRequest {
 	 *
 	 * @return returns a Pair of QueryString  Map of parameters
 	 */
-	public Pair<String, Map<String, MultiFilterMeta>> calculateFilters() {
+	public FilterCriteria calculateFilters() {
 		final Map<String, QueryRequest.MultiFilterMeta> filters = getFilters();
 		// remove any blank filters
 
@@ -157,7 +156,7 @@ public class QueryRequest {
 			filterQuery.append(result);
 		}
 
-		return Pair.of(filterQuery.toString(), filters);
+		return new FilterCriteria(filterQuery.toString(), filters);
 	}
 
 	/**
@@ -275,5 +274,14 @@ public class QueryRequest {
 		@Schema(description = "List of filter constraints for this filter")
 		private List<FilterConstraint> constraints = new ArrayList<>();
 
+	}
+
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@RegisterForReflection
+	public static class FilterCriteria {
+		private String query;
+		private Map<String, MultiFilterMeta> parameters;
 	}
 }

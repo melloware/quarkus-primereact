@@ -21,7 +21,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.apache.commons.lang3.tuple.Pair;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -122,9 +121,9 @@ public class CarResource {
 		final Sort sort = request.calculateSort();
 
 		// filters
-		final Pair<String, Map<String, QueryRequest.MultiFilterMeta>> filterMeta = request.calculateFilters();
-		final String filterQuery = filterMeta.getLeft();
-		final Map<String, QueryRequest.MultiFilterMeta> filters = filterMeta.getRight();
+		final QueryRequest.FilterCriteria filterMeta = request.calculateFilters();
+		final String filterQuery = filterMeta.getQuery();
+		final Map<String, QueryRequest.MultiFilterMeta> filters = filterMeta.getParameters();
 
 		PanacheQuery<Car> query = Car.findAll(sort);
 		if (!filters.isEmpty()) {
