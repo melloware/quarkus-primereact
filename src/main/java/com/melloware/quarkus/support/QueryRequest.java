@@ -19,6 +19,7 @@ import io.quarkus.panache.common.Sort;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -52,22 +53,42 @@ public class QueryRequest {
 	@Schema(description = "Map of columns being filtered and their filter criteria")
 	private Map<String, MultiFilterMeta> filters = new HashMap<>();
 
+	/**
+	 * Are these criteria using single sort only
+	 *
+	 * @return true if single sort
+	 */
 	@JsonIgnore
 	public boolean isSingleSort() {
 		return sortField != null && sortField.length() > 0;
 	}
 
+	/**
+	 * Are these criteria using multiple column sorting.
+	 *
+	 * @return true if multiple sorting
+	 */
 	@JsonIgnore
 	public boolean isMultipleSort() {
 		return !getMultiSortMeta().isEmpty();
 	}
 
+	/**
+	 * Is the table using filterDisplay="menu" or filterDisplay="row".
+	 *
+	 * @return
+	 */
 	@JsonIgnore
 	public boolean isFilterMenu() {
 		// check whether this is a filterDisplay="menu" or "row"
-		return getFilters().entrySet().stream().filter(e -> StringUtils.isNotBlank(e.getValue().getOperator())).findFirst().isPresent();
+		return getFilters().entrySet().stream().anyMatch(e -> StringUtils.isNotBlank(e.getValue().getOperator()));
 	}
 
+	/**
+	 * Calculate the sorts.
+	 *
+	 * @return the final Panache Sort
+	 */
 	@JsonIgnore
 	public Sort calculateSort() {
 		Sort sort = null;
@@ -87,6 +108,11 @@ public class QueryRequest {
 		return sort;
 	}
 
+	/**
+	 * Calculate the column filters.
+	 *
+	 * @return returns a Pair of QueryString  Map of parameters
+	 */
 	public Pair<String, Map<String, MultiFilterMeta>> calculateFilters() {
 		final Map<String, QueryRequest.MultiFilterMeta> filters = getFilters();
 		// remove any blank filters
@@ -116,7 +142,7 @@ public class QueryRequest {
 					else {
 						filterQuery.append("(");
 					}
-					filterQuery.append(result + ")");
+					filterQuery.append(result).append(")");
 				}
 			}
 		}
@@ -134,6 +160,11 @@ public class QueryRequest {
 		return Pair.of(filterQuery.toString(), filters);
 	}
 
+	/**
+	 * Builds the filter parameters like ":make0 = Acura", ":make1 = BMW".
+	 *
+	 * @return the Map of parameter replacements and their values.
+	 */
 	public Map<String, Object> calculateFilterParameters() {
 		Map<String, Object> params = new HashMap<>();
 		if (this.isFilterMenu()) {
@@ -234,6 +265,7 @@ public class QueryRequest {
 
 	@Data
 	@NoArgsConstructor
+	@EqualsAndHashCode(callSuper = true)
 	@RegisterForReflection
 	public static class MultiFilterMeta extends FilterConstraint {
 
