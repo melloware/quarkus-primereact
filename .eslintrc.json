@@ -43,7 +43,7 @@
     "overrides": [
         {
             "files": [
-                "src/**/openapi-auth/**"
+                "src/**/service/**"
             ],
             "rules": {
                 "@typescript-eslint/no-explicit-any": "off",

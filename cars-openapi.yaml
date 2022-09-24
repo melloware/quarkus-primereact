@@ -156,13 +156,104 @@ components:
           minimum: 0
           type: number
           example: 9999.99
-    QueryResponseCar:
+        modifiedTime:
+          allOf:
+          - $ref: '#/components/schemas/Instant'
+          - description: Modified time of the record
+    Instant:
+      format: date-time
+      type: string
+      example: 2022-03-10T16:15:50Z
+    MultiFilterMeta:
+      type: object
+      properties:
+        value:
+          description: Value to filter this column by
+          type: object
+        matchMode:
+          description: "Filter match mode e.g. equals, notEquals, contains, notContains,\
+            \ gt, gte, lt, lte"
+          type: string
+          example: equals
+    MultiSortMeta:
+      type: object
+      properties:
+        field:
+          description: Sort field for this multiple sort
+          type: string
+          example: lastName
+        order:
+          format: int32
+          description: "Sort order for this field either -1 desc, 0 none, 1 asc"
+          type: integer
+          example: 1
+    QueryRequest:
+      description: "Represents a PrimeReact query request from the UI for a complex\
+        \ datatable with multiple sorts, multiple filters, and pagination."
+      type: object
+      properties:
+        first:
+          format: int32
+          description: First record
+          type: integer
+          example: 1
+        rows:
+          format: int32
+          description: Number of rows
+          type: integer
+          example: 10
+        page:
+          format: int32
+          description: Page number
+          type: integer
+          example: 1
+        sortField:
+          description: Sort field if single field sorting
+          type: string
+          example: firstName
+        sortOrder:
+          format: int32
+          description: "Sort order if single field sorting either -1 desc, 0 none,\
+            \ 1 asc"
+          type: integer
+          example: 1
+        multiSortMeta:
+          description: Multiple sorting list of columns to sort and in which order
+          type: array
+          items:
+            $ref: '#/components/schemas/MultiSortMeta'
+        filters:
+          description: Map of columns being filtered and their filter criteria
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/MultiFilterMeta'
+    QueryResponse:
+      description: "Represents a PrimeReact query response to the UI for a complex\
+        \ datatable with multiple sorts, multiple filters, and pagination."
       type: object
       properties:
         totalRecords:
           format: int64
+          description: Total records available by this query criteria
           type: integer
+          example: 4128
         records:
+          description: "Records for this set of pagination, sorting, filtering."
+          type: array
+          items:
+            type: object
+    QueryResponseCar:
+      description: "Represents a PrimeReact query response to the UI for a complex\
+        \ datatable with multiple sorts, multiple filters, and pagination."
+      type: object
+      properties:
+        totalRecords:
+          format: int64
+          description: Total records available by this query criteria
+          type: integer
+          example: 4128
+        records:
+          description: "Records for this set of pagination, sorting, filtering."
           type: array
           items:
             $ref: '#/components/schemas/Car'

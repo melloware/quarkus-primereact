@@ -1,8 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { FilterMatchMode, SortOrder } from 'primereact/api';
 import { Button } from 'primereact/button';
+import { Calendar } from 'primereact/calendar';
 import { ColorPicker } from 'primereact/colorpicker';
-import { Column } from 'primereact/column';
+import { Column, ColumnFilterElementTemplateOptions } from 'primereact/column';
 import { DataTable, DataTablePFSEvent } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
@@ -62,7 +63,8 @@ const CrudPage = () => {
 			make: { value: '', matchMode: FilterMatchMode.CONTAINS },
 			model: { value: '', matchMode: FilterMatchMode.CONTAINS },
 			color: { value: '', matchMode: FilterMatchMode.CONTAINS },
-			year: { value: '', matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO }
+			year: { value: '', matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO },
+			createdTime: { value: '', matchMode: FilterMatchMode.DATE_AFTER }
 		}
 	});
 
@@ -258,6 +260,24 @@ const CrudPage = () => {
 		return item.price?.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 	};
 
+	const timeBodyTemplate = (item: Car) => {
+		return new Date(item.modifiedTime!).toISOString().replace(/T/, ' ').replace(/\..+/, '');
+	};
+
+	const dateFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
+		return (
+			<Calendar
+				value={options.value}
+				onChange={(e) => options.filterApplyCallback(e.value, options.index)}
+				dateFormat="dd-M-yy"
+				placeholder="dd-MMM-yy"
+				monthNavigator
+				yearNavigator
+				yearRange="2000:2050"
+			/>
+		);
+	};
+
 	const actionBodyTemplate = (item: Car) => {
 		const className = classNames('p-button-rounded action  mr-2');
 		const editClassName = classNames(className, 'p-button-success');
@@ -318,6 +338,16 @@ const CrudPage = () => {
 					<Column field="model" header="Model" sortable filter filterPlaceholder="Model" />
 					<Column field="color" header="Color" sortable filter body={colorBodyTemplate} align="center" style={{ width: '10rem' }} />
 					<Column field="price" header="Price" sortable body={priceBodyTemplate} align="right" dataType="numeric" />
+					<Column
+						field="modifiedTime"
+						header="Modified"
+						sortable
+						filter
+						filterElement={dateFilterTemplate}
+						body={timeBodyTemplate}
+						dataType="date"
+						style={{ width: '16rem' }}
+					/>
 					<Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '10rem' }} align="right"></Column>
 				</DataTable>
 			</div>

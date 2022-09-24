@@ -12,6 +12,76 @@ import type { ErrorType } from './AxiosMutator';
 export type GetEntityCarsParams = { request?: string };
 
 /**
+ * Represents a PrimeReact query response to the UI for a complex datatable with multiple sorts, multiple filters, and pagination.
+ */
+export interface QueryResponseCar {
+	/** Total records available by this query criteria */
+	totalRecords?: number;
+	/** Records for this set of pagination, sorting, filtering. */
+	records?: Car[];
+}
+
+export type QueryResponseRecordsItem = { [key: string]: any };
+
+/**
+ * Represents a PrimeReact query response to the UI for a complex datatable with multiple sorts, multiple filters, and pagination.
+ */
+export interface QueryResponse {
+	/** Total records available by this query criteria */
+	totalRecords?: number;
+	/** Records for this set of pagination, sorting, filtering. */
+	records?: QueryResponseRecordsItem[];
+}
+
+/**
+ * Map of columns being filtered and their filter criteria
+ */
+export type QueryRequestFilters = { [key: string]: MultiFilterMeta };
+
+export interface MultiSortMeta {
+	/** Sort field for this multiple sort */
+	field?: string;
+	/** Sort order for this field either -1 desc, 0 none, 1 asc */
+	order?: number;
+}
+
+/**
+ * Represents a PrimeReact query request from the UI for a complex datatable with multiple sorts, multiple filters, and pagination.
+ */
+export interface QueryRequest {
+	/** First record */
+	first?: number;
+	/** Number of rows */
+	rows?: number;
+	/** Page number */
+	page?: number;
+	/** Sort field if single field sorting */
+	sortField?: string;
+	/** Sort order if single field sorting either -1 desc, 0 none, 1 asc */
+	sortOrder?: number;
+	/** Multiple sorting list of columns to sort and in which order */
+	multiSortMeta?: MultiSortMeta[];
+	/** Map of columns being filtered and their filter criteria */
+	filters?: QueryRequestFilters;
+}
+
+/**
+ * Value to filter this column by
+ */
+export type MultiFilterMetaValue = { [key: string]: any };
+
+export interface MultiFilterMeta {
+	/** Value to filter this column by */
+	value?: MultiFilterMetaValue;
+	/** Filter match mode e.g. equals, notEquals, contains, notContains, gt, gte, lt, lte */
+	matchMode?: string;
+}
+
+export type Instant = Date;
+
+export type CarModifiedTime = Instant & unknown;
+
+/**
  * Entity that represents a car.
  */
 export interface Car {
@@ -28,11 +98,7 @@ export interface Car {
 	color: string;
 	/** Price */
 	price: number;
-}
-
-export interface QueryResponseCar {
-	totalRecords?: number;
-	records?: Car[];
+	modifiedTime?: CarModifiedTime;
 }
 
 export const useGetEntityCarsHook = () => {
