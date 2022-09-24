@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +63,12 @@ public class QueryRequest {
 	}
 
 	@JsonIgnore
+	public boolean isFilterMenu() {
+		// check whether this is a filterDisplay="menu" or "row"
+		return getFilters().entrySet().stream().filter(e -> StringUtils.isNotBlank(e.getValue().getOperator())).findFirst().isPresent();
+	}
+
+	@JsonIgnore
 	public Sort calculateSort() {
 		Sort sort = null;
 		if (isSingleSort()) {
@@ -80,15 +87,71 @@ public class QueryRequest {
 		return sort;
 	}
 
-	public Pair<String, Map<String, MultiFilterMeta>> calculateFilters(final Sort sort) {
+	public Pair<String, Map<String, MultiFilterMeta>> calculateFilters() {
 		final Map<String, QueryRequest.MultiFilterMeta> filters = getFilters();
-		filters.entrySet()
-					.removeIf(e -> StringUtils.isBlank(e.getValue().getOperator()) && StringUtils.isBlank(Objects.toString(e.getValue().getValue(), null)));
-		final String filterQuery = filters.entrySet().stream()
-					.map(entry -> entry.getKey() + entry.getValue().getSqlClause() + " :" + entry.getKey())
-					.collect(Collectors.joining(" and "));
+		// remove any blank filters
 
-		return Pair.of(filterQuery, filters);
+		StringBuilder filterQuery = new StringBuilder(1024);
+		// check whether this is a filterDisplay="menu" or "row"
+		if (this.isFilterMenu()) {
+			for (Map.Entry<String, MultiFilterMeta> entry : filters.entrySet()) {
+				String column = entry.getKey();
+				MultiFilterMeta filterConstraints = entry.getValue();
+				List<QueryRequest.FilterConstraint> constraints = filterConstraints.getConstraints();
+
+				// remove any blank filters
+				constraints.removeIf(e -> StringUtils.isBlank(Objects.toString(e.getValue(), null)));
+				if (constraints.isEmpty()) {
+					continue;
+				}
+
+				AtomicInteger i = new AtomicInteger();
+				String result = filterConstraints.getConstraints().stream()
+							.map(constraint -> column + constraint.getSqlClause() + " :" + column + i.getAndIncrement())
+							.collect(Collectors.joining(" " + filterConstraints.operator + " "));
+				if (StringUtils.isNotEmpty(result)) {
+					if (filterQuery.length() > 0) {
+						filterQuery.append(" and (");
+					}
+					else {
+						filterQuery.append("(");
+					}
+					filterQuery.append(result + ")");
+				}
+			}
+		}
+		else {
+			// remove any blank filters
+			filters.entrySet()
+						.removeIf(e -> StringUtils.isBlank(Objects.toString(e.getValue().getValue(), null)));
+			// filter display = "row"
+			String result = filters.entrySet().stream()
+						.map(entry -> entry.getKey() + entry.getValue().getSqlClause() + " :" + entry.getKey())
+						.collect(Collectors.joining(" and "));
+			filterQuery.append(result);
+		}
+
+		return Pair.of(filterQuery.toString(), filters);
+	}
+
+	public Map<String, Object> calculateFilterParameters() {
+		Map<String, Object> params = new HashMap<>();
+		if (this.isFilterMenu()) {
+			// filterDisplay="menu"
+			for (Map.Entry<String, QueryRequest.MultiFilterMeta> entry : filters.entrySet()) {
+				String column = entry.getKey();
+
+				int i = 0;
+				for (QueryRequest.FilterConstraint constraint : entry.getValue().getConstraints()) {
+					params.put(column + i++, constraint.getSqlValue());
+				}
+			}
+		}
+		else {
+			// filterDisplay="row"
+			params = filters.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getSqlValue()));
+		}
+		return params;
 	}
 
 	@Data
@@ -117,7 +180,7 @@ public class QueryRequest {
 
 		@JsonIgnore
 		public String getSqlClause() {
-			switch (getMatchMode()) {
+			switch (matchMode) {
 				case "equals":
 				case "dateIs":
 					return "=";
@@ -144,7 +207,7 @@ public class QueryRequest {
 		@JsonIgnore
 		public Object getSqlValue() {
 			Object value = getValue();
-			switch (getMatchMode()) {
+			switch (matchMode) {
 				case "contains":
 				case "notContains":
 					return "%" + value + "%";

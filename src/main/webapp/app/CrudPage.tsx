@@ -1,5 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { FilterMatchMode, SortOrder } from 'primereact/api';
+import { FilterMatchMode, FilterOperator, SortOrder } from 'primereact/api';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { ColorPicker } from 'primereact/colorpicker';
@@ -59,12 +59,12 @@ const CrudPage = () => {
 			{ field: 'model', order: SortOrder.ASC }
 		],
 		filters: {
-			vin: { value: '', matchMode: FilterMatchMode.CONTAINS },
-			make: { value: '', matchMode: FilterMatchMode.CONTAINS },
-			model: { value: '', matchMode: FilterMatchMode.CONTAINS },
-			color: { value: '', matchMode: FilterMatchMode.CONTAINS },
-			year: { value: '', matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO },
-			modifiedTime: { value: '', matchMode: FilterMatchMode.DATE_AFTER }
+			vin: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
+			make: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
+			model: { operator: FilterOperator.AND, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
+			color: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
+			year: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO }] },
+			modifiedTime: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.DATE_AFTER }] }
 		}
 	});
 
@@ -317,7 +317,7 @@ const CrudPage = () => {
 					currentPageReportTemplate="{first} to {last} of {totalRecords} cars"
 					responsiveLayout="stack"
 					breakpoint="768px"
-					filterDisplay="row"
+					filterDisplay="menu"
 					filterDelay={500}
 					rowsPerPageOptions={[5, 10, 25]}
 					totalRecords={totalRecords}
@@ -333,7 +333,7 @@ const CrudPage = () => {
 					exportFilename="cars"
 				>
 					<Column field="vin" header="VIN" sortable filter filterPlaceholder="VIN" />
-					<Column field="year" header="Year" sortable dataType="numeric" filter />
+					<Column field="year" header="Year" sortable filter dataType="numeric" />
 					<Column field="make" header="Make" sortable filter filterPlaceholder="Make" />
 					<Column field="model" header="Model" sortable filter filterPlaceholder="Model" />
 					<Column field="color" header="Color" sortable filter body={colorBodyTemplate} align="center" style={{ width: '10rem' }} />

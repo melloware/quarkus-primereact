@@ -2,7 +2,6 @@ package com.melloware.quarkus.panache;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -44,101 +43,101 @@ import lombok.extern.jbosslog.JBossLog;
 @Tag(name = "Car Resource", description = "CRUD operations for the Car entity.")
 public class CarResource {
 
-    @Inject
-    ObjectMapper objectMapper;
+	@Inject
+	ObjectMapper objectMapper;
 
-    @GET
-    @Path("{id}")
-    public Car getSingle(@Min(value = 0) Long id) {
-        Car entity = Car.findById(id);
-        if (entity == null) {
-            throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
-        }
-        return entity;
-    }
+	@GET
+	@Path("{id}")
+	public Car getSingle(@Min(value = 0) Long id) {
+		Car entity = Car.findById(id);
+		if (entity == null) {
+			throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
+		}
+		return entity;
+	}
 
-    @GET
-    @Path("/manufacturers")
-    public List<String> getManufacturers() {
-        return Car.getEntityManager().createQuery("select distinct make from Car order by make").getResultList();
-    }
+	@GET
+	@Path("/manufacturers")
+	public List<String> getManufacturers() {
+		return Car.getEntityManager().createQuery("select distinct make from Car order by make").getResultList();
+	}
 
-    @POST
-    @Transactional
-    public Response create(@Valid Car car) {
-        if (car.id != null) {
-            // 422 Unprocessable Entity
-            throw new WebApplicationException("Id was invalidly set on request.", 422);
-        }
-        car.persist();
-        return Response.ok(car).status(Status.CREATED).build();
-    }
+	@POST
+	@Transactional
+	public Response create(@Valid Car car) {
+		if (car.id != null) {
+			// 422 Unprocessable Entity
+			throw new WebApplicationException("Id was invalidly set on request.", 422);
+		}
+		car.persist();
+		return Response.ok(car).status(Status.CREATED).build();
+	}
 
-    @PUT
-    @Path("{id}")
-    @Transactional
-    public Car update(@Min(value = 0) Long id, @Valid Car car) {
-        Car entity = Car.findById(id);
-        if (entity == null) {
-            throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
-        }
+	@PUT
+	@Path("{id}")
+	@Transactional
+	public Car update(@Min(value = 0) Long id, @Valid Car car) {
+		Car entity = Car.findById(id);
+		if (entity == null) {
+			throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
+		}
 
-        // would normally use ModelMapper here: https://modelmapper.org/
-        entity.make = car.make;
-        entity.model = car.model;
-        entity.year = car.year;
-        entity.vin = car.vin;
-        entity.color = car.color;
-        entity.price = car.price;
+		// would normally use ModelMapper here: https://modelmapper.org/
+		entity.make = car.make;
+		entity.model = car.model;
+		entity.year = car.year;
+		entity.vin = car.vin;
+		entity.color = car.color;
+		entity.price = car.price;
 
-        return entity;
-    }
+		return entity;
+	}
 
-    @DELETE
-    @Path("{id}")
-    @Transactional
-    public Response delete(@Min(value = 0) Long id) {
-        Car entity = Car.findById(id);
-        if (entity == null) {
-            throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
-        }
-        entity.delete();
-        return Response.status(Status.NO_CONTENT).build();
-    }
+	@DELETE
+	@Path("{id}")
+	@Transactional
+	public Response delete(@Min(value = 0) Long id) {
+		Car entity = Car.findById(id);
+		if (entity == null) {
+			throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
+		}
+		entity.delete();
+		return Response.status(Status.NO_CONTENT).build();
+	}
 
-    @GET
-    public QueryResponse<Car> list(@QueryParam("request") String lazyRequest) throws JsonProcessingException {
-        final QueryResponse<Car> response = new QueryResponse<>();
-        if (lazyRequest == null || lazyRequest.length() == 0) {
-            List<Car> results = Car.listAll(Sort.by("make"));
-            response.setTotalRecords(results.size());
-            response.setRecords(results);
-            return response;
-        }
+	@GET
+	public QueryResponse<Car> list(@QueryParam("request") String lazyRequest) throws JsonProcessingException {
+		final QueryResponse<Car> response = new QueryResponse<>();
+		if (lazyRequest == null || lazyRequest.length() == 0) {
+			List<Car> results = Car.listAll(Sort.by("make"));
+			response.setTotalRecords(results.size());
+			response.setRecords(results);
+			return response;
+		}
 
-        final QueryRequest request = objectMapper.readValue(lazyRequest, QueryRequest.class);
-        LOG.info(request);
+		final QueryRequest request = objectMapper.readValue(lazyRequest, QueryRequest.class);
+		LOG.info(request);
 
-        // sorts
-        final Sort sort = request.calculateSort();
+		// sorts
+		final Sort sort = request.calculateSort();
 
-        // filters
-        final Pair<String, Map<String, QueryRequest.MultiFilterMeta>> filterMeta = request.calculateFilters(sort);
-        final String filterQuery = filterMeta.getLeft();
-        final Map<String, QueryRequest.MultiFilterMeta> filters = filterMeta.getRight();
+		// filters
+		final Pair<String, Map<String, QueryRequest.MultiFilterMeta>> filterMeta = request.calculateFilters();
+		final String filterQuery = filterMeta.getLeft();
+		final Map<String, QueryRequest.MultiFilterMeta> filters = filterMeta.getRight();
 
-        PanacheQuery<Car> query = Car.findAll(sort);
-        if (!filters.isEmpty()) {
-            final Map<String, Object> map = filters.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getSqlValue()));
-            query = Car.find(filterQuery, sort, map);
-        }
+		PanacheQuery<Car> query = Car.findAll(sort);
+		if (!filters.isEmpty()) {
+			Map<String, Object> map = request.calculateFilterParameters();
+			query = Car.find(filterQuery, sort, map);
+		}
 
-        // range
-        query.range(request.getFirst(), request.getFirst() + request.getRows());
+		// range
+		query.range(request.getFirst(), request.getFirst() + request.getRows());
 
-        // response
-        response.setTotalRecords(query.count());
-        response.setRecords(query.list());
-        return response;
-    }
+		// response
+		response.setTotalRecords(query.count());
+		response.setRecords(query.list());
+		return response;
+	}
 }
