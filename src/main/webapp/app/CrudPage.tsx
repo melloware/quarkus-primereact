@@ -64,7 +64,7 @@ const CrudPage = () => {
 			model: { value: '', matchMode: FilterMatchMode.CONTAINS },
 			color: { value: '', matchMode: FilterMatchMode.CONTAINS },
 			year: { value: '', matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO },
-			createdTime: { value: '', matchMode: FilterMatchMode.DATE_AFTER }
+			modifiedTime: { value: '', matchMode: FilterMatchMode.DATE_AFTER }
 		}
 	});
 

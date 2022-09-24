@@ -82,7 +82,8 @@ public class QueryRequest {
 
 	public Pair<String, Map<String, MultiFilterMeta>> calculateFilters(final Sort sort) {
 		final Map<String, QueryRequest.MultiFilterMeta> filters = getFilters();
-		filters.entrySet().removeIf(e -> StringUtils.isBlank(Objects.toString(e.getValue().getValue(), null)));
+		filters.entrySet()
+					.removeIf(e -> StringUtils.isBlank(e.getValue().getOperator()) && StringUtils.isBlank(Objects.toString(e.getValue().getValue(), null)));
 		final String filterQuery = filters.entrySet().stream()
 					.map(entry -> entry.getKey() + entry.getValue().getSqlClause() + " :" + entry.getKey())
 					.collect(Collectors.joining(" and "));
@@ -108,7 +109,7 @@ public class QueryRequest {
 	@Data
 	@NoArgsConstructor
 	@RegisterForReflection
-	public static class MultiFilterMeta {
+	public static class FilterConstraint {
 		@Schema(description = "Value to filter this column by")
 		private Object value;
 		@Schema(example = "equals", description = "Filter match mode e.g. equals, notEquals, contains, notContains, gt, gte, lt, lte")
@@ -116,7 +117,7 @@ public class QueryRequest {
 
 		@JsonIgnore
 		public String getSqlClause() {
-			switch (matchMode) {
+			switch (getMatchMode()) {
 				case "equals":
 				case "dateIs":
 					return "=";
@@ -142,7 +143,8 @@ public class QueryRequest {
 
 		@JsonIgnore
 		public Object getSqlValue() {
-			switch (matchMode) {
+			Object value = getValue();
+			switch (getMatchMode()) {
 				case "contains":
 				case "notContains":
 					return "%" + value + "%";
@@ -165,5 +167,18 @@ public class QueryRequest {
 					return value;
 			}
 		}
+	}
+
+	@Data
+	@NoArgsConstructor
+	@RegisterForReflection
+	public static class MultiFilterMeta extends FilterConstraint {
+
+		@Schema(description = "Filter operator either 'and' or 'or'")
+		private String operator;
+
+		@Schema(description = "List of filter constraints for this filter")
+		private List<FilterConstraint> constraints = new ArrayList<>();
+
 	}
 }
