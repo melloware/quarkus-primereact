@@ -76,7 +76,7 @@ public class QueryRequest {
 	/**
 	 * Is the table using filterDisplay="menu" or filterDisplay="row".
 	 *
-	 * @return
+	 * @return true if filtering by menu
 	 */
 	@JsonIgnore
 	public boolean isFilterMenu() {
