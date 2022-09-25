@@ -7,12 +7,12 @@ import { AppMenu } from './AppMenu';
 import { AppMenuItem, AppMenuItemClickParams } from './AppMenuItem';
 import CrudPage from './CrudPage';
 
-import 'primereact/resources/themes/lara-dark-blue/theme.css';
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.min.css';
-import './assets/layout/layout.scss';
+import 'primereact/resources/themes/lara-dark-blue/theme.css';
 import './App.css';
+import './assets/layout/layout.scss';
 
 const App = () => {
 	const [layoutMode] = useState('static');
@@ -146,11 +146,11 @@ const App = () => {
 		<div className={wrapperClass} onClick={onWrapperClick}>
 			<div className="layout-topbar">
 				<Link to="/" className="layout-topbar-logo">
-					<img src="static/images/quarkus.svg" alt="Quarkus" />
+					<img src="static/images/quarkus.svg" alt="Quarkus" height="35" width="35" />
 					<span>Quarkus</span>
 				</Link>
 
-				<button type="button" className="p-link  layout-menu-button layout-topbar-button" onClick={onToggleMenuClick}>
+				<button type="button" className="p-link layout-menu-button layout-topbar-button" onClick={onToggleMenuClick} aria-label="Appliction Menu">
 					<i className="pi pi-bars" />
 				</button>
 
@@ -160,7 +160,7 @@ const App = () => {
 				<ul className={classNames('layout-topbar-menu lg:flex origin-top', { 'layout-topbar-menu-mobile-active': mobileTopbarMenuActive })}>
 					<li>
 						<a href="https://reactjs.org" target="_blank" rel="noreferrer">
-							<img src="static/images/react.svg" className="react-logo" alt="React JS" />
+							<img src="static/images/react.svg" className="react-logo" alt="React JS" height="84" width="89" />
 						</a>
 					</li>
 				</ul>
@@ -180,7 +180,7 @@ const App = () => {
 				<div className="layout-footer">
 					Powered by
 					<a href="https://primefaces.org/primereact/" target="_blank" rel="noreferrer">
-						<img src="static/images/primereact.svg" alt="PrimeReact" height="30" className="ml-2" />
+						<img src="static/images/primereact.svg" alt="PrimeReact" height="30" width="118" className="ml-2" />
 					</a>
 				</div>
 			</div>

@@ -8,6 +8,7 @@ import { DataTable, DataTablePFSEvent } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
+import { InputSwitch } from 'primereact/inputswitch';
 import { InputText } from 'primereact/inputtext';
 import { Toast, ToastSeverityType } from 'primereact/toast';
 import { Toolbar } from 'primereact/toolbar';
@@ -47,8 +48,28 @@ const CrudPage = () => {
 	const [manufacturers, setManufacturers] = useState<string[]>([]);
 	const [deleteCarDialog, setDeleteCarDialog] = useState(false);
 	const [editCarDialog, setEditCarDialog] = useState(false);
+	const [isMenuFilter, setMenuFilter] = useState(true);
 	const [totalRecords, setTotalRecords] = useState(0);
-	const [tableParams, setTableParams] = useState<DataTablePFSEvent>({
+
+	const menuFilters = {
+		vin: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
+		make: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
+		model: { operator: FilterOperator.AND, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
+		color: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
+		year: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO }] },
+		modifiedTime: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.DATE_AFTER }] }
+	};
+
+	const rowFilters = {
+		vin: { value: '', matchMode: FilterMatchMode.CONTAINS },
+		make: { value: '', matchMode: FilterMatchMode.CONTAINS },
+		model: { value: '', matchMode: FilterMatchMode.CONTAINS },
+		color: { value: '', matchMode: FilterMatchMode.CONTAINS },
+		year: { value: '', matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO },
+		modifiedTime: { value: '', matchMode: FilterMatchMode.DATE_AFTER }
+	};
+
+	const initialParams: DataTablePFSEvent = {
 		first: 0,
 		rows: 5,
 		page: 1,
@@ -58,15 +79,10 @@ const CrudPage = () => {
 			{ field: 'make', order: SortOrder.ASC },
 			{ field: 'model', order: SortOrder.ASC }
 		],
-		filters: {
-			vin: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
-			make: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
-			model: { operator: FilterOperator.AND, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
-			color: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
-			year: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.GREATER_THAN_OR_EQUAL_TO }] },
-			modifiedTime: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.DATE_AFTER }] }
-		}
-	});
+		filters: {}
+	};
+
+	const [tableParams, setTableParams] = useState<DataTablePFSEvent>(initialParams);
 
 	// queries
 	const queryClient = useQueryClient();
@@ -115,6 +131,12 @@ const CrudPage = () => {
 			setManufacturers(queryManufacturers.data);
 		}
 	}, [queryManufacturers.data]);
+
+	useEffect(() => {
+		const newParams = { ...initialParams };
+		newParams.filters = isMenuFilter ? { ...menuFilters } : { ...rowFilters };
+		setTableParams(newParams);
+	}, [isMenuFilter]);
 
 	const onPage = (event: DataTablePFSEvent) => {
 		setTableParams(event);
@@ -284,8 +306,20 @@ const CrudPage = () => {
 		const deleteClassName = classNames(className, 'p-button-danger');
 		return (
 			<div>
-				<Button icon="pi pi-pencil" className={editClassName} onClick={() => editCar(item)} data-pr-tooltip="Edit car" />
-				<Button icon="pi pi-trash" className={deleteClassName} onClick={() => confirmDeleteCar(item)} data-pr-tooltip="Delete car" />
+				<Button
+					icon="pi pi-pencil"
+					className={editClassName}
+					onClick={() => editCar(item)}
+					data-pr-tooltip="Edit car"
+					aria-label={`Edit ${item.make} ${item.model}`}
+				/>
+				<Button
+					icon="pi pi-trash"
+					className={deleteClassName}
+					onClick={() => confirmDeleteCar(item)}
+					data-pr-tooltip="Delete car"
+					aria-label={`Delete ${item.make} ${item.model}`}
+				/>
 			</div>
 		);
 	};
@@ -298,9 +332,30 @@ const CrudPage = () => {
 	);
 
 	const leftToolbarTemplate = (
-		<Button label="New" icon="pi pi-plus" className="p-button-success mr-2 action" onClick={createCar} data-pr-tooltip="Create new car" />
+		<div>
+			<Button label="New" icon="pi pi-plus" className="p-button-success mr-2 action" onClick={createCar} data-pr-tooltip="Create new car" />
+		</div>
 	);
-	const rightToolbarTemplate = <Button label="Export" icon="pi pi-download" className="action" onClick={exportCSV} data-pr-tooltip="Export to CSV" />;
+	const rightToolbarTemplate = (
+		<div className="flex justify-content-between align-items-center">
+			<label htmlFor="chkFilterDisplay" className="font-semibold mr-2">
+				Filter Diplay
+			</label>
+			<InputSwitch
+				inputId="chkFilterDisplay"
+				className="mr-2"
+				checked={isMenuFilter}
+				aria-label="Switch filter display between menu and row"
+				tooltip={'Switch filter display between menu and row'}
+				tooltipOptions={{ position: 'top' }}
+				onChange={(e) => {
+					setTableParams({ ...initialParams });
+					setMenuFilter(e.value);
+				}}
+			/>
+			<Button label="Export" icon="pi pi-download" className="action" onClick={exportCSV} data-pr-tooltip="Export to CSV" />
+		</div>
+	);
 
 	return (
 		<div>
@@ -317,7 +372,7 @@ const CrudPage = () => {
 					currentPageReportTemplate="{first} to {last} of {totalRecords} cars"
 					responsiveLayout="stack"
 					breakpoint="768px"
-					filterDisplay="menu"
+					filterDisplay={isMenuFilter ? 'menu' : 'row'}
 					filterDelay={500}
 					rowsPerPageOptions={[5, 10, 25]}
 					totalRecords={totalRecords}
