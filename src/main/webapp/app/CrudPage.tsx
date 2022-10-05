@@ -339,7 +339,7 @@ const CrudPage = () => {
 	const rightToolbarTemplate = (
 		<div className="flex justify-content-between align-items-center">
 			<label htmlFor="chkFilterDisplay" className="font-semibold mr-2">
-				Filter Diplay
+				Filter Display
 			</label>
 			<InputSwitch
 				inputId="chkFilterDisplay"
