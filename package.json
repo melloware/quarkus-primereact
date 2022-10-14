@@ -10,8 +10,8 @@
     },
     "license": "MIT",
     "dependencies": {
-        "@tanstack/react-query": "4.6.0",
-        "@tanstack/react-query-devtools": "4.6.0",
+        "@tanstack/react-query": "4.12.0",
+        "@tanstack/react-query-devtools": "4.12.0",
         "axios": "1.1.2",
         "build": "^0.1.4",
         "dompurify": "2.4.0",
