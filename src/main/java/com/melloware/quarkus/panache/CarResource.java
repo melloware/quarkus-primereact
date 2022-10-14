@@ -121,7 +121,7 @@ public class CarResource {
 		final Sort sort = request.calculateSort();
 
 		// filters
-		final QueryRequest.FilterCriteria filterMeta = request.calculateFilters();
+		final QueryRequest.FilterCriteria filterMeta = request.calculateFilters(QueryRequest.FilterOperator.AND);
 		final String filterQuery = filterMeta.getQuery();
 		final Map<String, QueryRequest.MultiFilterMeta> filters = filterMeta.getParameters();
 

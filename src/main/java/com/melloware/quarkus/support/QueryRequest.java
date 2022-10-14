@@ -12,10 +12,11 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import io.quarkus.panache.common.Sort;
 import io.quarkus.runtime.annotations.RegisterForReflection;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -51,6 +52,12 @@ public class QueryRequest {
 	// filtering
 	@Schema(description = "Map of columns being filtered and their filter criteria")
 	private Map<String, MultiFilterMeta> filters = new HashMap<>();
+
+	/**
+	 * Map of column overrides to map say "codeListName" to "codelist.name"
+	 */
+	@JsonIgnore
+	private Map<String, String> overrides = new HashMap<>();
 
 	/**
 	 * Are these criteria using single sort only
@@ -92,37 +99,41 @@ public class QueryRequest {
 	public Sort calculateSort() {
 		Sort sort = null;
 		if (isSingleSort()) {
-			sort = Sort.by(getSortField(), getSortOrder() == 1 ? Sort.Direction.Ascending : Sort.Direction.Descending);
-		}
-		else if (isMultipleSort()) {
+			sort = Sort.by(checkOverride(getSortField()),
+					getSortOrder() == 1 ? Sort.Direction.Ascending : Sort.Direction.Descending);
+		} else if (isMultipleSort()) {
 			for (final QueryRequest.MultiSortMeta multiSortMeta : getMultiSortMeta()) {
 				if (sort == null) {
-					sort = Sort.by(multiSortMeta.getField(), multiSortMeta.getSqlOrder());
-				}
-				else {
-					sort.and(multiSortMeta.getField(), multiSortMeta.getSqlOrder());
+					sort = Sort.by(checkOverride(multiSortMeta.getField()), multiSortMeta.getSqlOrder());
+				} else {
+					sort.and(checkOverride(multiSortMeta.getField()), multiSortMeta.getSqlOrder());
 				}
 			}
 		}
 		return sort;
 	}
 
+	private String checkOverride(final String column) {
+		return overrides.getOrDefault(column, column);
+	}
+
 	/**
 	 * Calculate the column filters.
 	 *
-	 * @return returns a Pair of QueryString  Map of parameters
+	 * @param operator either AND/OR for how you want filters joined
+	 * @return returns a Pair of QueryString Map of parameters
 	 */
-	public FilterCriteria calculateFilters() {
+	public FilterCriteria calculateFilters(final FilterOperator operator) {
 		final Map<String, QueryRequest.MultiFilterMeta> filters = getFilters();
 		// remove any blank filters
 
-		StringBuilder filterQuery = new StringBuilder(1024);
+		final StringBuilder filterQuery = new StringBuilder(1024);
 		// check whether this is a filterDisplay="menu" or "row"
 		if (this.isFilterMenu()) {
-			for (Map.Entry<String, MultiFilterMeta> entry : filters.entrySet()) {
-				String column = entry.getKey();
-				MultiFilterMeta filterConstraints = entry.getValue();
-				List<QueryRequest.FilterConstraint> constraints = filterConstraints.getConstraints();
+			for (final Map.Entry<String, MultiFilterMeta> entry : filters.entrySet()) {
+				final String column = checkOverride(entry.getKey());
+				final MultiFilterMeta filterConstraints = entry.getValue();
+				final List<QueryRequest.FilterConstraint> constraints = filterConstraints.getConstraints();
 
 				// remove any blank filters
 				constraints.removeIf(e -> StringUtils.isBlank(Objects.toString(e.getValue(), null)));
@@ -130,29 +141,29 @@ public class QueryRequest {
 					continue;
 				}
 
-				AtomicInteger i = new AtomicInteger();
-				String result = filterConstraints.getConstraints().stream()
-							.map(constraint -> column + constraint.getSqlClause() + " :" + column + i.getAndIncrement())
-							.collect(Collectors.joining(" " + filterConstraints.operator + " "));
+				final AtomicInteger i = new AtomicInteger();
+				final String result = filterConstraints.getConstraints().stream()
+						.map(constraint -> column + constraint.getSqlClause() + " :" +
+								createColumnVariable(column, i.getAndIncrement()))
+						.collect(Collectors.joining(" " + filterConstraints.operator + " "));
 				if (StringUtils.isNotEmpty(result)) {
 					if (filterQuery.length() > 0) {
-						filterQuery.append(" and (");
-					}
-					else {
+						filterQuery.append(StringUtils.SPACE).append(operator.name()).append(" (");
+					} else {
 						filterQuery.append("(");
 					}
 					filterQuery.append(result).append(")");
 				}
 			}
-		}
-		else {
+		} else {
 			// remove any blank filters
 			filters.entrySet()
-						.removeIf(e -> StringUtils.isBlank(Objects.toString(e.getValue().getValue(), null)));
+					.removeIf(e -> StringUtils.isBlank(Objects.toString(e.getValue().getValue(), null)));
 			// filter display = "row"
-			String result = filters.entrySet().stream()
-						.map(entry -> entry.getKey() + entry.getValue().getSqlClause() + " :" + entry.getKey())
-						.collect(Collectors.joining(" and "));
+			final String result = filters.entrySet().stream()
+					.map(entry -> checkOverride(entry.getKey()) + entry.getValue().getSqlClause() + " :" +
+							entry.getKey())
+					.collect(Collectors.joining(" " + operator.name() + " "));
 			filterQuery.append(result);
 		}
 
@@ -168,20 +179,33 @@ public class QueryRequest {
 		Map<String, Object> params = new HashMap<>();
 		if (this.isFilterMenu()) {
 			// filterDisplay="menu"
-			for (Map.Entry<String, QueryRequest.MultiFilterMeta> entry : filters.entrySet()) {
-				String column = entry.getKey();
+			for (final Map.Entry<String, QueryRequest.MultiFilterMeta> entry : filters.entrySet()) {
+				final String column = checkOverride(entry.getKey());
 
 				int i = 0;
-				for (QueryRequest.FilterConstraint constraint : entry.getValue().getConstraints()) {
-					params.put(column + i++, constraint.getSqlValue());
+				for (final QueryRequest.FilterConstraint constraint : entry.getValue().getConstraints()) {
+					params.put(createColumnVariable(column, i++), constraint.getSqlValue());
 				}
 			}
-		}
-		else {
+		} else {
 			// filterDisplay="row"
-			params = filters.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getSqlValue()));
+			params = filters.entrySet().stream()
+					.collect(Collectors.toMap(e -> checkOverride(e.getKey()), e -> e.getValue().getSqlValue()));
 		}
 		return params;
+	}
+
+	private String createColumnVariable(final String column, final int counter) {
+		return StringUtils.remove(column, '.') + counter;
+	}
+
+	/**
+	 * Filter operator either AND or OR for how to join filters.
+	 */
+	@RegisterForReflection
+	public enum FilterOperator {
+		AND,
+		OR
 	}
 
 	@Data
@@ -211,53 +235,53 @@ public class QueryRequest {
 		@JsonIgnore
 		public String getSqlClause() {
 			switch (matchMode) {
-				case "equals":
-				case "dateIs":
-					return "=";
-				case "notEquals":
-				case "dateIsNot":
-					return "!=";
-				case "notContains":
-					return " not like ";
-				case "gt":
-				case "dateAfter":
-					return ">";
-				case "gte":
-					return ">=";
-				case "lt":
-				case "dateBefore":
-					return "<";
-				case "lte":
-					return "<=";
-				default:
-					return " like ";
+			case "equals":
+			case "dateIs":
+				return "=";
+			case "notEquals":
+			case "dateIsNot":
+				return "!=";
+			case "notContains":
+				return " not like ";
+			case "gt":
+			case "dateAfter":
+				return ">";
+			case "gte":
+				return ">=";
+			case "lt":
+			case "dateBefore":
+				return "<";
+			case "lte":
+				return "<=";
+			default:
+				return " like ";
 			}
 		}
 
 		@JsonIgnore
 		public Object getSqlValue() {
-			Object value = getValue();
+			final Object value = getValue();
 			switch (matchMode) {
-				case "contains":
-				case "notContains":
-					return "%" + value + "%";
-				case "startsWith":
-					return value + "%";
-				case "endsWith":
-					return "%" + value;
-				case "gt":
-				case "gte":
-				case "lt":
-				case "lte":
-					// TODO: BigDecimal not supported yet
-					return Integer.parseInt((String) value);
-				case "dateAfter":
-				case "dateBefore":
-				case "dateIs":
-				case "dateIsNot":
-					return Instant.parse((String) value);
-				default:
-					return value;
+			case "contains":
+			case "notContains":
+				return "%" + value + "%";
+			case "startsWith":
+				return value + "%";
+			case "endsWith":
+				return "%" + value;
+			case "gt":
+			case "gte":
+			case "lt":
+			case "lte":
+				// TODO: BigDecimal not supported yet
+				return Integer.parseInt((String) value);
+			case "dateAfter":
+			case "dateBefore":
+			case "dateIs":
+			case "dateIsNot":
+				return Instant.parse((String) value);
+			default:
+				return value;
 			}
 		}
 	}
