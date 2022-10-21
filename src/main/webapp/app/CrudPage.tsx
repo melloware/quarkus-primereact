@@ -380,6 +380,8 @@ const CrudPage = () => {
 					onSort={onSort}
 					onFilter={onFilter}
 					sortMode="multiple"
+					sortField={tableParams.sortField}
+					sortOrder={tableParams.sortOrder}
 					multiSortMeta={tableParams.multiSortMeta}
 					filters={tableParams.filters}
 					first={tableParams.first}
