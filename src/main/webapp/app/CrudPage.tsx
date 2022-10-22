@@ -49,6 +49,7 @@ const CrudPage = () => {
 	const [deleteCarDialog, setDeleteCarDialog] = useState(false);
 	const [editCarDialog, setEditCarDialog] = useState(false);
 	const [isMenuFilter, setMenuFilter] = useState(true);
+	const [isMultipleSort, setMultipleSort] = useState(true);
 	const [totalRecords, setTotalRecords] = useState(0);
 
 	const menuFilters = {
@@ -135,8 +136,13 @@ const CrudPage = () => {
 	useEffect(() => {
 		const newParams = { ...initialParams };
 		newParams.filters = isMenuFilter ? { ...menuFilters } : { ...rowFilters };
+		if (!isMultipleSort) {
+			newParams.sortField = 'make';
+			newParams.sortOrder = SortOrder.ASC;
+			newParams.multiSortMeta = [];
+		}
 		setTableParams(newParams);
-	}, [isMenuFilter]);
+	}, [isMenuFilter, isMultipleSort]);
 
 	const onPage = (event: DataTablePFSEvent) => {
 		setTableParams(event);
@@ -338,6 +344,21 @@ const CrudPage = () => {
 	);
 	const rightToolbarTemplate = (
 		<div className="flex justify-content-between align-items-center">
+			<label htmlFor="chkSortDisplay" className="font-semibold mr-2">
+				Sort Multiple
+			</label>
+			<InputSwitch
+				inputId="chkSortDisplay"
+				className="mr-2"
+				checked={isMultipleSort}
+				aria-label="Switch sorting between multiple and single"
+				tooltip={'Switch sorting between multiple and single'}
+				tooltipOptions={{ position: 'top' }}
+				onChange={(e) => {
+					setTableParams({ ...initialParams });
+					setMultipleSort(e.value);
+				}}
+			/>
 			<label htmlFor="chkFilterDisplay" className="font-semibold mr-2">
 				Filter Display
 			</label>
@@ -379,7 +400,7 @@ const CrudPage = () => {
 					onPage={onPage}
 					onSort={onSort}
 					onFilter={onFilter}
-					sortMode="multiple"
+					sortMode={isMultipleSort ? 'multiple' : 'single'}
 					sortField={tableParams.sortField}
 					sortOrder={tableParams.sortOrder}
 					multiSortMeta={tableParams.multiSortMeta}
