@@ -36,7 +36,7 @@
         "customize-cra": "latest",
         "eslint-config-prettier": "latest",
         "eslint-plugin-prettier": "latest",
-        "glob-all": "3.3.0",
+        "glob-all": "3.3.1",
         "orval": "6.10.2",
         "prettier": "latest",
         "purgecss-webpack-plugin": "4.1.3",
