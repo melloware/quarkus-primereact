@@ -464,6 +464,7 @@ const CrudPage = () => {
 											options={manufacturers}
 											className={classNames({ 'p-invalid': fieldState.error })}
 											{...field}
+											focusInputRef={field.ref}
 										/>
 										{getFormErrorMessage(fieldState, field.name)}
 									</>
