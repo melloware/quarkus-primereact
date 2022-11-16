@@ -500,7 +500,7 @@ const CrudPage = () => {
 										</label>
 										<InputNumber
 											id={field.name}
-											ref={field.ref}
+											inputRef={field.ref}
 											value={field.value}
 											onBlur={field.onBlur}
 											onValueChange={(e) => field.onChange(e)}
@@ -525,6 +525,7 @@ const CrudPage = () => {
 										<ColorPicker
 											id={field.name}
 											{...field}
+											inputRef={field.ref}
 											className={classNames({ 'p-invalid': fieldState.error })}
 											defaultColor="ffffff"
 										/>
@@ -547,7 +548,7 @@ const CrudPage = () => {
 									</label>
 									<InputNumber
 										id={field.name}
-										ref={field.ref}
+										inputRef={field.ref}
 										value={field.value}
 										onBlur={field.onBlur}
 										onValueChange={(e) => field.onChange(e)}
