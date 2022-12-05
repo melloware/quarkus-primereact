@@ -10,8 +10,8 @@
     },
     "license": "MIT",
     "dependencies": {
-        "@tanstack/react-query": "4.14.5",
-        "@tanstack/react-query-devtools": "4.14.5",
+        "@tanstack/react-query": "4.19.1",
+        "@tanstack/react-query-devtools": "4.19.1",
         "axios": "1.2.0",
         "build": "^0.1.4",
         "dompurify": "2.4.1",
@@ -57,6 +57,9 @@
         "extends": [
             "react-app"
         ]
+    },
+    "engines": {
+        "node": ">=16.0.0"
     },
     "browserslist": [
         ">0.2%",
