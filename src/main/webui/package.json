@@ -11,7 +11,7 @@
     "license": "MIT",
     "dependencies": {
         "@tanstack/react-query": "4.21.0",
-        "@tanstack/react-query-devtools": "4.21.0",
+        "@tanstack/react-query-devtools": "4.22.0",
         "axios": "1.2.2",
         "dompurify": "2.4.3",
         "primeflex": "3.3.0",
