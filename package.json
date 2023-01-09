@@ -14,7 +14,7 @@
         "@tanstack/react-query-devtools": "4.19.1",
         "axios": "1.2.2",
         "build": "^0.1.4",
-        "dompurify": "2.4.1",
+        "dompurify": "2.4.3",
         "primeflex": "3.3.0",
         "primeicons": "6.0.1",
         "primereact": "8.7.3",
