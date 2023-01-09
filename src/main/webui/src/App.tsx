@@ -1,5 +1,5 @@
 import PrimeReact from 'primereact/api';
-import { classNames, DomHandler } from 'primereact/utils';
+import { DomHandler, classNames } from 'primereact/utils';
 import React, { useEffect, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -111,6 +111,7 @@ const App = () => {
 			label: 'Server Docs',
 			items: [
 				{ label: 'Quarkus', icon: 'pi pi-fw pi-server', url: 'https://quarkus.io/', target: '_blank' },
+				{ label: 'Quinoa', icon: 'pi pi-fw pi-server', url: 'https://quarkiverse.github.io/quarkiverse-docs/quarkus-quinoa', target: '_blank' },
 				{ label: 'Hibernate/Panache', icon: 'pi pi-fw pi-database', url: 'https://quarkus.io/guides/hibernate-orm-panache', target: '_blank' },
 				{ label: 'PostgreSQL', icon: 'pi pi-fw pi-database', url: 'https://www.postgresql.org/', target: '_blank' },
 				{ label: 'Liquibase', icon: 'pi pi-fw pi-database', url: 'https://www.liquibase.com/', target: '_blank' },

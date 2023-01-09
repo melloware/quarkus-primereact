@@ -442,7 +442,13 @@ const CrudPage = () => {
 									<label htmlFor={field.name} className={classNames({ 'p-error': errors.vin })}>
 										VIN*
 									</label>
-									<InputText id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.error })} />
+									<InputText
+										id={field.name}
+										{...field}
+										autoFocus
+										className={classNames({ 'p-invalid': fieldState.error })}
+										autoComplete="off"
+									/>
 									{getFormErrorMessage(fieldState, field.name, 17)}
 								</>
 							)}

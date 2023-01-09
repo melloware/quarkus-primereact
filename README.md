@@ -13,6 +13,7 @@ While the code is surprisingly simple, under the hood this is using:
 - Hibernate ORM with Panache to perform the CRUD operations on the database
 - PostgreSQL database; see below to run one via Docker
 - Liquibase to automatically update database
+- Quinoa to handle allowing this monorepo to serve React and Java code
 - React + PrimeReact for a top notch user interface including lazy datatable
 - TanStack Query for powerful asynchronous state management for TypeScript
 - Orval to generate TanStack Query client Typescript from OpenAPI definition
@@ -22,7 +23,7 @@ While the code is surprisingly simple, under the hood this is using:
 
 To compile and run this demo you will need:
 
-- JDK 11+
+- JDK 17+
 - Docker
 
 In addition, you will need either a PostgreSQL database, or Docker to run one.
@@ -35,7 +36,7 @@ The Maven Quarkus plugin provides a development mode that supports
 live coding. To try this out:
 
 ```bash
-$ ./mvnw compile quarkus:dev
+$ ./mvnw quarkus:dev
 ```
 
 Watch as it starts up a temporary PostreSQL database just for this session. In this mode you can make changes to the code and have the changes immediately applied, by just refreshing your browser.
@@ -43,14 +44,7 @@ Watch as it starts up a temporary PostreSQL database just for this session. In t
 > :bulb:
 Hot reload works add a new REST endpoint and see it update in realtime. Try it!
 
-To modify the React UI and perform live coding try this out:
-
-```bash
-$ npm install
-$ npm run start
-```
-
-Now open your web browser to http://localhost:3000/ to see it in action.
+Now open your web browser to http://localhost:8080/ to see it in action.
 
 [![Quarkus Monorepo](https://github.com/melloware/quarkus-monorepo/blob/main/src/test/resources/quarkus-monorepo-screen.png)](https://github.com/melloware/quarkus-monorepo)
 
@@ -64,8 +58,6 @@ conventional jar file.
 First compile it:
 
 ```bash
-$ npm install
-$ npm run build
 $ ./mvnw package
 ```
 
@@ -84,7 +76,7 @@ Then run it with:
 $ java -jar ./target/quarkus-app/quarkus-run.jar -Dquarkus.datasource.jdbc.url=jdbc:postgresql://localhost/quarkus_postgres
 ```
 Navigate to:
-<http://localhost:3000/>
+<http://localhost:8080/>
 
 > :bulb:
 Have a look at how fast it boots. Or measure total native memory consumption...

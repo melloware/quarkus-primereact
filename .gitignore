@@ -20,9 +20,9 @@ nb-configuration.xml
 .sass-cache
 sassdoc
 
-# NODDE
-/node_modules
-yarn.lock
+# NODE
+node_modules/
+.quinoa
 
 # Vim
 *.swp

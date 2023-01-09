@@ -8,12 +8,6 @@ const path = require('path');
 const CspHtmlWebpackPlugin = require("@melloware/csp-webpack-plugin");
 const PurgecssPlugin = require('purgecss-webpack-plugin');
 
-// paths
-paths.appSrc = path.resolve(__dirname, 'src/main/webapp/app');
-paths.appIndexJs = path.resolve(__dirname, 'src/main/webapp/app/index.tsx');
-paths.appPublic = path.resolve(__dirname, 'src/main/webapp/public');
-paths.appHtml = path.resolve(__dirname, 'src/main/webapp/public/index.html');
-
 // Content Security Policy
 const cspConfigPolicy = {
     'default-src': "'none'",
@@ -55,4 +49,18 @@ function addPlugins(config, env) {
 
 module.exports = {
     webpack: override(addPlugins),
+    devServer: function(configFunction) {
+        // Return the replacement function for create-react-app to use to generate the Webpack
+        // Development Server config. "configFunction" is the function that would normally have
+        // been used to generate the Webpack Development server config - you can use it to create
+        // a starting configuration to then modify instead of having to create a config from scratch.
+        return function(proxy, allowedHost) {
+            // Create the default config by calling configFunction with the proxy/allowedHost parameters
+            const config = configFunction(proxy, allowedHost);
+            config.historyApiFallback = false;
+
+            // Return your customised Webpack Development Server config.
+            return config;
+        };
+    }
 };
