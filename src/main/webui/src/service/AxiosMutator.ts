@@ -1,9 +1,9 @@
-import Axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import Axios, { AxiosError, RawAxiosRequestConfig } from 'axios';
 
 export const AXIOS_INSTANCE = Axios.create({ baseURL: process.env.REACT_APP_API_SERVER! });
 
-export const useAxiosMutator = <T>(): ((config: AxiosRequestConfig) => Promise<T>) => {
-	return (config: AxiosRequestConfig) => {
+export const useAxiosMutator = <T>(): ((config: RawAxiosRequestConfig) => Promise<T>) => {
+	return (config: RawAxiosRequestConfig) => {
 		const source = Axios.CancelToken.source();
 		const promise = AXIOS_INSTANCE({
 			...config,
