@@ -8,7 +8,8 @@
 	<description>Quarkus monorepo demonstrating Panache REST server with PrimeReact UI client</description>
 	<url>https://github.com/melloware/quarkus-monorepo</url>
 	<properties>
-		<quarkus.platform.version>2.16.1.Final</quarkus.platform.version>
+		<quarkus.platform.version>2.16.2.Final</quarkus.platform.version>
+		<quarkus-quinoa.version>1.2.4</quarkus-quinoa.version>
 		<surefire-plugin.version>3.0.0-M8</surefire-plugin.version>
 		<compiler-plugin.version>3.10.1</compiler-plugin.version>
 		<maven.compiler.release>17</maven.compiler.release>
@@ -31,7 +32,7 @@
 		<dependency>
 			<groupId>io.quarkiverse.quinoa</groupId>
 			<artifactId>quarkus-quinoa</artifactId>
-			<version>1.2.4</version>
+			<version>${quarkus-quinoa.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.quarkus</groupId>

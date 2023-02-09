@@ -4,13 +4,13 @@ import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { ColorPicker } from 'primereact/colorpicker';
 import { Column, ColumnFilterElementTemplateOptions } from 'primereact/column';
-import { DataTable, DataTablePFSEvent } from 'primereact/datatable';
+import { DataTable, DataTableStateEvent } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputSwitch } from 'primereact/inputswitch';
 import { InputText } from 'primereact/inputtext';
-import { Toast, ToastSeverityType } from 'primereact/toast';
+import { Toast } from 'primereact/toast';
 import { Toolbar } from 'primereact/toolbar';
 import { Tooltip } from 'primereact/tooltip';
 import { classNames } from 'primereact/utils';
@@ -40,7 +40,7 @@ const CrudPage = () => {
 
 	// refs
 	const toastRef = useRef<Toast>(null);
-	const datatable = useRef<DataTable>(null);
+	const datatable = useRef<DataTable<Car[]>>(null);
 
 	// state
 	const [cars, setCars] = useState<Car[]>([]);
@@ -70,7 +70,7 @@ const CrudPage = () => {
 		modifiedTime: { value: '', matchMode: FilterMatchMode.DATE_AFTER }
 	};
 
-	const initialParams: DataTablePFSEvent = {
+	const initialParams: DataTableStateEvent = {
 		first: 0,
 		rows: 5,
 		page: 1,
@@ -83,7 +83,7 @@ const CrudPage = () => {
 		filters: {}
 	};
 
-	const [tableParams, setTableParams] = useState<DataTablePFSEvent>(initialParams);
+	const [tableParams, setTableParams] = useState<DataTableStateEvent>(initialParams);
 
 	// queries
 	const queryClient = useQueryClient();
@@ -144,15 +144,15 @@ const CrudPage = () => {
 		setTableParams(newParams);
 	}, [isMenuFilter, isMultipleSort]);
 
-	const onPage = (event: DataTablePFSEvent) => {
+	const onPage = (event: DataTableStateEvent) => {
 		setTableParams(event);
 	};
 
-	const onSort = (event: DataTablePFSEvent) => {
+	const onSort = (event: DataTableStateEvent) => {
 		setTableParams(event);
 	};
 
-	const onFilter = (event: DataTablePFSEvent) => {
+	const onFilter = (event: DataTableStateEvent) => {
 		event['first'] = 0;
 		setTableParams(event);
 	};
@@ -161,7 +161,7 @@ const CrudPage = () => {
 		datatable.current?.exportCSV();
 	};
 
-	const toast = (severity?: ToastSeverityType, summary?: React.ReactNode, detail?: React.ReactNode) => {
+	const toast = (severity?: 'success' | 'info' | 'warn' | 'error' | undefined, summary?: React.ReactNode, detail?: React.ReactNode) => {
 		toastRef.current?.show({ severity: severity, summary: summary, detail: detail, life: 4000 });
 	};
 
@@ -356,7 +356,7 @@ const CrudPage = () => {
 				tooltipOptions={{ position: 'top' }}
 				onChange={(e) => {
 					setTableParams({ ...initialParams });
-					setMultipleSort(e.value);
+					setMultipleSort(e.value!);
 				}}
 			/>
 			<label htmlFor="chkFilterDisplay" className="font-semibold mr-2">
@@ -371,7 +371,7 @@ const CrudPage = () => {
 				tooltipOptions={{ position: 'top' }}
 				onChange={(e) => {
 					setTableParams({ ...initialParams });
-					setMenuFilter(e.value);
+					setMenuFilter(e.value!);
 				}}
 			/>
 			<Button label="Export" icon="pi pi-download" className="action" onClick={exportCSV} data-pr-tooltip="Export to CSV" />
