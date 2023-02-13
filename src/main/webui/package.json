@@ -16,7 +16,7 @@
         "dompurify": "2.4.3",
         "primeflex": "3.3.0",
         "primeicons": "6.0.1",
-        "primereact": "9.0.0-rc.1",
+        "primereact": "9.0.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
         "react-hook-form": "7.43.1",
