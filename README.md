@@ -39,6 +39,12 @@ live coding. To try this out:
 $ ./mvnw quarkus:dev
 ```
 
+If you need to rebuild the UI portion and install new packages...
+
+```bash
+$ ./mvnw quarkus:dev -Dquarkus.quinoa.force-install=true
+```
+
 Watch as it starts up a temporary PostreSQL database just for this session. In this mode you can make changes to the code and have the changes immediately applied, by just refreshing your browser.
 
 > :bulb:
