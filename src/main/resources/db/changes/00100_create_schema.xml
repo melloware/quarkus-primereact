@@ -11,7 +11,7 @@
 
 	<changeSet author="quarkus" id="create-schema">
 		<comment>New table CAR.</comment>
-		<createSequence sequenceName="hibernate_sequence" startValue="1" cycle="false" incrementBy="1" maxValue="9223372036854775807"/>
+		<createSequence sequenceName="CAR_SEQ" startValue="1" cycle="false" incrementBy="50" maxValue="9223372036854775807"/>
 
 		<createTable tableName="CAR">
 			<column name="id" type="int8">
