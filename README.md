@@ -99,7 +99,7 @@ steps to remove unnecessary codepaths. Use the  `native` profile to compile a
 native executable:
 
 ```bash
-$ mvn clean package -Dnative
+$ mvn -Pnative
 ```
 
 After getting a cup of coffee, you'll be able to run this binary directly where ${version} is the current project version:
