@@ -8,7 +8,7 @@
 	<description>Quarkus monorepo demonstrating Panache REST server with PrimeReact UI client</description>
 	<url>https://github.com/melloware/quarkus-monorepo</url>
 	<properties>
-		<quarkus.platform.version>3.0.0.CR1</quarkus.platform.version>
+		<quarkus.platform.version>3.0.0.CR2</quarkus.platform.version>
 		<quarkus-quinoa.version>2.0.2</quarkus-quinoa.version>
 		<surefire-plugin.version>3.0.0</surefire-plugin.version>
 		<compiler-plugin.version>3.11.0</compiler-plugin.version>
@@ -45,6 +45,10 @@
 		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-smallrye-health</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-info</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.quarkus</groupId>
@@ -100,7 +104,7 @@
 		</pluginManagement>
 		<plugins>
 			<plugin>
-				<groupId>io.quarkus.platform</groupId>
+				<groupId>io.quarkus</groupId>
 				<artifactId>quarkus-maven-plugin</artifactId>
 				<version>${quarkus.platform.version}</version>
 				<extensions>true</extensions>
