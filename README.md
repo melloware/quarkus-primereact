@@ -1,9 +1,13 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Actions CI](https://img.shields.io/github/actions/workflow/status/melloware/quarkus-monorepo/build.yml?branch=main&logo=GitHub&style=for-the-badge)](https://github.com/melloware/quarkus-monorepo/actions/workflows/build.yml)
 [![Quarkus](https://img.shields.io/badge/quarkus-power-blue?logo=quarkus&style=for-the-badge)](https://github.com/quarkusio/quarkus)
-# Quarkus Monorepo
 
-<img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webui/public/static/images/quarkus.svg" height="50" ><img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webui/public/static/images/plus-sign.svg" height="50" ><img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webui/public/static/images/primereact-dark.svg" height="50" >
+<div align="center">
+<img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webui/public/static/images/quarkus.svg" width="67" height="70" ><img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webui/public/static/images/plus-sign.svg" height="70" ><img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webui/public/static/images/primereact-dark.svg" height="70" >
+
+# Quarkus Monorepo
+</div>
+<br>
 
 This [monorepo](https://en.wikipedia.org/wiki/Monorepo) is a minimal CRUD service exposing a couple of endpoints over REST,
 with a front-end based on React so you can play with it from your browser.
