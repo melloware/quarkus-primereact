@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.melloware</groupId>
 	<artifactId>quarkus-monorepo</artifactId>
-	<version>9.5.0</version>
+	<version>9.6.0</version>
 	<name>Quarkus Monorepo</name>
 	<description>Quarkus monorepo demonstrating Panache REST server with PrimeReact UI client</description>
 	<url>https://github.com/melloware/quarkus-monorepo</url>

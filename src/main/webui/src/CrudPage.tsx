@@ -470,6 +470,7 @@ const CrudPage = () => {
 											options={manufacturers}
 											className={classNames({ 'p-invalid': fieldState.error })}
 											{...field}
+											onChange={(e) => field.onChange(e.value)}
 											focusInputRef={field.ref}
 										/>
 										{getFormErrorMessage(fieldState, field.name)}
@@ -510,7 +511,7 @@ const CrudPage = () => {
 											inputRef={field.ref}
 											value={field.value}
 											onBlur={field.onBlur}
-											onValueChange={(e) => field.onChange(e)}
+											onValueChange={(e) => field.onChange(e.value as number)}
 											useGrouping={false}
 											inputClassName={classNames({ 'p-invalid': fieldState.error })}
 										/>
@@ -532,6 +533,7 @@ const CrudPage = () => {
 										<ColorPicker
 											id={field.name}
 											{...field}
+											onChange={(e) => field.onChange(e.value as string)}
 											inputRef={field.ref}
 											className={classNames({ 'p-invalid': fieldState.error })}
 											defaultColor="ffffff"
@@ -558,7 +560,7 @@ const CrudPage = () => {
 										inputRef={field.ref}
 										value={field.value}
 										onBlur={field.onBlur}
-										onValueChange={(e) => field.onChange(e)}
+										onValueChange={(e) => field.onChange(e.value as number)}
 										mode="currency"
 										currency="USD"
 										locale="en-US"
