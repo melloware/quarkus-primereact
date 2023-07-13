@@ -28,7 +28,7 @@
         "@melloware/csp-webpack-plugin": "6.0.4",
         "@types/node": "20.3.3",
         "@types/react": "18.2.14",
-        "@types/react-dom": "18.2.6",
+        "@types/react-dom": "18.2.7",
         "@types/react-router-dom": "latest",
         "@types/react-transition-group": "latest",
         "customize-cra": "latest",
