@@ -27,7 +27,7 @@
 	"devDependencies": {
 		"@melloware/csp-webpack-plugin": "6.0.4",
 		"@types/node": "20.6.0",
-		"@types/react": "18.2.20",
+		"@types/react": "18.2.21",
 		"@types/react-dom": "18.2.7",
 		"@types/react-router-dom": "latest",
 		"@types/react-transition-group": "latest",
