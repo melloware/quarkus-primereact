@@ -17,7 +17,16 @@ import { classNames } from 'primereact/utils';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, ControllerFieldState, useForm } from 'react-hook-form';
 import { ErrorType } from './service/AxiosMutator';
-import { Car, useDeleteEntityCarsId, useGetEntityCars, useGetEntityCarsManufacturers, usePostEntityCars, usePutEntityCarsId } from './service/CarService';
+import {
+	Car,
+	QueryResponse,
+	QueryResponseCar,
+	useDeleteEntityCarsId,
+	useGetEntityCars,
+	useGetEntityCarsManufacturers,
+	usePostEntityCars,
+	usePutEntityCarsId
+} from './service/CarService';
 
 /**
  * CRUD page demonstrating multiple TanStack Query and PrimeReact concepts such as lazy querying datable,
@@ -97,42 +106,36 @@ const CrudPage = () => {
 				queryKey: ['list-cars', tableParams],
 				refetchOnWindowFocus: false,
 				retry: false,
-				cacheTime: 0
+				cacheTime: 0,
+				onSuccess: (data: QueryResponseCar) => {
+					const results = data;
+					setTotalRecords(results.totalRecords!);
+					setCars(results.records!);
+				},
+				onError: () => {
+					setCars([]);
+					setTotalRecords(0);
+				}
 			}
 		}
 	);
-	const queryManufacturers = useGetEntityCarsManufacturers({
+	useGetEntityCarsManufacturers({
 		query: {
 			queryKey: ['unique-manufacturers'],
 			refetchOnWindowFocus: false,
 			retry: false,
 			cacheTime: Infinity,
-			staleTime: Infinity
+			staleTime: Infinity,
+			onSuccess: (data: QueryResponse) => {
+				setManufacturers(data as string[]);
+			},
+			onError: () => {
+				setManufacturers([]);
+			}
 		}
 	});
 
 	// hooks
-	useEffect(() => {
-		if (queryList.isError) {
-			setCars([]);
-			setTotalRecords(0);
-		}
-		if (queryList.isSuccess) {
-			const results = queryList.data;
-			setTotalRecords(results.totalRecords!);
-			setCars(results.records!);
-		}
-	}, [queryList.data]);
-
-	useEffect(() => {
-		if (queryManufacturers.isError) {
-			setManufacturers([]);
-		}
-		if (queryManufacturers.isSuccess) {
-			setManufacturers(queryManufacturers.data);
-		}
-	}, [queryManufacturers.data]);
-
 	useEffect(() => {
 		const newParams = { ...initialParams };
 		newParams.filters = isMenuFilter ? { ...menuFilters } : { ...rowFilters };
@@ -391,8 +394,6 @@ const CrudPage = () => {
 					paginator
 					paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
 					currentPageReportTemplate="{first} to {last} of {totalRecords} cars"
-					responsiveLayout="stack"
-					breakpoint="768px"
 					filterDisplay={isMenuFilter ? 'menu' : 'row'}
 					filterDelay={500}
 					rowsPerPageOptions={[5, 10, 25]}
