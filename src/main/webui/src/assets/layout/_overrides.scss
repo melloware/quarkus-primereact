@@ -1,1 +1,12 @@
 //Suggested location to add your overrides so that migration would be easy by just updating the SASS folder in the future
+body {
+    font-family: var(--font-family);
+    color: var(--text-color);
+    background-color: var(--surface-ground);
+	background-image: unset;
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
