@@ -117,7 +117,7 @@ export const getGetEntityCarsQueryKey = (params?: GetEntityCarsParams) => {
 
 export const useGetEntityCarsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError = ErrorType<unknown>>(
 	params?: GetEntityCarsParams,
-	options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError, TData> }
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError, TData>> }
 ) => {
 	const { query: queryOptions } = options ?? {};
 
@@ -137,7 +137,7 @@ export type GetEntityCarsQueryError = ErrorType<unknown>;
 
 export const useGetEntityCars = <TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError = ErrorType<unknown>>(
 	params?: GetEntityCarsParams,
-	options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError, TData> }
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError, TData>> }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 	const queryOptions = useGetEntityCarsQueryOptions(params, options);
 
@@ -200,7 +200,7 @@ export const useGetEntityCarsManufacturersQueryOptions = <
 	TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsManufacturersHook>>>,
 	TError = ErrorType<unknown>
 >(options?: {
-	query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsManufacturersHook>>>, TError, TData>;
+	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsManufacturersHook>>>, TError, TData>>;
 }) => {
 	const { query: queryOptions } = options ?? {};
 
@@ -225,7 +225,7 @@ export const useGetEntityCarsManufacturers = <
 	TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsManufacturersHook>>>,
 	TError = ErrorType<unknown>
 >(options?: {
-	query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsManufacturersHook>>>, TError, TData>;
+	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsManufacturersHook>>>, TError, TData>>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 	const queryOptions = useGetEntityCarsManufacturersQueryOptions(options);
 
@@ -250,7 +250,7 @@ export const getGetEntityCarsIdQueryKey = (id: number) => {
 
 export const useGetEntityCarsIdQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError = ErrorType<unknown>>(
 	id: number,
-	options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError, TData> }
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError, TData>> }
 ) => {
 	const { query: queryOptions } = options ?? {};
 
@@ -272,7 +272,7 @@ export type GetEntityCarsIdQueryError = ErrorType<unknown>;
 
 export const useGetEntityCarsId = <TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError = ErrorType<unknown>>(
 	id: number,
-	options?: { query?: UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError, TData> }
+	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError, TData>> }
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 	const queryOptions = useGetEntityCarsIdQueryOptions(id, options);
 

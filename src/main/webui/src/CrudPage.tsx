@@ -17,16 +17,7 @@ import { classNames } from 'primereact/utils';
 import React, { useEffect, useRef, useState } from 'react';
 import { Controller, ControllerFieldState, useForm } from 'react-hook-form';
 import { ErrorType } from './service/AxiosMutator';
-import {
-	Car,
-	QueryResponse,
-	QueryResponseCar,
-	useDeleteEntityCarsId,
-	useGetEntityCars,
-	useGetEntityCarsManufacturers,
-	usePostEntityCars,
-	usePutEntityCarsId
-} from './service/CarService';
+import { Car, useDeleteEntityCarsId, useGetEntityCars, useGetEntityCarsManufacturers, usePostEntityCars, usePutEntityCarsId } from './service/CarService';
 
 /**
  * CRUD page demonstrating multiple TanStack Query and PrimeReact concepts such as lazy querying datable,
@@ -52,14 +43,11 @@ const CrudPage = () => {
 	const datatable = useRef<DataTable<Car[]>>(null);
 
 	// state
-	const [cars, setCars] = useState<Car[]>([]);
 	const [car, setCar] = useState<Car>(defaultValues);
-	const [manufacturers, setManufacturers] = useState<string[]>([]);
 	const [deleteCarDialog, setDeleteCarDialog] = useState(false);
 	const [editCarDialog, setEditCarDialog] = useState(false);
 	const [isMenuFilter, setMenuFilter] = useState(true);
 	const [isMultipleSort, setMultipleSort] = useState(true);
-	const [totalRecords, setTotalRecords] = useState(0);
 
 	const menuFilters = {
 		vin: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
@@ -99,39 +87,24 @@ const CrudPage = () => {
 	const deleteCarMutation = useDeleteEntityCarsId();
 	const createCarMutation = usePostEntityCars();
 	const updateCarMutation = usePutEntityCarsId();
-	const queryList = useGetEntityCars(
+	const queryCars = useGetEntityCars(
 		{ request: JSON.stringify(tableParams) },
 		{
 			query: {
 				queryKey: ['list-cars', tableParams],
 				refetchOnWindowFocus: false,
 				retry: false,
-				cacheTime: 0,
-				onSuccess: (data: QueryResponseCar) => {
-					const results = data;
-					setTotalRecords(results.totalRecords!);
-					setCars(results.records!);
-				},
-				onError: () => {
-					setCars([]);
-					setTotalRecords(0);
-				}
+				gcTime: 0
 			}
 		}
 	);
-	useGetEntityCarsManufacturers({
+	const queryManufacturers = useGetEntityCarsManufacturers({
 		query: {
 			queryKey: ['unique-manufacturers'],
 			refetchOnWindowFocus: false,
 			retry: false,
-			cacheTime: Infinity,
-			staleTime: Infinity,
-			onSuccess: (data: QueryResponse) => {
-				setManufacturers(data as string[]);
-			},
-			onError: () => {
-				setManufacturers([]);
-			}
+			gcTime: Infinity,
+			staleTime: Infinity
 		}
 	});
 
@@ -217,7 +190,7 @@ const CrudPage = () => {
 					onSuccess: () => {
 						hideEditDialog();
 						toast('success', 'Successful', `${car.year} ${car.make} ${car.model} Updated`);
-						queryClient.invalidateQueries(['list-cars']);
+						queryClient.invalidateQueries({ queryKey: ['list-cars'] });
 					},
 					onError: (error: ErrorType<unknown>) => {
 						toast('error', 'Error', JSON.stringify(error.response?.data));
@@ -231,7 +204,7 @@ const CrudPage = () => {
 					onSuccess: () => {
 						hideEditDialog();
 						toast('success', 'Successful', `${car.year} ${car.make} ${car.model} Created`);
-						queryClient.invalidateQueries(['list-cars']);
+						queryClient.invalidateQueries({ queryKey: ['list-cars'] });
 					},
 					onError: (error: ErrorType<unknown>) => {
 						toast('error', 'Error', JSON.stringify(error.response?.data));
@@ -270,7 +243,7 @@ const CrudPage = () => {
 				onSuccess: () => {
 					hideDeleteCarDialog();
 					toast('success', 'Successful', `${car.year} ${car.make} ${car.model} Deleted`);
-					queryClient.invalidateQueries(['list-cars']);
+					queryClient.invalidateQueries({ queryKey: ['list-cars'] });
 				},
 				onError: (error: ErrorType<unknown>) => {
 					toast('error', 'Error', JSON.stringify(error.response?.data));
@@ -388,7 +361,7 @@ const CrudPage = () => {
 
 				<DataTable
 					ref={datatable}
-					value={cars}
+					value={queryCars.data?.records}
 					lazy
 					dataKey="id"
 					paginator
@@ -397,7 +370,7 @@ const CrudPage = () => {
 					filterDisplay={isMenuFilter ? 'menu' : 'row'}
 					filterDelay={500}
 					rowsPerPageOptions={[5, 10, 25]}
-					totalRecords={totalRecords}
+					totalRecords={queryCars.data?.totalRecords}
 					onPage={onPage}
 					onSort={onSort}
 					onFilter={onFilter}
@@ -408,7 +381,7 @@ const CrudPage = () => {
 					filters={tableParams.filters}
 					first={tableParams.first}
 					rows={tableParams.rows}
-					loading={queryList.isFetching}
+					loading={queryCars.isFetching}
 					exportFilename="cars"
 				>
 					<Column field="vin" header="VIN" sortable filter filterPlaceholder="VIN" />
@@ -468,7 +441,7 @@ const CrudPage = () => {
 										</label>
 										<Dropdown
 											id={field.name}
-											options={manufacturers}
+											options={queryManufacturers.data}
 											className={classNames({ 'p-invalid': fieldState.error })}
 											{...field}
 											onChange={(e) => field.onChange(e.value)}
