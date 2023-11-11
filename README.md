@@ -1,7 +1,7 @@
 <div align="center">
 <img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webui/public/static/images/quarkus.svg" width="67" height="70" ><img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webui/public/static/images/plus-sign.svg" height="70" ><img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webui/public/static/images/primereact-dark.svg" height="70" >
 
-# Quarkus Monorepo
+# Quarkus PrimeReact
 </div>
 <br>
 
@@ -17,12 +17,12 @@ While the code is surprisingly simple, under the hood this is using:
 - RESTEasy to expose the REST endpoints and documented with OpenAPI
 - Hibernate ORM with Panache to perform the CRUD operations on the database
 - PostgreSQL database; see below to run one via Docker
-- Liquibase to automatically update database
-- Quinoa to handle allowing this monorepo to serve React and Java code
-- React + PrimeReact for a top notch user interface including lazy datatable
-- TanStack Query for powerful asynchronous state management for TypeScript
-- Orval to generate TanStack Query client Typescript from OpenAPI definition
-- React Hook Forms to validate user input data
+- [Liquibase](https://www.liquibase.com/) to automatically update database
+- [Quinoa](https://github.com/quarkiverse/quarkus-quinoa) to handle allowing this monorepo to serve React and Java code
+- [React + PrimeReact](https://primereact.org/) for a top notch user interface including lazy datatable
+- [TanStack Query](https://tanstack.com/query/latest) for powerful asynchronous state management for TypeScript
+- [Orval](https://orval.dev/) to generate TanStack Query client Typescript from OpenAPI definition
+- [React Hook Forms](https://react-hook-form.com/) to validate user input data
 
 ## Requirements
 
