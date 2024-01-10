@@ -18,7 +18,7 @@ While the code is surprisingly simple, under the hood this is using:
 
 - RESTEasy to expose the REST endpoints and documented with OpenAPI
 - Hibernate ORM with Panache to perform the CRUD operations on the database
-- PostgreSQL database; see below to run one via Docker
+- PostgreSQL database; automatically starts an embedded DB
 - [Liquibase](https://www.liquibase.com/) to automatically update database
 - [Quinoa](https://github.com/quarkiverse/quarkus-quinoa) to handle allowing this monorepo to serve React and Java code
 - [React + PrimeReact](https://primereact.org/) for a top notch user interface including lazy datatable
