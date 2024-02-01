@@ -1,6 +1,6 @@
 {
 	"name": "quarkus-monorepo",
-	"version": "10.3.1",
+	"version": "10.3.3",
 	"description": "Quarkus monorepo demonstrating Quarkus REST server with PrimeReact UI client.",
 	"homepage": ".",
 	"private": false,
