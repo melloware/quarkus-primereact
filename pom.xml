@@ -10,7 +10,7 @@
 	<properties>
 		<quarkus.platform.version>3.2.9.Final</quarkus.platform.version>
 		<quarkus-quinoa.version>2.2.5</quarkus-quinoa.version>
-		<surefire-plugin.version>3.2.3</surefire-plugin.version>
+		<surefire-plugin.version>3.2.5</surefire-plugin.version>
 		<compiler-plugin.version>3.12.1</compiler-plugin.version>
 		<maven.compiler.release>17</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,7 +65,7 @@
 		<dependency>
 			<groupId>io.quarkiverse.embedded.postgresql</groupId>
 			<artifactId>quarkus-embedded-postgresql</artifactId>
-			<version>0.1.1</version>
+			<version>0.1.3</version>
 		</dependency>
 		<dependency>
 			<groupId>io.quarkus</groupId>
