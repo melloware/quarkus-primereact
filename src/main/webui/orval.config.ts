@@ -17,7 +17,7 @@ module.exports = {
       }
     },
     input: {
-      target: './cars-openapi.yaml',
+      target: './openapi.yaml',
     },
   },
 };

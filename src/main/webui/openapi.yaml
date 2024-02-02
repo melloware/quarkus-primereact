@@ -1,7 +1,7 @@
 ---
 openapi: 3.0.3
 info:
-  title: Quarkus React Monorepo
+  title: Quarkus PrimeReact Monorepo
   description: Quarkus monorepo demonstrating Panache REST server with PrimeReact
     UI client
   contact:
@@ -9,6 +9,11 @@ info:
     url: https://melloware.com
     email: mellowaredev@gmail.com
   version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Auto generated value
+- url: http://0.0.0.0:8080
+  description: Auto generated value
 tags:
 - name: Car Resource
   description: CRUD operations for the Car entity.
@@ -157,9 +162,20 @@ components:
           type: number
           example: 9999.99
         modifiedTime:
+          description: Modified time of the record
+          type: string
           allOf:
           - $ref: '#/components/schemas/Instant'
-          - description: Modified time of the record
+    FilterConstraint:
+      type: object
+      properties:
+        value:
+          description: Value to filter this column by
+        matchMode:
+          description: "Filter match mode e.g. equals, notEquals, contains, notContains,\
+            \ gt, gte, lt, lte"
+          type: string
+          example: equals
     Instant:
       format: date-time
       type: string
@@ -169,12 +185,19 @@ components:
       properties:
         value:
           description: Value to filter this column by
-          type: object
         matchMode:
           description: "Filter match mode e.g. equals, notEquals, contains, notContains,\
             \ gt, gte, lt, lte"
           type: string
           example: equals
+        operator:
+          description: Filter operator either 'and' or 'or'
+          type: string
+        constraints:
+          description: List of filter constraints for this filter
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterConstraint'
     MultiSortMeta:
       type: object
       properties:
@@ -240,8 +263,7 @@ components:
         records:
           description: "Records for this set of pagination, sorting, filtering."
           type: array
-          items:
-            type: object
+          items: {}
     QueryResponseCar:
       description: "Represents a PrimeReact query response to the UI for a complex\
         \ datatable with multiple sorts, multiple filters, and pagination."
@@ -257,3 +279,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Car'
+  securitySchemes:
+    SecurityScheme:
+      type: http
+      description: Authentication
+      scheme: basic
