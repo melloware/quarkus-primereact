@@ -485,7 +485,7 @@ const CrudPage = () => {
 											inputClassName={classNames({ 'p-invalid': fieldState.error })}
 											inputId={field.name}
 											inputRef={field.ref}
-											keepInvalid
+											onBlur={field.onBlur}
 											onChange={(e) => field.onChange(e.value?.getFullYear())}
 											value={new Date(field.value, 1, 1)}
 											view="year"
