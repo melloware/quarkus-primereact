@@ -480,14 +480,14 @@ const CrudPage = () => {
 										<label htmlFor={field.name} className={classNames({ 'p-error': errors.year })}>
 											Year*
 										</label>
-										<InputNumber
-											id={field.name}
+										<Calendar
+											inputId={field.name}
 											inputRef={field.ref}
-											value={field.value}
-											onBlur={field.onBlur}
-											onValueChange={(e) => field.onChange(e.value as number)}
-											useGrouping={false}
-											inputClassName={classNames({ 'p-invalid': fieldState.error })}
+											value={new Date(field.value, 1, 1)}
+											view="year"
+											onChange={(e) => field.onChange(e.value?.getFullYear())}
+											dateFormat="yy"
+											className={classNames({ 'p-invalid': fieldState.error })}
 										/>
 										{getFormErrorMessage(fieldState, field.name, 2050, 1960)}
 									</>
