@@ -481,13 +481,14 @@ const CrudPage = () => {
 											Year*
 										</label>
 										<Calendar
+											dateFormat="yy"
+											inputClassName={classNames({ 'p-invalid': fieldState.error })}
 											inputId={field.name}
 											inputRef={field.ref}
+											keepInvalid
+											onChange={(e) => field.onChange(e.value?.getFullYear())}
 											value={new Date(field.value, 1, 1)}
 											view="year"
-											onChange={(e) => field.onChange(e.value?.getFullYear())}
-											dateFormat="yy"
-											className={classNames({ 'p-invalid': fieldState.error })}
 										/>
 										{getFormErrorMessage(fieldState, field.name, 2050, 1960)}
 									</>
