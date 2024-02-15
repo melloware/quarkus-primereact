@@ -363,13 +363,6 @@
           }
         }
       }
-    },
-    "securitySchemes" : {
-      "SecurityScheme" : {
-        "type" : "http",
-        "description" : "Authentication",
-        "scheme" : "basic"
-      }
     }
   }
 }

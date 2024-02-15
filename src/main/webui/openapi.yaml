@@ -279,8 +279,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Car'
-  securitySchemes:
-    SecurityScheme:
-      type: http
-      description: Authentication
-      scheme: basic
