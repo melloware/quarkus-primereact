@@ -33,7 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/QueryResponseCar'
+                $ref: "#/components/schemas/QueryResponseCar"
     post:
       tags:
       - Car Resource
@@ -41,7 +41,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Car'
+              $ref: "#/components/schemas/Car"
       responses:
         "200":
           description: OK
@@ -76,7 +76,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Car'
+                $ref: "#/components/schemas/Car"
     put:
       tags:
       - Car Resource
@@ -92,14 +92,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Car'
+              $ref: "#/components/schemas/Car"
       responses:
         "200":
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Car'
+                $ref: "#/components/schemas/Car"
     delete:
       tags:
       - Car Resource
@@ -165,7 +165,7 @@ components:
           description: Modified time of the record
           type: string
           allOf:
-          - $ref: '#/components/schemas/Instant'
+          - $ref: "#/components/schemas/Instant"
     FilterConstraint:
       type: object
       properties:
@@ -197,7 +197,7 @@ components:
           description: List of filter constraints for this filter
           type: array
           items:
-            $ref: '#/components/schemas/FilterConstraint'
+            $ref: "#/components/schemas/FilterConstraint"
     MultiSortMeta:
       type: object
       properties:
@@ -244,12 +244,12 @@ components:
           description: Multiple sorting list of columns to sort and in which order
           type: array
           items:
-            $ref: '#/components/schemas/MultiSortMeta'
+            $ref: "#/components/schemas/MultiSortMeta"
         filters:
           description: Map of columns being filtered and their filter criteria
           type: object
           additionalProperties:
-            $ref: '#/components/schemas/MultiFilterMeta'
+            $ref: "#/components/schemas/MultiFilterMeta"
     QueryResponse:
       description: "Represents a PrimeReact query response to the UI for a complex\
         \ datatable with multiple sorts, multiple filters, and pagination."
@@ -278,4 +278,4 @@ components:
           description: "Records for this set of pagination, sorting, filtering."
           type: array
           items:
-            $ref: '#/components/schemas/Car'
+            $ref: "#/components/schemas/Car"
