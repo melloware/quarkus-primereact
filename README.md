@@ -73,19 +73,13 @@ First compile it:
 $ ./mvnw package
 ```
 
-Next we need to make sure you have a PostgreSQL instance running (Quarkus automatically starts one for dev and test mode). To set up a PostgreSQL database with Docker:
-
-```bash
-$ docker run -it --rm=true --name quarkus_postgres -e POSTGRES_USER=quarkus_postgres -e POSTGRES_PASSWORD=quarkus_postgres -e POSTGRES_DB=quarkus_postgres -p 5432:5432 postgres:14
-```
-
 Connection properties for the Agroal datasource are defined in the standard Quarkus configuration file,
 `src/main/resources/application.properties`.
 
 Then run it with:
 
 ```bash
-$ java -jar ./target/quarkus-app/quarkus-run.jar -Dquarkus.datasource.jdbc.url=jdbc:postgresql://localhost/quarkus_postgres
+$ java -jar ./target/quarkus-app/quarkus-run.jar
 ```
 Navigate to:
 <http://localhost:8080/>
@@ -121,13 +115,4 @@ Please brace yourself: don't choke on that fresh cup of coffee you just got. Now
 
 Navigate to: <http://localhost:8080/index.html>
 
-## Running in Kubernetes
 
-This section provides extra information for running both the database and the demo on Kubernetes.
-As well as running the DB on Kubernetes, a service needs to be exposed for the demo to connect to the DB.
-
-Then, rebuild demo docker image with a system property that points to the DB.
-
-```bash
--Dquarkus.datasource.jdbc.url=jdbc:postgresql://<DB_SERVICE_NAME>/quarkus_postgres
-```

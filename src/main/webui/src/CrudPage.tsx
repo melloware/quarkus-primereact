@@ -308,7 +308,7 @@ const CrudPage = () => {
 
 	const deleteCarDialogFooter = (
 		<div>
-			<Button label="No" icon="pi pi-times" className="p-button-text p-button-info" onClick={hideDeleteCarDialog} />
+			<Button label="No" icon="pi pi-times" className="p-button-text p-button-info" onClick={hideDeleteCarDialog} autoFocus />
 			<Button label="Yes" icon="pi pi-check" className="p-button-text p-button-danger" onClick={deleteCar} />
 		</div>
 	);

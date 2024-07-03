@@ -1,6 +1,6 @@
 import Axios, { AxiosError, RawAxiosRequestConfig } from 'axios';
 
-export const AXIOS_INSTANCE = Axios.create({ baseURL: process.env.REACT_APP_API_SERVER! });
+export const AXIOS_INSTANCE = Axios.create({ baseURL: import.meta.env.REACT_APP_API_SERVER! });
 
 export const useAxiosMutator = <T>(): ((config: RawAxiosRequestConfig) => Promise<T>) => {
 	return (config: RawAxiosRequestConfig) => {
