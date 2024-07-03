@@ -416,13 +416,7 @@ const CrudPage = () => {
 									<label htmlFor={field.name} className={classNames({ 'p-error': errors.vin })}>
 										VIN*
 									</label>
-									<InputText
-										id={field.name}
-										{...field}
-										autoFocus
-										className={classNames({ 'p-invalid': fieldState.error })}
-										autoComplete="off"
-									/>
+									<InputText id={field.name} {...field} className={classNames({ 'p-invalid': fieldState.error })} autoComplete="off" />
 									{getFormErrorMessage(fieldState, field.name, 17)}
 								</>
 							)}
@@ -549,7 +543,7 @@ const CrudPage = () => {
 
 					<div className="p-dialog-footer pb-0">
 						<Button label="Cancel" type="reset" icon="pi pi-times" className="p-button-text p-button-info" onClick={hideEditDialog} />
-						<Button label="Save" type="submit" icon="pi pi-check" className="p-button-text p-button-success" />
+						<Button label="Save" type="submit" icon="pi pi-check" className="p-button-text p-button-success" autoFocus />
 					</div>
 				</form>
 			</Dialog>

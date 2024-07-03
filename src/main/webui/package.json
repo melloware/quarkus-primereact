@@ -1,6 +1,6 @@
 {
 	"name": "quarkus-monorepo",
-	"version": "10.6.6",
+	"version": "10.7.0",
 	"description": "Quarkus monorepo demonstrating Quarkus REST server with PrimeReact UI client.",
 	"homepage": ".",
 	"private": false,
@@ -16,11 +16,11 @@
 		"dompurify": "3.1.5",
 		"primeflex": "3.3.1",
 		"primeicons": "7.0.0",
-		"primereact": "10.6.6",
+		"primereact": "10.7.0",
 		"react": "18.3.1",
 		"react-dom": "18.3.1",
-		"react-hook-form": "7.52.0",
-		"react-router-dom": "6.23.1",
+		"react-hook-form": "7.52.1",
+		"react-router-dom": "6.24.0",
 		"react-transition-group": "4.4.5",
 		"trusted-types": "2.0.0"
 	},
