@@ -2,9 +2,9 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.melloware</groupId>
-	<artifactId>quarkus-monorepo</artifactId>
+	<artifactId>quarkus-primereact</artifactId>
 	<version>10.7.0</version>
-	<name>Quarkus Monorepo</name>
+	<name>Quarkus PrimeReact</name>
 	<description>Quarkus monorepo demonstrating Panache REST server with PrimeReact UI client</description>
 	<url>https://github.com/melloware/quarkus-monorepo</url>
 	<properties>
@@ -71,6 +71,12 @@
 		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-jdbc-postgresql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkiverse.loggingmanager</groupId>
+			<artifactId>quarkus-logging-manager</artifactId>
+			<version>3.0.3</version>
+			<scope>runtime</scope>
 		</dependency>
 		<!-- Utilities: -->
 		<dependency>
