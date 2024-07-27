@@ -1,4 +1,4 @@
-import { MenuItem } from 'primereact/menuitem';
+import type { MenuItem } from 'primereact/menuitem';
 import { To } from 'react-router-dom';
 
 export interface AppMenuItemClickParams {
