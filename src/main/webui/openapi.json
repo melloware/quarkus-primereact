@@ -162,6 +162,92 @@
         }
       }
     },
+    "/q/logging-manager" : {
+      "summary" : "Return info on all loggers, or a specific logger",
+      "description" : "Logging Manager Loggers",
+      "get" : {
+        "tags" : [ "Logging-manager" ],
+        "summary" : "Information on Logger(s)",
+        "description" : "Get information on all loggers or a specific logger.",
+        "operationId" : "logging_manager_get_all",
+        "parameters" : [ {
+          "name" : "loggerName",
+          "in" : "query",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/LoggerInfo"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Logging-manager" ],
+        "summary" : "Update log level",
+        "description" : "Update a log level for a certain logger",
+        "operationId" : "logging_manager_update",
+        "requestBody" : {
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "loggerName" : { },
+                  "loggerLevel" : {
+                    "$ref" : "#/components/schemas/LoggerLevel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/q/logging-manager/levels" : {
+      "summary" : "Return all levels that is available",
+      "description" : "All available levels",
+      "get" : {
+        "tags" : [ "Logging-manager" ],
+        "summary" : "Get all available levels",
+        "description" : "This returns all possible log levels",
+        "operationId" : "logging_manager_levels",
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/LoggerLevel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/q/health" : {
       "summary" : "MicroProfile Health provides a way for your application to distribute information about its healthiness state to state whether or not it is able to function properly",
       "description" : "MicroProfile Health Endpoint",
@@ -323,92 +409,6 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/HealthCheckResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/q/logging-manager" : {
-      "summary" : "Return info on all loggers, or a specific logger",
-      "description" : "Logging Manager Loggers",
-      "get" : {
-        "tags" : [ "Logging-manager" ],
-        "summary" : "Information on Logger(s)",
-        "description" : "Get information on all loggers or a specific logger.",
-        "operationId" : "logging_manager_get_all",
-        "parameters" : [ {
-          "name" : "loggerName",
-          "in" : "query",
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Ok",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/LoggerInfo"
-                  }
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not Found"
-          }
-        }
-      },
-      "post" : {
-        "tags" : [ "Logging-manager" ],
-        "summary" : "Update log level",
-        "description" : "Update a log level for a certain logger",
-        "operationId" : "logging_manager_update",
-        "requestBody" : {
-          "content" : {
-            "application/x-www-form-urlencoded" : {
-              "schema" : {
-                "type" : "object",
-                "properties" : {
-                  "loggerName" : { },
-                  "loggerLevel" : {
-                    "$ref" : "#/components/schemas/LoggerLevel"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses" : {
-          "201" : {
-            "description" : "Created"
-          }
-        }
-      }
-    },
-    "/q/logging-manager/levels" : {
-      "summary" : "Return all levels that is available",
-      "description" : "All available levels",
-      "get" : {
-        "tags" : [ "Logging-manager" ],
-        "summary" : "Get all available levels",
-        "description" : "This returns all possible log levels",
-        "operationId" : "logging_manager_levels",
-        "responses" : {
-          "200" : {
-            "description" : "Ok",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/LoggerLevel"
-                  }
                 }
               }
             }
@@ -617,6 +617,24 @@
           }
         }
       },
+      "LoggerLevel" : {
+        "enum" : [ "OFF", "SEVERE", "ERROR", "FATAL", "WARNING", "WARN", "INFO", "DEBUG", "TRACE", "CONFIG", "FINE", "FINER", "FINEST", "ALL" ],
+        "type" : "string"
+      },
+      "LoggerInfo" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "effectiveLevel" : {
+            "$ref" : "#/components/schemas/LoggerLevel"
+          },
+          "configuredLevel" : {
+            "$ref" : "#/components/schemas/LoggerLevel"
+          }
+        }
+      },
       "HealthCheckResponse" : {
         "type" : "object",
         "properties" : {
@@ -635,24 +653,6 @@
       "HealthCheckStatus" : {
         "enum" : [ "DOWN", "UP" ],
         "type" : "string"
-      },
-      "LoggerLevel" : {
-        "enum" : [ "OFF", "SEVERE", "ERROR", "FATAL", "WARNING", "WARN", "INFO", "DEBUG", "TRACE", "CONFIG", "FINE", "FINER", "FINEST", "ALL" ],
-        "type" : "string"
-      },
-      "LoggerInfo" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "effectiveLevel" : {
-            "$ref" : "#/components/schemas/LoggerLevel"
-          },
-          "configuredLevel" : {
-            "$ref" : "#/components/schemas/LoggerLevel"
-          }
-        }
       }
     }
   }
