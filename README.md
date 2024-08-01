@@ -105,7 +105,7 @@ $ mvn -Pnative
 After getting a cup of coffee, you'll be able to run this binary directly where ${version} is the current project version:
 
 ```bash
-$ docker run -i --rm -p 8080:8080 melloware/quarkus-monorepo:${version}
+$ docker run -i --rm -p 8080:8080 melloware/quarkus-primereact:${version}
 ```
 
 > :bulb:
