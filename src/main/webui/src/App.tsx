@@ -11,6 +11,7 @@ import locale_de from 'primelocale/de.json';
 import locale_el from 'primelocale/el.json';
 import locale_en_au from 'primelocale/en-au.json';
 import locale_en_gb from 'primelocale/en-gb.json';
+import locale_en from 'primelocale/en.json';
 import locale_es from 'primelocale/es.json';
 import locale_fa from 'primelocale/fa.json';
 import locale_fi from 'primelocale/fi.json';
@@ -89,6 +90,7 @@ const App = () => {
 		['el', locale_el['el']],
 		['en-au', locale_en_au['en-au']],
 		['en-gb', locale_en_gb['en-gb']],
+		['en', locale_en['en']],
 		['es', locale_es['es']],
 		['fa', locale_fa['fa']],
 		['fi', locale_fi['fi']],
@@ -173,7 +175,7 @@ const App = () => {
 		}
 
 		// If still no match, return English as default
-		return localeMap.get('en-gb')!;
+		return localeMap.get('en')!;
 	};
 
 	const onWrapperClick = (_event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
