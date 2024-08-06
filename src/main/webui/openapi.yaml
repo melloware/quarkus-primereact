@@ -151,9 +151,9 @@ paths:
             schema:
               type: object
               properties:
-                loggerName: {}
                 loggerLevel:
                   $ref: "#/components/schemas/LoggerLevel"
+                loggerName: {}
       responses:
         "201":
           description: Created
@@ -477,12 +477,12 @@ components:
     LoggerInfo:
       type: object
       properties:
-        name:
-          type: string
-        effectiveLevel:
-          $ref: "#/components/schemas/LoggerLevel"
         configuredLevel:
           $ref: "#/components/schemas/LoggerLevel"
+        effectiveLevel:
+          $ref: "#/components/schemas/LoggerLevel"
+        name:
+          type: string
     HealthCheckResponse:
       type: object
       properties:

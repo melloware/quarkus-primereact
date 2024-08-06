@@ -207,10 +207,10 @@
               "schema" : {
                 "type" : "object",
                 "properties" : {
-                  "loggerName" : { },
                   "loggerLevel" : {
                     "$ref" : "#/components/schemas/LoggerLevel"
-                  }
+                  },
+                  "loggerName" : { }
                 }
               }
             }
@@ -624,14 +624,14 @@
       "LoggerInfo" : {
         "type" : "object",
         "properties" : {
-          "name" : {
-            "type" : "string"
+          "configuredLevel" : {
+            "$ref" : "#/components/schemas/LoggerLevel"
           },
           "effectiveLevel" : {
             "$ref" : "#/components/schemas/LoggerLevel"
           },
-          "configuredLevel" : {
-            "$ref" : "#/components/schemas/LoggerLevel"
+          "name" : {
+            "type" : "string"
           }
         }
       },
