@@ -34,6 +34,7 @@
 		"@types/react-router-dom": "5.3.3",
 		"@types/react-transition-group": "4.4.11",
 		"core-js": "3.38.1",
+		"cross-env": "^7.0.3",
 		"eslint-config-prettier": "9.1.0",
 		"eslint-plugin-prettier": "5.2.1",
 		"orval": "7.0.1",
