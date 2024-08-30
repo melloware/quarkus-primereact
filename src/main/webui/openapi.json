@@ -262,7 +262,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/HealthCheckResponse"
+                  "$ref" : "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -272,7 +272,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/HealthCheckResponse"
+                  "$ref" : "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -282,7 +282,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/HealthCheckResponse"
+                  "$ref" : "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -304,7 +304,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/HealthCheckResponse"
+                  "$ref" : "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -314,7 +314,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/HealthCheckResponse"
+                  "$ref" : "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -324,7 +324,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/HealthCheckResponse"
+                  "$ref" : "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -346,7 +346,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/HealthCheckResponse"
+                  "$ref" : "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -356,7 +356,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/HealthCheckResponse"
+                  "$ref" : "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -366,7 +366,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/HealthCheckResponse"
+                  "$ref" : "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -388,7 +388,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/HealthCheckResponse"
+                  "$ref" : "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -398,7 +398,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/HealthCheckResponse"
+                  "$ref" : "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -408,7 +408,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/HealthCheckResponse"
+                  "$ref" : "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -624,35 +624,47 @@
       "LoggerInfo" : {
         "type" : "object",
         "properties" : {
+          "name" : {
+            "type" : "string"
+          },
           "configuredLevel" : {
             "$ref" : "#/components/schemas/LoggerLevel"
           },
           "effectiveLevel" : {
             "$ref" : "#/components/schemas/LoggerLevel"
-          },
-          "name" : {
-            "type" : "string"
           }
         }
       },
-      "HealthCheckResponse" : {
+      "HealthResponse" : {
         "type" : "object",
         "properties" : {
+          "status" : {
+            "enum" : [ "UP", "DOWN" ],
+            "type" : "string"
+          },
+          "checks" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/HealthCheck"
+            }
+          }
+        }
+      },
+      "HealthCheck" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
           "data" : {
             "type" : "object",
             "nullable" : true
           },
-          "name" : {
-            "type" : "string"
-          },
           "status" : {
-            "$ref" : "#/components/schemas/HealthCheckStatus"
+            "enum" : [ "UP", "DOWN" ],
+            "type" : "string"
           }
         }
-      },
-      "HealthCheckStatus" : {
-        "enum" : [ "DOWN", "UP" ],
-        "type" : "string"
       }
     }
   }

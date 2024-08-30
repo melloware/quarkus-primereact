@@ -38,20 +38,33 @@ export type HealthCheckStatus = (typeof HealthCheckStatus)[keyof typeof HealthCh
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const HealthCheckStatus = {
-	DOWN: 'DOWN',
-	UP: 'UP'
+	UP: 'UP',
+	DOWN: 'DOWN'
 } as const;
 
 /**
  * @nullable
  */
-export type HealthCheckResponseData = { [key: string]: unknown } | null;
+export type HealthCheckData = { [key: string]: unknown } | null;
 
-export interface HealthCheckResponse {
+export interface HealthCheck {
 	/** @nullable */
-	data?: HealthCheckResponseData;
+	data?: HealthCheckData;
 	name?: string;
 	status?: HealthCheckStatus;
+}
+
+export type HealthResponseStatus = (typeof HealthResponseStatus)[keyof typeof HealthResponseStatus];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const HealthResponseStatus = {
+	UP: 'UP',
+	DOWN: 'DOWN'
+} as const;
+
+export interface HealthResponse {
+	checks?: HealthCheck[];
+	status?: HealthResponseStatus;
 }
 
 export type LoggerLevel = (typeof LoggerLevel)[keyof typeof LoggerLevel];
@@ -726,7 +739,7 @@ export function useLoggingManagerLevels<TData = Awaited<ReturnType<ReturnType<ty
  * @summary An aggregated view of the Liveness, Readiness and Startup of this application
  */
 export const useMicroprofileHealthRootHook = () => {
-	const microprofileHealthRoot = useAxiosMutator<HealthCheckResponse>();
+	const microprofileHealthRoot = useAxiosMutator<HealthResponse>();
 
 	return useCallback(
 		(signal?: AbortSignal) => {
@@ -742,7 +755,7 @@ export const getMicroprofileHealthRootQueryKey = () => {
 
 export const useMicroprofileHealthRootQueryOptions = <
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>, TError, TData>>;
 }) => {
@@ -760,25 +773,25 @@ export const useMicroprofileHealthRootQueryOptions = <
 };
 
 export type MicroprofileHealthRootQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>>;
-export type MicroprofileHealthRootQueryError = ErrorType<HealthCheckResponse>;
+export type MicroprofileHealthRootQueryError = ErrorType<HealthResponse>;
 
 export function useMicroprofileHealthRoot<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options: {
 	query: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>, TError, TData>> &
 		Pick<DefinedInitialDataOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>, TError, TData>, 'initialData'>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useMicroprofileHealthRoot<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>, TError, TData>> &
 		Pick<UndefinedInitialDataOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>, TError, TData>, 'initialData'>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useMicroprofileHealthRoot<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>, TError, TData>>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
@@ -788,7 +801,7 @@ export function useMicroprofileHealthRoot<
 
 export function useMicroprofileHealthRoot<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>, TError, TData>>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
@@ -806,7 +819,7 @@ export function useMicroprofileHealthRoot<
  * @summary The Liveness check of this application
  */
 export const useMicroprofileHealthLivenessHook = () => {
-	const microprofileHealthLiveness = useAxiosMutator<HealthCheckResponse>();
+	const microprofileHealthLiveness = useAxiosMutator<HealthResponse>();
 
 	return useCallback(
 		(signal?: AbortSignal) => {
@@ -822,7 +835,7 @@ export const getMicroprofileHealthLivenessQueryKey = () => {
 
 export const useMicroprofileHealthLivenessQueryOptions = <
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>, TError, TData>>;
 }) => {
@@ -843,25 +856,25 @@ export const useMicroprofileHealthLivenessQueryOptions = <
 };
 
 export type MicroprofileHealthLivenessQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>>;
-export type MicroprofileHealthLivenessQueryError = ErrorType<HealthCheckResponse>;
+export type MicroprofileHealthLivenessQueryError = ErrorType<HealthResponse>;
 
 export function useMicroprofileHealthLiveness<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options: {
 	query: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>, TError, TData>> &
 		Pick<DefinedInitialDataOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>, TError, TData>, 'initialData'>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useMicroprofileHealthLiveness<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>, TError, TData>> &
 		Pick<UndefinedInitialDataOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>, TError, TData>, 'initialData'>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useMicroprofileHealthLiveness<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>, TError, TData>>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
@@ -871,7 +884,7 @@ export function useMicroprofileHealthLiveness<
 
 export function useMicroprofileHealthLiveness<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>, TError, TData>>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
@@ -889,7 +902,7 @@ export function useMicroprofileHealthLiveness<
  * @summary The Readiness check of this application
  */
 export const useMicroprofileHealthReadinessHook = () => {
-	const microprofileHealthReadiness = useAxiosMutator<HealthCheckResponse>();
+	const microprofileHealthReadiness = useAxiosMutator<HealthResponse>();
 
 	return useCallback(
 		(signal?: AbortSignal) => {
@@ -905,7 +918,7 @@ export const getMicroprofileHealthReadinessQueryKey = () => {
 
 export const useMicroprofileHealthReadinessQueryOptions = <
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>, TError, TData>>;
 }) => {
@@ -926,25 +939,25 @@ export const useMicroprofileHealthReadinessQueryOptions = <
 };
 
 export type MicroprofileHealthReadinessQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>>;
-export type MicroprofileHealthReadinessQueryError = ErrorType<HealthCheckResponse>;
+export type MicroprofileHealthReadinessQueryError = ErrorType<HealthResponse>;
 
 export function useMicroprofileHealthReadiness<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options: {
 	query: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>, TError, TData>> &
 		Pick<DefinedInitialDataOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>, TError, TData>, 'initialData'>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useMicroprofileHealthReadiness<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>, TError, TData>> &
 		Pick<UndefinedInitialDataOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>, TError, TData>, 'initialData'>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useMicroprofileHealthReadiness<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>, TError, TData>>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
@@ -954,7 +967,7 @@ export function useMicroprofileHealthReadiness<
 
 export function useMicroprofileHealthReadiness<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>, TError, TData>>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
@@ -972,7 +985,7 @@ export function useMicroprofileHealthReadiness<
  * @summary The Startup check of this application
  */
 export const useMicroprofileHealthStartupHook = () => {
-	const microprofileHealthStartup = useAxiosMutator<HealthCheckResponse>();
+	const microprofileHealthStartup = useAxiosMutator<HealthResponse>();
 
 	return useCallback(
 		(signal?: AbortSignal) => {
@@ -988,7 +1001,7 @@ export const getMicroprofileHealthStartupQueryKey = () => {
 
 export const useMicroprofileHealthStartupQueryOptions = <
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>, TError, TData>>;
 }) => {
@@ -1008,25 +1021,25 @@ export const useMicroprofileHealthStartupQueryOptions = <
 };
 
 export type MicroprofileHealthStartupQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>>;
-export type MicroprofileHealthStartupQueryError = ErrorType<HealthCheckResponse>;
+export type MicroprofileHealthStartupQueryError = ErrorType<HealthResponse>;
 
 export function useMicroprofileHealthStartup<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options: {
 	query: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>, TError, TData>> &
 		Pick<DefinedInitialDataOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>, TError, TData>, 'initialData'>;
 }): DefinedUseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useMicroprofileHealthStartup<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>, TError, TData>> &
 		Pick<UndefinedInitialDataOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>, TError, TData>, 'initialData'>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
 export function useMicroprofileHealthStartup<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>, TError, TData>>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey };
@@ -1036,7 +1049,7 @@ export function useMicroprofileHealthStartup<
 
 export function useMicroprofileHealthStartup<
 	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>,
-	TError = ErrorType<HealthCheckResponse>
+	TError = ErrorType<HealthResponse>
 >(options?: {
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>, TError, TData>>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {

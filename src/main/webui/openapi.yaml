@@ -193,19 +193,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckResponse"
+                $ref: "#/components/schemas/HealthResponse"
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckResponse"
+                $ref: "#/components/schemas/HealthResponse"
         "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckResponse"
+                $ref: "#/components/schemas/HealthResponse"
   /q/health/live:
     summary: Liveness checks are utilized to tell whether the application should be
       restarted
@@ -222,19 +222,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckResponse"
+                $ref: "#/components/schemas/HealthResponse"
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckResponse"
+                $ref: "#/components/schemas/HealthResponse"
         "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckResponse"
+                $ref: "#/components/schemas/HealthResponse"
   /q/health/ready:
     summary: Readiness checks are used to tell whether the application is able to
       process requests
@@ -251,19 +251,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckResponse"
+                $ref: "#/components/schemas/HealthResponse"
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckResponse"
+                $ref: "#/components/schemas/HealthResponse"
         "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckResponse"
+                $ref: "#/components/schemas/HealthResponse"
   /q/health/started:
     summary: Startup checks are an used to tell when the application has started
     description: MicroProfile Health - Startup Endpoint
@@ -279,19 +279,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckResponse"
+                $ref: "#/components/schemas/HealthResponse"
         "503":
           description: Service Unavailable
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckResponse"
+                $ref: "#/components/schemas/HealthResponse"
         "500":
           description: Internal Server Error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthCheckResponse"
+                $ref: "#/components/schemas/HealthResponse"
 components:
   schemas:
     Car:
@@ -477,24 +477,34 @@ components:
     LoggerInfo:
       type: object
       properties:
+        name:
+          type: string
         configuredLevel:
           $ref: "#/components/schemas/LoggerLevel"
         effectiveLevel:
           $ref: "#/components/schemas/LoggerLevel"
-        name:
-          type: string
-    HealthCheckResponse:
+    HealthResponse:
       type: object
       properties:
+        status:
+          enum:
+          - UP
+          - DOWN
+          type: string
+        checks:
+          type: array
+          items:
+            $ref: "#/components/schemas/HealthCheck"
+    HealthCheck:
+      type: object
+      properties:
+        name:
+          type: string
         data:
           type: object
           nullable: true
-        name:
-          type: string
         status:
-          $ref: "#/components/schemas/HealthCheckStatus"
-    HealthCheckStatus:
-      enum:
-      - DOWN
-      - UP
-      type: string
+          enum:
+          - UP
+          - DOWN
+          type: string
