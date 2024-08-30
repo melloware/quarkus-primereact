@@ -45,8 +45,8 @@
 	"scripts": {
 		"format": "prettier --write \"{src,__tests__}/**/*.{ts,tsx}\"",
 		"codegen": "orval && npm run format",
+		"start": "npm run dev",
 		"dev": "npm run codegen && set FARM_CONFIG_FORMAT=cjs && farm start",
-		"start": "npm run codegen && set FARM_CONFIG_FORMAT=cjs && farm start",
 		"build": "npm run codegen && set FARM_CONFIG_FORMAT=cjs && farm build",
 		"preview": "set FARM_CONFIG_FORMAT=cjs && farm preview",
 		"clean": "farm clean"
