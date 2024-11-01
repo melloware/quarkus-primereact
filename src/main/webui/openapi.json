@@ -25,6 +25,7 @@
     "/entity/cars" : {
       "get" : {
         "tags" : [ "Car Resource" ],
+        "description" : "List",
         "parameters" : [ {
           "name" : "request",
           "in" : "query",
@@ -47,6 +48,7 @@
       },
       "post" : {
         "tags" : [ "Car Resource" ],
+        "description" : "Create",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -66,6 +68,7 @@
     "/entity/cars/manufacturers" : {
       "get" : {
         "tags" : [ "Car Resource" ],
+        "description" : "Get Manufacturers",
         "responses" : {
           "200" : {
             "description" : "OK",
@@ -86,6 +89,7 @@
     "/entity/cars/{id}" : {
       "get" : {
         "tags" : [ "Car Resource" ],
+        "description" : "Get Single",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -111,6 +115,7 @@
       },
       "put" : {
         "tags" : [ "Car Resource" ],
+        "description" : "Update",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -145,6 +150,7 @@
       },
       "delete" : {
         "tags" : [ "Car Resource" ],
+        "description" : "Delete",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -166,7 +172,7 @@
       "summary" : "Return info on all loggers, or a specific logger",
       "description" : "Logging Manager Loggers",
       "get" : {
-        "tags" : [ "Logging-manager" ],
+        "tags" : [ "logging-manager" ],
         "summary" : "Information on Logger(s)",
         "description" : "Get information on all loggers or a specific logger.",
         "operationId" : "logging_manager_get_all",
@@ -197,7 +203,7 @@
         }
       },
       "post" : {
-        "tags" : [ "Logging-manager" ],
+        "tags" : [ "logging-manager" ],
         "summary" : "Update log level",
         "description" : "Update a log level for a certain logger",
         "operationId" : "logging_manager_update",
@@ -207,10 +213,10 @@
               "schema" : {
                 "type" : "object",
                 "properties" : {
+                  "loggerName" : { },
                   "loggerLevel" : {
                     "$ref" : "#/components/schemas/LoggerLevel"
-                  },
-                  "loggerName" : { }
+                  }
                 }
               }
             }
@@ -227,7 +233,7 @@
       "summary" : "Return all levels that is available",
       "description" : "All available levels",
       "get" : {
-        "tags" : [ "Logging-manager" ],
+        "tags" : [ "logging-manager" ],
         "summary" : "Get all available levels",
         "description" : "This returns all possible log levels",
         "operationId" : "logging_manager_levels",
@@ -461,7 +467,7 @@
           },
           "price" : {
             "description" : "Price",
-            "minimum" : 0,
+            "minimum" : 0.00,
             "type" : "number",
             "example" : 9999.99
           },
@@ -624,44 +630,44 @@
       "LoggerInfo" : {
         "type" : "object",
         "properties" : {
-          "name" : {
-            "type" : "string"
+          "effectiveLevel" : {
+            "$ref" : "#/components/schemas/LoggerLevel"
           },
           "configuredLevel" : {
             "$ref" : "#/components/schemas/LoggerLevel"
           },
-          "effectiveLevel" : {
-            "$ref" : "#/components/schemas/LoggerLevel"
+          "name" : {
+            "type" : "string"
           }
         }
       },
       "HealthResponse" : {
         "type" : "object",
         "properties" : {
-          "status" : {
-            "enum" : [ "UP", "DOWN" ],
-            "type" : "string"
-          },
           "checks" : {
             "type" : "array",
             "items" : {
               "$ref" : "#/components/schemas/HealthCheck"
             }
+          },
+          "status" : {
+            "enum" : [ "UP", "DOWN" ],
+            "type" : "string"
           }
         }
       },
       "HealthCheck" : {
         "type" : "object",
         "properties" : {
-          "name" : {
+          "status" : {
+            "enum" : [ "UP", "DOWN" ],
             "type" : "string"
           },
           "data" : {
             "type" : "object",
             "nullable" : true
           },
-          "status" : {
-            "enum" : [ "UP", "DOWN" ],
+          "name" : {
             "type" : "string"
           }
         }

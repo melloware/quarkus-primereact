@@ -22,6 +22,7 @@ paths:
     get:
       tags:
       - Car Resource
+      description: List
       parameters:
       - name: request
         in: query
@@ -37,6 +38,7 @@ paths:
     post:
       tags:
       - Car Resource
+      description: Create
       requestBody:
         content:
           application/json:
@@ -49,6 +51,7 @@ paths:
     get:
       tags:
       - Car Resource
+      description: Get Manufacturers
       responses:
         "200":
           description: OK
@@ -62,6 +65,7 @@ paths:
     get:
       tags:
       - Car Resource
+      description: Get Single
       parameters:
       - name: id
         in: path
@@ -80,6 +84,7 @@ paths:
     put:
       tags:
       - Car Resource
+      description: Update
       parameters:
       - name: id
         in: path
@@ -103,6 +108,7 @@ paths:
     delete:
       tags:
       - Car Resource
+      description: Delete
       parameters:
       - name: id
         in: path
@@ -119,7 +125,7 @@ paths:
     description: Logging Manager Loggers
     get:
       tags:
-      - Logging-manager
+      - logging-manager
       summary: Information on Logger(s)
       description: Get information on all loggers or a specific logger.
       operationId: logging_manager_get_all
@@ -141,7 +147,7 @@ paths:
           description: Not Found
     post:
       tags:
-      - Logging-manager
+      - logging-manager
       summary: Update log level
       description: Update a log level for a certain logger
       operationId: logging_manager_update
@@ -151,9 +157,9 @@ paths:
             schema:
               type: object
               properties:
+                loggerName: {}
                 loggerLevel:
                   $ref: "#/components/schemas/LoggerLevel"
-                loggerName: {}
       responses:
         "201":
           description: Created
@@ -162,7 +168,7 @@ paths:
     description: All available levels
     get:
       tags:
-      - Logging-manager
+      - logging-manager
       summary: Get all available levels
       description: This returns all possible log levels
       operationId: logging_manager_levels
@@ -336,7 +342,7 @@ components:
           example: 891d4c
         price:
           description: Price
-          minimum: 0
+          minimum: 0.00
           type: number
           example: 9999.99
         modifiedTime:
@@ -477,34 +483,34 @@ components:
     LoggerInfo:
       type: object
       properties:
-        name:
-          type: string
-        configuredLevel:
-          $ref: "#/components/schemas/LoggerLevel"
         effectiveLevel:
           $ref: "#/components/schemas/LoggerLevel"
+        configuredLevel:
+          $ref: "#/components/schemas/LoggerLevel"
+        name:
+          type: string
     HealthResponse:
       type: object
       properties:
-        status:
-          enum:
-          - UP
-          - DOWN
-          type: string
         checks:
           type: array
           items:
             $ref: "#/components/schemas/HealthCheck"
-    HealthCheck:
-      type: object
-      properties:
-        name:
-          type: string
-        data:
-          type: object
-          nullable: true
         status:
           enum:
           - UP
           - DOWN
+          type: string
+    HealthCheck:
+      type: object
+      properties:
+        status:
+          enum:
+          - UP
+          - DOWN
+          type: string
+        data:
+          type: object
+          nullable: true
+        name:
           type: string
