@@ -635,11 +635,11 @@ export const useLoggingManagerUpdateHook = () => {
 	return useCallback(
 		(loggingManagerUpdateBody: LoggingManagerUpdateBody) => {
 			const formUrlEncoded = new URLSearchParams();
-			if (loggingManagerUpdateBody.loggerName !== undefined) {
-				formUrlEncoded.append('loggerName', loggingManagerUpdateBody.loggerName);
-			}
 			if (loggingManagerUpdateBody.loggerLevel !== undefined) {
 				formUrlEncoded.append('loggerLevel', loggingManagerUpdateBody.loggerLevel);
+			}
+			if (loggingManagerUpdateBody.loggerName !== undefined) {
+				formUrlEncoded.append('loggerName', loggingManagerUpdateBody.loggerName);
 			}
 
 			return loggingManagerUpdate({

@@ -10,26 +10,26 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"@tanstack/react-query": "5.56.2",
-		"@tanstack/react-query-devtools": "5.58.0",
+		"@tanstack/react-query": "5.60.2",
+		"@tanstack/react-query-devtools": "5.60.2",
 		"axios": "1.7.7",
 		"primeflex": "3.3.1",
 		"primeicons": "7.0.0",
-		"primelocale": "1.0.4",
+		"primelocale": "1.1.1",
 		"primereact": "10.8.4",
 		"react": "18.3.1",
 		"react-dom": "18.3.1",
-		"react-hook-form": "7.53.0",
-		"react-router-dom": "6.26.2",
+		"react-hook-form": "7.53.2",
+		"react-router-dom": "6.28.0",
 		"react-transition-group": "4.4.5"
 	},
 	"devDependencies": {
 		"@farmfe/cli": "1.0.4",
-		"@farmfe/core": "1.3.23",
+		"@farmfe/core": "1.3.33",
 		"@farmfe/plugin-react": "1.2.4",
 		"@farmfe/plugin-sass": "1.1.0",
-		"@types/node": "22.7.4",
-		"@types/react": "18.3.10",
+		"@types/node": "22.9.0",
+		"@types/react": "18.3.12",
 		"@types/react-dom": "18.3.1",
 		"@types/react-router-dom": "5.3.3",
 		"@types/react-transition-group": "4.4.11",
@@ -40,7 +40,7 @@
 		"orval": "7.2.0",
 		"prettier": "3.3.3",
 		"react-refresh": "0.14.2",
-		"typescript": "5.6.2"
+		"typescript": "5.6.3"
 	},
 	"scripts": {
 		"format": "prettier --write \"{src,__tests__}/**/*.{ts,tsx}\"",
