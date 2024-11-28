@@ -14,6 +14,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.WebApplicationException;
@@ -47,7 +48,7 @@ public class CarResource {
 
 	@GET
 	@Path("{id}")
-	public Car getSingle(@Min(value = 0) Long id) {
+	public Car getSingle(@PathParam("id") @Min(value = 0) Long id) {
 		Car entity = Car.findById(id);
 		if (entity == null) {
 			throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
@@ -75,7 +76,7 @@ public class CarResource {
 	@PUT
 	@Path("{id}")
 	@Transactional
-	public Car update(@Min(value = 0) Long id, @Valid Car car) {
+	public Car update(@PathParam("id") @Min(value = 0) Long id, @Valid Car car) {
 		Car entity = Car.findById(id);
 		if (entity == null) {
 			throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
@@ -95,7 +96,7 @@ public class CarResource {
 	@DELETE
 	@Path("{id}")
 	@Transactional
-	public Response delete(@Min(value = 0) Long id) {
+	public Response delete(@PathParam("id") @Min(value = 0) Long id) {
 		Car entity = Car.findById(id);
 		if (entity == null) {
 			throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
@@ -107,7 +108,7 @@ public class CarResource {
 	@GET
 	public QueryResponse<Car> list(@QueryParam("request") String lazyRequest) throws JsonProcessingException {
 		final QueryResponse<Car> response = new QueryResponse<>();
-		if (lazyRequest == null || lazyRequest.length() == 0) {
+		if (lazyRequest == null || lazyRequest.isEmpty()) {
 			List<Car> results = Car.listAll(Sort.by("make"));
 			response.setTotalRecords(results.size());
 			response.setRecords(results);

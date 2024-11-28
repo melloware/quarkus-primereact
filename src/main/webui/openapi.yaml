@@ -225,10 +225,6 @@ components:
     HealthCheck:
       type: object
       properties:
-        data:
-          type:
-          - object
-          - "null"
         status:
           type: string
           enum:
@@ -236,6 +232,10 @@ components:
           - DOWN
         name:
           type: string
+        data:
+          type:
+          - object
+          - "null"
 tags:
 - name: Car Resource
   description: CRUD operations for the Car entity.

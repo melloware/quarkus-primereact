@@ -236,15 +236,15 @@
       "HealthCheck" : {
         "type" : "object",
         "properties" : {
-          "data" : {
-            "type" : [ "object", "null" ]
-          },
           "status" : {
             "type" : "string",
             "enum" : [ "UP", "DOWN" ]
           },
           "name" : {
             "type" : "string"
+          },
+          "data" : {
+            "type" : [ "object", "null" ]
           }
         }
       }
