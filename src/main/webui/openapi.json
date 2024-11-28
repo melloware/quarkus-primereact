@@ -1,22 +1,255 @@
 {
-  "openapi" : "3.0.3",
-  "info" : {
-    "title" : "Quarkus PrimeReact Monorepo",
-    "description" : "Quarkus monorepo demonstrating Panache REST server with PrimeReact UI client",
-    "contact" : {
-      "name" : "Melloware",
-      "url" : "https://melloware.com",
-      "email" : "mellowaredev@gmail.com"
-    },
-    "version" : "1.0.0"
+  "openapi" : "3.1.0",
+  "components" : {
+    "schemas" : {
+      "Car" : {
+        "description" : "Entity that represents a car.",
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "vin" : {
+            "type" : "string",
+            "description" : "VIN number",
+            "examples" : [ "WVGEF9BP4DD085048" ],
+            "pattern" : "\\S"
+          },
+          "make" : {
+            "type" : "string",
+            "description" : "Manufacturer",
+            "examples" : [ "BMW" ],
+            "pattern" : "\\S"
+          },
+          "model" : {
+            "type" : "string",
+            "description" : "Model Number",
+            "examples" : [ "330ix" ],
+            "pattern" : "\\S"
+          },
+          "year" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "Year of manufacture",
+            "examples" : [ 1974 ],
+            "minimum" : 1960
+          },
+          "color" : {
+            "type" : "string",
+            "description" : "HTML color of the car",
+            "examples" : [ "891d4c" ],
+            "pattern" : "\\S"
+          },
+          "price" : {
+            "type" : "number",
+            "description" : "Price",
+            "examples" : [ 9999.99 ],
+            "minimum" : 0.00
+          },
+          "modifiedTime" : {
+            "description" : "Modified time of the record",
+            "type" : "string",
+            "$ref" : "#/components/schemas/Instant"
+          }
+        },
+        "required" : [ "vin", "make", "model", "year", "color", "price" ]
+      },
+      "FilterConstraint" : {
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "description" : "Value to filter this column by"
+          },
+          "matchMode" : {
+            "type" : "string",
+            "description" : "Filter match mode e.g. equals, notEquals, contains, notContains, gt, gte, lt, lte",
+            "examples" : [ "equals" ]
+          }
+        }
+      },
+      "Instant" : {
+        "type" : "string",
+        "format" : "date-time",
+        "examples" : [ "2022-03-10T16:15:50Z" ]
+      },
+      "MultiFilterMeta" : {
+        "type" : "object",
+        "properties" : {
+          "value" : {
+            "description" : "Value to filter this column by"
+          },
+          "matchMode" : {
+            "type" : "string",
+            "description" : "Filter match mode e.g. equals, notEquals, contains, notContains, gt, gte, lt, lte",
+            "examples" : [ "equals" ]
+          },
+          "operator" : {
+            "type" : "string",
+            "description" : "Filter operator either 'and' or 'or'"
+          },
+          "constraints" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FilterConstraint"
+            },
+            "description" : "List of filter constraints for this filter"
+          }
+        }
+      },
+      "MultiSortMeta" : {
+        "type" : "object",
+        "properties" : {
+          "field" : {
+            "type" : "string",
+            "description" : "Sort field for this multiple sort",
+            "examples" : [ "lastName" ]
+          },
+          "order" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "Sort order for this field either -1 desc, 0 none, 1 asc",
+            "examples" : [ 1 ]
+          }
+        }
+      },
+      "QueryRequest" : {
+        "description" : "Represents a PrimeReact query request from the UI for a complex datatable with multiple sorts, multiple filters, and pagination.",
+        "type" : "object",
+        "properties" : {
+          "first" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "First record",
+            "examples" : [ 1 ]
+          },
+          "rows" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "Number of rows",
+            "examples" : [ 10 ]
+          },
+          "page" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "Page number",
+            "examples" : [ 1 ]
+          },
+          "sortField" : {
+            "type" : "string",
+            "description" : "Sort field if single field sorting",
+            "examples" : [ "firstName" ]
+          },
+          "sortOrder" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "Sort order if single field sorting either -1 desc, 0 none, 1 asc",
+            "examples" : [ 1 ]
+          },
+          "multiSortMeta" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/MultiSortMeta"
+            },
+            "description" : "Multiple sorting list of columns to sort and in which order"
+          },
+          "filters" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "$ref" : "#/components/schemas/MultiFilterMeta"
+            },
+            "description" : "Map of columns being filtered and their filter criteria"
+          }
+        }
+      },
+      "QueryResponse" : {
+        "description" : "Represents a PrimeReact query response to the UI for a complex datatable with multiple sorts, multiple filters, and pagination.",
+        "type" : "object",
+        "properties" : {
+          "totalRecords" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Total records available by this query criteria",
+            "examples" : [ 4128 ]
+          },
+          "records" : {
+            "type" : "array",
+            "items" : { },
+            "description" : "Records for this set of pagination, sorting, filtering."
+          }
+        }
+      },
+      "QueryResponseCar" : {
+        "description" : "Represents a PrimeReact query response to the UI for a complex datatable with multiple sorts, multiple filters, and pagination.",
+        "type" : "object",
+        "properties" : {
+          "totalRecords" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Total records available by this query criteria",
+            "examples" : [ 4128 ]
+          },
+          "records" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Car"
+            },
+            "description" : "Records for this set of pagination, sorting, filtering."
+          }
+        }
+      },
+      "LoggerLevel" : {
+        "title" : "LoggerLevel",
+        "type" : "string",
+        "enum" : [ "OFF", "SEVERE", "ERROR", "FATAL", "WARNING", "WARN", "INFO", "DEBUG", "TRACE", "CONFIG", "FINE", "FINER", "FINEST", "ALL" ]
+      },
+      "LoggerInfo" : {
+        "title" : "LoggerInfo",
+        "type" : "object",
+        "properties" : {
+          "configuredLevel" : {
+            "$ref" : "#/components/schemas/LoggerLevel"
+          },
+          "effectiveLevel" : {
+            "$ref" : "#/components/schemas/LoggerLevel"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "HealthResponse" : {
+        "type" : "object",
+        "properties" : {
+          "checks" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/HealthCheck"
+            }
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "UP", "DOWN" ]
+          }
+        }
+      },
+      "HealthCheck" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : [ "object", "null" ]
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "UP", "DOWN" ]
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
   },
-  "servers" : [ {
-    "url" : "http://localhost:8080",
-    "description" : "Auto generated value"
-  }, {
-    "url" : "http://0.0.0.0:8080",
-    "description" : "Auto generated value"
-  } ],
   "tags" : [ {
     "name" : "Car Resource",
     "description" : "CRUD operations for the Car entity."
@@ -25,7 +258,6 @@
     "/entity/cars" : {
       "get" : {
         "tags" : [ "Car Resource" ],
-        "description" : "List",
         "parameters" : [ {
           "name" : "request",
           "in" : "query",
@@ -44,11 +276,11 @@
               }
             }
           }
-        }
+        },
+        "summary" : "List"
       },
       "post" : {
         "tags" : [ "Car Resource" ],
-        "description" : "Create",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -56,19 +288,20 @@
                 "$ref" : "#/components/schemas/Car"
               }
             }
-          }
+          },
+          "required" : true
         },
         "responses" : {
           "200" : {
             "description" : "OK"
           }
-        }
+        },
+        "summary" : "Create"
       }
     },
     "/entity/cars/manufacturers" : {
       "get" : {
         "tags" : [ "Car Resource" ],
-        "description" : "Get Manufacturers",
         "responses" : {
           "200" : {
             "description" : "OK",
@@ -83,47 +316,21 @@
               }
             }
           }
-        }
+        },
+        "summary" : "Get Manufacturers"
       }
     },
     "/entity/cars/{id}" : {
-      "get" : {
-        "tags" : [ "Car Resource" ],
-        "description" : "Get Single",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "format" : "int64",
-            "minimum" : 0,
-            "type" : "integer"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Car"
-                }
-              }
-            }
-          }
-        }
-      },
       "put" : {
         "tags" : [ "Car Resource" ],
-        "description" : "Update",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
           "required" : true,
           "schema" : {
+            "type" : "integer",
             "format" : "int64",
-            "minimum" : 0,
-            "type" : "integer"
+            "minimum" : 0
           }
         } ],
         "requestBody" : {
@@ -133,7 +340,8 @@
                 "$ref" : "#/components/schemas/Car"
               }
             }
-          }
+          },
+          "required" : true
         },
         "responses" : {
           "200" : {
@@ -146,36 +354,63 @@
               }
             }
           }
-        }
+        },
+        "summary" : "Update"
       },
-      "delete" : {
+      "get" : {
         "tags" : [ "Car Resource" ],
-        "description" : "Delete",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
           "required" : true,
           "schema" : {
+            "type" : "integer",
             "format" : "int64",
-            "minimum" : 0,
-            "type" : "integer"
+            "minimum" : 0
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Car"
+                }
+              }
+            }
+          }
+        },
+        "summary" : "Get Single"
+      },
+      "delete" : {
+        "tags" : [ "Car Resource" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "minimum" : 0
           }
         } ],
         "responses" : {
           "200" : {
             "description" : "OK"
           }
-        }
+        },
+        "summary" : "Delete"
       }
     },
     "/q/logging-manager" : {
       "summary" : "Return info on all loggers, or a specific logger",
       "description" : "Logging Manager Loggers",
       "get" : {
-        "tags" : [ "logging-manager" ],
+        "operationId" : "logging_manager_get_all",
         "summary" : "Information on Logger(s)",
         "description" : "Get information on all loggers or a specific logger.",
-        "operationId" : "logging_manager_get_all",
+        "tags" : [ "logging-manager" ],
         "parameters" : [ {
           "name" : "loggerName",
           "in" : "query",
@@ -203,10 +438,10 @@
         }
       },
       "post" : {
-        "tags" : [ "logging-manager" ],
+        "operationId" : "logging_manager_update",
         "summary" : "Update log level",
         "description" : "Update a log level for a certain logger",
-        "operationId" : "logging_manager_update",
+        "tags" : [ "logging-manager" ],
         "requestBody" : {
           "content" : {
             "application/x-www-form-urlencoded" : {
@@ -230,13 +465,13 @@
       }
     },
     "/q/logging-manager/levels" : {
-      "summary" : "Return all levels that is available",
       "description" : "All available levels",
+      "summary" : "Return all levels that is available",
       "get" : {
-        "tags" : [ "logging-manager" ],
-        "summary" : "Get all available levels",
         "description" : "This returns all possible log levels",
         "operationId" : "logging_manager_levels",
+        "tags" : [ "logging-manager" ],
+        "summary" : "Get all available levels",
         "responses" : {
           "200" : {
             "description" : "Ok",
@@ -255,13 +490,13 @@
       }
     },
     "/q/health" : {
-      "summary" : "MicroProfile Health provides a way for your application to distribute information about its healthiness state to state whether or not it is able to function properly",
       "description" : "MicroProfile Health Endpoint",
+      "summary" : "MicroProfile Health provides a way for your application to distribute information about its healthiness state to state whether or not it is able to function properly",
       "get" : {
+        "operationId" : "microprofile_health_root",
+        "description" : "Check the health of the application",
         "tags" : [ "MicroProfile Health" ],
         "summary" : "An aggregated view of the Liveness, Readiness and Startup of this application",
-        "description" : "Check the health of the application",
-        "operationId" : "microprofile_health_root",
         "responses" : {
           "200" : {
             "description" : "OK",
@@ -297,13 +532,13 @@
       }
     },
     "/q/health/live" : {
-      "summary" : "Liveness checks are utilized to tell whether the application should be restarted",
       "description" : "MicroProfile Health - Liveness Endpoint",
+      "summary" : "Liveness checks are utilized to tell whether the application should be restarted",
       "get" : {
+        "operationId" : "microprofile_health_liveness",
+        "description" : "Check the liveness of the application",
         "tags" : [ "MicroProfile Health" ],
         "summary" : "The Liveness check of this application",
-        "description" : "Check the liveness of the application",
-        "operationId" : "microprofile_health_liveness",
         "responses" : {
           "200" : {
             "description" : "OK",
@@ -339,13 +574,13 @@
       }
     },
     "/q/health/ready" : {
-      "summary" : "Readiness checks are used to tell whether the application is able to process requests",
       "description" : "MicroProfile Health - Readiness Endpoint",
+      "summary" : "Readiness checks are used to tell whether the application is able to process requests",
       "get" : {
+        "operationId" : "microprofile_health_readiness",
+        "description" : "Check the readiness of the application",
         "tags" : [ "MicroProfile Health" ],
         "summary" : "The Readiness check of this application",
-        "description" : "Check the readiness of the application",
-        "operationId" : "microprofile_health_readiness",
         "responses" : {
           "200" : {
             "description" : "OK",
@@ -381,13 +616,13 @@
       }
     },
     "/q/health/started" : {
-      "summary" : "Startup checks are an used to tell when the application has started",
       "description" : "MicroProfile Health - Startup Endpoint",
+      "summary" : "Startup checks are an used to tell when the application has started",
       "get" : {
+        "operationId" : "microprofile_health_startup",
+        "description" : "Check the startup of the application",
         "tags" : [ "MicroProfile Health" ],
         "summary" : "The Startup check of this application",
-        "description" : "Check the startup of the application",
-        "operationId" : "microprofile_health_startup",
         "responses" : {
           "200" : {
             "description" : "OK",
@@ -423,255 +658,21 @@
       }
     }
   },
-  "components" : {
-    "schemas" : {
-      "Car" : {
-        "description" : "Entity that represents a car.",
-        "required" : [ "vin", "make", "model", "year", "color", "price" ],
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "format" : "int64",
-            "type" : "integer"
-          },
-          "vin" : {
-            "description" : "VIN number",
-            "pattern" : "\\S",
-            "type" : "string",
-            "example" : "WVGEF9BP4DD085048"
-          },
-          "make" : {
-            "description" : "Manufacturer",
-            "pattern" : "\\S",
-            "type" : "string",
-            "example" : "BMW"
-          },
-          "model" : {
-            "description" : "Model Number",
-            "pattern" : "\\S",
-            "type" : "string",
-            "example" : "330ix"
-          },
-          "year" : {
-            "format" : "int32",
-            "description" : "Year of manufacture",
-            "minimum" : 1960,
-            "type" : "integer",
-            "example" : 1974
-          },
-          "color" : {
-            "description" : "HTML color of the car",
-            "pattern" : "\\S",
-            "type" : "string",
-            "example" : "891d4c"
-          },
-          "price" : {
-            "description" : "Price",
-            "minimum" : 0.00,
-            "type" : "number",
-            "example" : 9999.99
-          },
-          "modifiedTime" : {
-            "description" : "Modified time of the record",
-            "type" : "string",
-            "allOf" : [ {
-              "$ref" : "#/components/schemas/Instant"
-            } ]
-          }
-        }
-      },
-      "FilterConstraint" : {
-        "type" : "object",
-        "properties" : {
-          "value" : {
-            "description" : "Value to filter this column by"
-          },
-          "matchMode" : {
-            "description" : "Filter match mode e.g. equals, notEquals, contains, notContains, gt, gte, lt, lte",
-            "type" : "string",
-            "example" : "equals"
-          }
-        }
-      },
-      "Instant" : {
-        "format" : "date-time",
-        "type" : "string",
-        "example" : "2022-03-10T16:15:50Z"
-      },
-      "MultiFilterMeta" : {
-        "type" : "object",
-        "properties" : {
-          "value" : {
-            "description" : "Value to filter this column by"
-          },
-          "matchMode" : {
-            "description" : "Filter match mode e.g. equals, notEquals, contains, notContains, gt, gte, lt, lte",
-            "type" : "string",
-            "example" : "equals"
-          },
-          "operator" : {
-            "description" : "Filter operator either 'and' or 'or'",
-            "type" : "string"
-          },
-          "constraints" : {
-            "description" : "List of filter constraints for this filter",
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/FilterConstraint"
-            }
-          }
-        }
-      },
-      "MultiSortMeta" : {
-        "type" : "object",
-        "properties" : {
-          "field" : {
-            "description" : "Sort field for this multiple sort",
-            "type" : "string",
-            "example" : "lastName"
-          },
-          "order" : {
-            "format" : "int32",
-            "description" : "Sort order for this field either -1 desc, 0 none, 1 asc",
-            "type" : "integer",
-            "example" : 1
-          }
-        }
-      },
-      "QueryRequest" : {
-        "description" : "Represents a PrimeReact query request from the UI for a complex datatable with multiple sorts, multiple filters, and pagination.",
-        "type" : "object",
-        "properties" : {
-          "first" : {
-            "format" : "int32",
-            "description" : "First record",
-            "type" : "integer",
-            "example" : 1
-          },
-          "rows" : {
-            "format" : "int32",
-            "description" : "Number of rows",
-            "type" : "integer",
-            "example" : 10
-          },
-          "page" : {
-            "format" : "int32",
-            "description" : "Page number",
-            "type" : "integer",
-            "example" : 1
-          },
-          "sortField" : {
-            "description" : "Sort field if single field sorting",
-            "type" : "string",
-            "example" : "firstName"
-          },
-          "sortOrder" : {
-            "format" : "int32",
-            "description" : "Sort order if single field sorting either -1 desc, 0 none, 1 asc",
-            "type" : "integer",
-            "example" : 1
-          },
-          "multiSortMeta" : {
-            "description" : "Multiple sorting list of columns to sort and in which order",
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/MultiSortMeta"
-            }
-          },
-          "filters" : {
-            "description" : "Map of columns being filtered and their filter criteria",
-            "type" : "object",
-            "additionalProperties" : {
-              "$ref" : "#/components/schemas/MultiFilterMeta"
-            }
-          }
-        }
-      },
-      "QueryResponse" : {
-        "description" : "Represents a PrimeReact query response to the UI for a complex datatable with multiple sorts, multiple filters, and pagination.",
-        "type" : "object",
-        "properties" : {
-          "totalRecords" : {
-            "format" : "int64",
-            "description" : "Total records available by this query criteria",
-            "type" : "integer",
-            "example" : 4128
-          },
-          "records" : {
-            "description" : "Records for this set of pagination, sorting, filtering.",
-            "type" : "array",
-            "items" : { }
-          }
-        }
-      },
-      "QueryResponseCar" : {
-        "description" : "Represents a PrimeReact query response to the UI for a complex datatable with multiple sorts, multiple filters, and pagination.",
-        "type" : "object",
-        "properties" : {
-          "totalRecords" : {
-            "format" : "int64",
-            "description" : "Total records available by this query criteria",
-            "type" : "integer",
-            "example" : 4128
-          },
-          "records" : {
-            "description" : "Records for this set of pagination, sorting, filtering.",
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Car"
-            }
-          }
-        }
-      },
-      "LoggerLevel" : {
-        "enum" : [ "OFF", "SEVERE", "ERROR", "FATAL", "WARNING", "WARN", "INFO", "DEBUG", "TRACE", "CONFIG", "FINE", "FINER", "FINEST", "ALL" ],
-        "type" : "string"
-      },
-      "LoggerInfo" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "configuredLevel" : {
-            "$ref" : "#/components/schemas/LoggerLevel"
-          },
-          "effectiveLevel" : {
-            "$ref" : "#/components/schemas/LoggerLevel"
-          }
-        }
-      },
-      "HealthResponse" : {
-        "type" : "object",
-        "properties" : {
-          "checks" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/HealthCheck"
-            }
-          },
-          "status" : {
-            "enum" : [ "UP", "DOWN" ],
-            "type" : "string"
-          }
-        }
-      },
-      "HealthCheck" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "data" : {
-            "type" : "object",
-            "nullable" : true
-          },
-          "status" : {
-            "enum" : [ "UP", "DOWN" ],
-            "type" : "string"
-          }
-        }
-      }
+  "info" : {
+    "title" : "Quarkus PrimeReact Monorepo",
+    "version" : "1.0.0",
+    "description" : "Quarkus monorepo demonstrating Panache REST server with PrimeReact UI client",
+    "contact" : {
+      "name" : "Melloware",
+      "email" : "mellowaredev@gmail.com",
+      "url" : "https://melloware.com"
     }
-  }
+  },
+  "servers" : [ {
+    "url" : "http://localhost:8080",
+    "description" : "Auto generated value"
+  }, {
+    "url" : "http://0.0.0.0:8080",
+    "description" : "Auto generated value"
+  } ]
 }
