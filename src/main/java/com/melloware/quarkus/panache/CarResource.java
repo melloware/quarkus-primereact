@@ -58,7 +58,7 @@ public class CarResource {
 	@GET
 	@Path("/manufacturers")
 	public List<String> getManufacturers() {
-		return Car.getEntityManager().createQuery("select distinct make from Car order by make").getResultList();
+		return Car.find("select distinct make from Car order by make").project(String.class).list();
 	}
 
 	@POST
