@@ -10,7 +10,7 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"@tanstack/react-query": "5.61.5",
+		"@tanstack/react-query": "5.62.0",
 		"@tanstack/react-query-devtools": "5.61.5",
 		"axios": "1.7.8",
 		"primeflex": "3.3.1",
