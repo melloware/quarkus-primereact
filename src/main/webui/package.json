@@ -29,7 +29,7 @@
 		"@farmfe/plugin-react": "1.2.6",
 		"@farmfe/plugin-sass": "1.1.0",
 		"@types/node": "22.10.2",
-		"@types/react": "19.0.1",
+		"@types/react": "19.0.2",
 		"@types/react-dom": "19.0.2",
 		"@types/react-router-dom": "5.3.3",
 		"@types/react-transition-group": "4.4.12",
