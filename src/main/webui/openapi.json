@@ -207,13 +207,13 @@
         "title" : "LoggerInfo",
         "type" : "object",
         "properties" : {
-          "effectiveLevel" : {
+          "configuredLevel" : {
             "$ref" : "#/components/schemas/LoggerLevel"
           },
           "name" : {
             "type" : "string"
           },
-          "configuredLevel" : {
+          "effectiveLevel" : {
             "$ref" : "#/components/schemas/LoggerLevel"
           }
         }
@@ -221,30 +221,30 @@
       "HealthResponse" : {
         "type" : "object",
         "properties" : {
+          "status" : {
+            "type" : "string",
+            "enum" : [ "UP", "DOWN" ]
+          },
           "checks" : {
             "type" : "array",
             "items" : {
               "$ref" : "#/components/schemas/HealthCheck"
             }
-          },
-          "status" : {
-            "type" : "string",
-            "enum" : [ "UP", "DOWN" ]
           }
         }
       },
       "HealthCheck" : {
         "type" : "object",
         "properties" : {
-          "name" : {
-            "type" : "string"
+          "status" : {
+            "type" : "string",
+            "enum" : [ "UP", "DOWN" ]
           },
           "data" : {
             "type" : [ "object", "null" ]
           },
-          "status" : {
-            "type" : "string",
-            "enum" : [ "UP", "DOWN" ]
+          "name" : {
+            "type" : "string"
           }
         }
       }
@@ -448,10 +448,10 @@
               "schema" : {
                 "type" : "object",
                 "properties" : {
-                  "loggerName" : { },
                   "loggerLevel" : {
                     "$ref" : "#/components/schemas/LoggerLevel"
-                  }
+                  },
+                  "loggerName" : { }
                 }
               }
             }

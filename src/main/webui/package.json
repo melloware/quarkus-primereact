@@ -1,6 +1,6 @@
 {
 	"name": "quarkus-primereact",
-	"version": "10.8.5",
+	"version": "10.9.1",
 	"description": "Quarkus monorepo demonstrating Quarkus REST server with PrimeReact UI client.",
 	"homepage": ".",
 	"private": false,
@@ -15,8 +15,8 @@
 		"axios": "1.7.9",
 		"primeflex": "3.3.1",
 		"primeicons": "7.0.0",
-		"primelocale": "1.2.2",
-		"primereact": "10.8.5",
+		"primelocale": "1.2.3",
+		"primereact": "10.9.1",
 		"react": "19.0.0",
 		"react-dom": "19.0.0",
 		"react-hook-form": "7.54.2",

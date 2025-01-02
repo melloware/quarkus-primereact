@@ -204,38 +204,38 @@ components:
       title: LoggerInfo
       type: object
       properties:
-        effectiveLevel:
+        configuredLevel:
           $ref: "#/components/schemas/LoggerLevel"
         name:
           type: string
-        configuredLevel:
+        effectiveLevel:
           $ref: "#/components/schemas/LoggerLevel"
     HealthResponse:
       type: object
       properties:
+        status:
+          type: string
+          enum:
+          - UP
+          - DOWN
         checks:
           type: array
           items:
             $ref: "#/components/schemas/HealthCheck"
+    HealthCheck:
+      type: object
+      properties:
         status:
           type: string
           enum:
           - UP
           - DOWN
-    HealthCheck:
-      type: object
-      properties:
-        name:
-          type: string
         data:
           type:
           - object
           - "null"
-        status:
+        name:
           type: string
-          enum:
-          - UP
-          - DOWN
 tags:
 - name: Car Resource
   description: CRUD operations for the Car entity.
@@ -381,9 +381,9 @@ paths:
             schema:
               type: object
               properties:
-                loggerName: {}
                 loggerLevel:
                   $ref: "#/components/schemas/LoggerLevel"
+                loggerName: {}
       responses:
         "201":
           description: Created
