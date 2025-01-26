@@ -23,8 +23,8 @@ import { useCallback } from 'react';
 import { useAxiosMutator } from './AxiosMutator';
 import type { ErrorType } from './AxiosMutator';
 export type LoggingManagerUpdateBody = {
-	loggerLevel?: LoggerLevel;
 	loggerName?: unknown;
+	loggerLevel?: LoggerLevel;
 };
 
 export type LoggingManagerGetAllParams = {
@@ -49,8 +49,8 @@ export const HealthCheckStatus = {
 
 export interface HealthCheck {
 	status?: HealthCheckStatus;
-	data?: HealthCheckData;
 	name?: string;
+	data?: HealthCheckData;
 }
 
 export type HealthResponseStatus = (typeof HealthResponseStatus)[keyof typeof HealthResponseStatus];
@@ -62,8 +62,8 @@ export const HealthResponseStatus = {
 } as const;
 
 export interface HealthResponse {
-	status?: HealthResponseStatus;
 	checks?: HealthCheck[];
+	status?: HealthResponseStatus;
 }
 
 export type LoggerLevel = (typeof LoggerLevel)[keyof typeof LoggerLevel];
@@ -88,8 +88,8 @@ export const LoggerLevel = {
 
 export interface LoggerInfo {
 	configuredLevel?: LoggerLevel;
-	name?: string;
 	effectiveLevel?: LoggerLevel;
+	name?: string;
 }
 
 /**
@@ -691,11 +691,11 @@ export const useLoggingManagerUpdateHook = () => {
 	return useCallback(
 		(loggingManagerUpdateBody: LoggingManagerUpdateBody, signal?: AbortSignal) => {
 			const formUrlEncoded = new URLSearchParams();
-			if (loggingManagerUpdateBody.loggerLevel !== undefined) {
-				formUrlEncoded.append('loggerLevel', loggingManagerUpdateBody.loggerLevel);
-			}
 			if (loggingManagerUpdateBody.loggerName !== undefined) {
 				formUrlEncoded.append('loggerName', loggingManagerUpdateBody.loggerName);
+			}
+			if (loggingManagerUpdateBody.loggerLevel !== undefined) {
+				formUrlEncoded.append('loggerLevel', loggingManagerUpdateBody.loggerLevel);
 			}
 
 			return loggingManagerUpdate({
