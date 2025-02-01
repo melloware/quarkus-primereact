@@ -28,7 +28,7 @@
 		"@farmfe/core": "1.6.6",
 		"@farmfe/plugin-react": "1.2.6",
 		"@farmfe/plugin-sass": "1.1.0",
-		"@types/node": "22.10.10",
+		"@types/node": "22.13.0",
 		"@types/react": "19.0.8",
 		"@types/react-dom": "19.0.3",
 		"@types/react-router-dom": "5.3.3",
