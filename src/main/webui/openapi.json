@@ -198,26 +198,6 @@
           }
         }
       },
-      "LoggerLevel" : {
-        "title" : "LoggerLevel",
-        "type" : "string",
-        "enum" : [ "OFF", "SEVERE", "ERROR", "FATAL", "WARNING", "WARN", "INFO", "DEBUG", "TRACE", "CONFIG", "FINE", "FINER", "FINEST", "ALL" ]
-      },
-      "LoggerInfo" : {
-        "title" : "LoggerInfo",
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "effectiveLevel" : {
-            "$ref" : "#/components/schemas/LoggerLevel"
-          },
-          "configuredLevel" : {
-            "$ref" : "#/components/schemas/LoggerLevel"
-          }
-        }
-      },
       "HealthResponse" : {
         "type" : "object",
         "properties" : {
@@ -239,12 +219,32 @@
           "name" : {
             "type" : "string"
           },
+          "data" : {
+            "type" : [ "object", "null" ]
+          },
           "status" : {
             "type" : "string",
             "enum" : [ "UP", "DOWN" ]
+          }
+        }
+      },
+      "LoggerLevel" : {
+        "title" : "LoggerLevel",
+        "type" : "string",
+        "enum" : [ "OFF", "SEVERE", "ERROR", "FATAL", "WARNING", "WARN", "INFO", "DEBUG", "TRACE", "CONFIG", "FINE", "FINER", "FINEST", "ALL" ]
+      },
+      "LoggerInfo" : {
+        "title" : "LoggerInfo",
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
           },
-          "data" : {
-            "type" : [ "object", "null" ]
+          "configuredLevel" : {
+            "$ref" : "#/components/schemas/LoggerLevel"
+          },
+          "effectiveLevel" : {
+            "$ref" : "#/components/schemas/LoggerLevel"
           }
         }
       }
@@ -257,6 +257,8 @@
   "paths" : {
     "/entity/cars" : {
       "get" : {
+        "summary" : "List cars",
+        "description" : "Returns a paginated list of cars with optional filtering and sorting",
         "tags" : [ "Car Resource" ],
         "parameters" : [ {
           "name" : "request",
@@ -267,7 +269,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK",
+            "description" : "Success",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -275,11 +277,15 @@
                 }
               }
             }
+          },
+          "400" : {
+            "description" : "Invalid request format"
           }
-        },
-        "summary" : "List"
+        }
       },
       "post" : {
+        "summary" : "Create a new car",
+        "description" : "Creates a new car entry",
         "tags" : [ "Car Resource" ],
         "requestBody" : {
           "content" : {
@@ -292,19 +298,23 @@
           "required" : true
         },
         "responses" : {
-          "200" : {
-            "description" : "OK"
+          "201" : {
+            "description" : "Car created successfully"
+          },
+          "422" : {
+            "description" : "Invalid car data provided"
           }
-        },
-        "summary" : "Create"
+        }
       }
     },
     "/entity/cars/manufacturers" : {
       "get" : {
+        "summary" : "Get all manufacturers",
+        "description" : "Returns a list of distinct car manufacturers",
         "tags" : [ "Car Resource" ],
         "responses" : {
           "200" : {
-            "description" : "OK",
+            "description" : "Success",
             "content" : {
               "application/json" : {
                 "schema" : {
@@ -316,12 +326,13 @@
               }
             }
           }
-        },
-        "summary" : "Get Manufacturers"
+        }
       }
     },
     "/entity/cars/{id}" : {
       "put" : {
+        "summary" : "Update a car",
+        "description" : "Updates an existing car based on ID",
         "tags" : [ "Car Resource" ],
         "parameters" : [ {
           "name" : "id",
@@ -345,146 +356,70 @@
         },
         "responses" : {
           "200" : {
-            "description" : "OK",
+            "description" : "Car updated successfully",
             "content" : {
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/Car"
-                }
-              }
-            }
-          }
-        },
-        "summary" : "Update"
-      },
-      "get" : {
-        "tags" : [ "Car Resource" ],
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64",
-            "minimum" : 0
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Car"
-                }
-              }
-            }
-          }
-        },
-        "summary" : "Get Single"
-      },
-      "delete" : {
-        "tags" : [ "Car Resource" ],
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64",
-            "minimum" : 0
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK"
-          }
-        },
-        "summary" : "Delete"
-      }
-    },
-    "/q/logging-manager" : {
-      "summary" : "Return info on all loggers, or a specific logger",
-      "description" : "Logging Manager Loggers",
-      "get" : {
-        "operationId" : "logging_manager_get_all",
-        "summary" : "Information on Logger(s)",
-        "description" : "Get information on all loggers or a specific logger.",
-        "tags" : [ "logging-manager" ],
-        "parameters" : [ {
-          "name" : "loggerName",
-          "in" : "query",
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Ok",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/LoggerInfo"
-                  }
                 }
               }
             }
           },
           "404" : {
-            "description" : "Not Found"
+            "description" : "Car not found"
           }
         }
       },
-      "post" : {
-        "operationId" : "logging_manager_update",
-        "summary" : "Update log level",
-        "description" : "Update a log level for a certain logger",
-        "tags" : [ "logging-manager" ],
-        "requestBody" : {
-          "content" : {
-            "application/x-www-form-urlencoded" : {
-              "schema" : {
-                "type" : "object",
-                "properties" : {
-                  "loggerName" : { },
-                  "loggerLevel" : {
-                    "$ref" : "#/components/schemas/LoggerLevel"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses" : {
-          "201" : {
-            "description" : "Created"
-          }
-        }
-      }
-    },
-    "/q/logging-manager/levels" : {
-      "description" : "All available levels",
-      "summary" : "Return all levels that is available",
       "get" : {
-        "description" : "This returns all possible log levels",
-        "operationId" : "logging_manager_levels",
-        "tags" : [ "logging-manager" ],
-        "summary" : "Get all available levels",
+        "summary" : "Get a car by ID",
+        "description" : "Returns a car based on the provided ID",
+        "tags" : [ "Car Resource" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "minimum" : 0
+          }
+        } ],
         "responses" : {
           "200" : {
-            "description" : "Ok",
+            "description" : "Success",
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/LoggerLevel"
-                  }
+                  "$ref" : "#/components/schemas/Car"
                 }
               }
             }
+          },
+          "404" : {
+            "description" : "Car not found"
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete a car",
+        "description" : "Deletes a car based on ID",
+        "tags" : [ "Car Resource" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "minimum" : 0
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Car successfully deleted"
+          },
+          "404" : {
+            "description" : "Car not found"
           }
         }
       }
@@ -650,6 +585,92 @@
               "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/q/logging-manager" : {
+      "summary" : "Return info on all loggers, or a specific logger",
+      "description" : "Logging Manager Loggers",
+      "get" : {
+        "operationId" : "logging_manager_get_all",
+        "summary" : "Information on Logger(s)",
+        "description" : "Get information on all loggers or a specific logger.",
+        "tags" : [ "logging-manager" ],
+        "parameters" : [ {
+          "name" : "loggerName",
+          "in" : "query",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/LoggerInfo"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      },
+      "post" : {
+        "operationId" : "logging_manager_update",
+        "summary" : "Update log level",
+        "description" : "Update a log level for a certain logger",
+        "tags" : [ "logging-manager" ],
+        "requestBody" : {
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "loggerLevel" : {
+                    "$ref" : "#/components/schemas/LoggerLevel"
+                  },
+                  "loggerName" : { }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/q/logging-manager/levels" : {
+      "description" : "All available levels",
+      "summary" : "Return all levels that is available",
+      "get" : {
+        "description" : "This returns all possible log levels",
+        "operationId" : "logging_manager_levels",
+        "tags" : [ "logging-manager" ],
+        "summary" : "Get all available levels",
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/LoggerLevel"
+                  }
                 }
               }
             }

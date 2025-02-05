@@ -3,6 +3,19 @@ package com.melloware.quarkus.panache;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.melloware.quarkus.support.QueryRequest;
+import com.melloware.quarkus.support.QueryResponse;
+
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Sort;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -21,17 +34,6 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
-
-import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.melloware.quarkus.support.QueryRequest;
-import com.melloware.quarkus.support.QueryResponse;
-
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.panache.common.Sort;
-import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.extern.jbosslog.JBossLog;
 
 @Path("entity/cars")
@@ -48,6 +50,11 @@ public class CarResource {
 
 	@GET
 	@Path("{id}")
+	@Operation(summary = "Get a car by ID", description = "Returns a car based on the provided ID")
+	@APIResponses({
+		@APIResponse(responseCode = "200", description = "Success"),
+		@APIResponse(responseCode = "404", description = "Car not found")
+	})
 	public Car getSingle(@PathParam("id") @Min(value = 0) Long id) {
 		Car entity = Car.findById(id);
 		if (entity == null) {
@@ -58,12 +65,19 @@ public class CarResource {
 
 	@GET
 	@Path("/manufacturers")
+	@Operation(summary = "Get all manufacturers", description = "Returns a list of distinct car manufacturers")
+	@APIResponse(responseCode = "200", description = "Success")
 	public List<String> getManufacturers() {
 		return Car.find("select distinct make from Car order by make").project(String.class).list();
 	}
 
 	@POST
 	@Transactional
+	@Operation(summary = "Create a new car", description = "Creates a new car entry")
+	@APIResponses({
+		@APIResponse(responseCode = "201", description = "Car created successfully"),
+		@APIResponse(responseCode = "422", description = "Invalid car data provided")
+	})
 	public Response create(@Valid Car car) {
 		if (car.id != null) {
 			// 422 Unprocessable Entity
@@ -76,6 +90,11 @@ public class CarResource {
 	@PUT
 	@Path("{id}")
 	@Transactional
+	@Operation(summary = "Update a car", description = "Updates an existing car based on ID")
+	@APIResponses({
+		@APIResponse(responseCode = "200", description = "Car updated successfully"),
+		@APIResponse(responseCode = "404", description = "Car not found")
+	})
 	public Car update(@PathParam("id") @Min(value = 0) Long id, @Valid Car car) {
 		Car entity = Car.findById(id);
 		if (entity == null) {
@@ -96,6 +115,11 @@ public class CarResource {
 	@DELETE
 	@Path("{id}")
 	@Transactional
+	@Operation(summary = "Delete a car", description = "Deletes a car based on ID")
+	@APIResponses({
+		@APIResponse(responseCode = "204", description = "Car successfully deleted"),
+		@APIResponse(responseCode = "404", description = "Car not found")
+	})
 	public Response delete(@PathParam("id") @Min(value = 0) Long id) {
 		Car entity = Car.findById(id);
 		if (entity == null) {
@@ -106,6 +130,11 @@ public class CarResource {
 	}
 
 	@GET
+	@Operation(summary = "List cars", description = "Returns a paginated list of cars with optional filtering and sorting")
+	@APIResponses({
+		@APIResponse(responseCode = "200", description = "Success"),
+		@APIResponse(responseCode = "400", description = "Invalid request format")
+	})
 	public QueryResponse<Car> list(@QueryParam("request") String lazyRequest) throws JsonProcessingException {
 		final QueryResponse<Car> response = new QueryResponse<>();
 		if (lazyRequest == null || lazyRequest.isEmpty()) {

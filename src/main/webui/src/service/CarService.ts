@@ -155,8 +155,8 @@ export const LoggerLevel = {
 
 export interface LoggerInfo {
 	name?: string;
-	effectiveLevel?: LoggerLevel;
 	configuredLevel?: LoggerLevel;
+	effectiveLevel?: LoggerLevel;
 }
 
 export type HealthResponseStatus = (typeof HealthResponseStatus)[keyof typeof HealthResponseStatus];
@@ -172,6 +172,10 @@ export interface HealthResponse {
 	checks?: HealthCheck[];
 }
 
+export type HealthCheckDataAnyOf = { [key: string]: unknown };
+
+export type HealthCheckData = HealthCheckDataAnyOf | null;
+
 export type HealthCheckStatus = (typeof HealthCheckStatus)[keyof typeof HealthCheckStatus];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -180,14 +184,10 @@ export const HealthCheckStatus = {
 	DOWN: 'DOWN'
 } as const;
 
-export type HealthCheckDataAnyOf = { [key: string]: unknown };
-
-export type HealthCheckData = HealthCheckDataAnyOf | null;
-
 export interface HealthCheck {
 	name?: string;
-	status?: HealthCheckStatus;
 	data?: HealthCheckData;
+	status?: HealthCheckStatus;
 }
 
 export type GetEntityCarsParams = {
@@ -199,8 +199,8 @@ export type LoggingManagerGetAllParams = {
 };
 
 export type LoggingManagerUpdateBody = {
-	loggerName?: unknown;
 	loggerLevel?: LoggerLevel;
+	loggerName?: unknown;
 };
 
 /**
@@ -723,11 +723,11 @@ export const useLoggingManagerUpdateHook = () => {
 	return useCallback(
 		(loggingManagerUpdateBody: LoggingManagerUpdateBody, signal?: AbortSignal) => {
 			const formUrlEncoded = new URLSearchParams();
-			if (loggingManagerUpdateBody.loggerName !== undefined) {
-				formUrlEncoded.append('loggerName', loggingManagerUpdateBody.loggerName);
-			}
 			if (loggingManagerUpdateBody.loggerLevel !== undefined) {
 				formUrlEncoded.append('loggerLevel', loggingManagerUpdateBody.loggerLevel);
+			}
+			if (loggingManagerUpdateBody.loggerName !== undefined) {
+				formUrlEncoded.append('loggerName', loggingManagerUpdateBody.loggerName);
 			}
 
 			return loggingManagerUpdate({
