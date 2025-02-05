@@ -182,32 +182,6 @@ components:
           items:
             $ref: "#/components/schemas/Car"
           description: "Records for this set of pagination, sorting, filtering."
-    HealthResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - UP
-          - DOWN
-        checks:
-          type: array
-          items:
-            $ref: "#/components/schemas/HealthCheck"
-    HealthCheck:
-      type: object
-      properties:
-        name:
-          type: string
-        data:
-          type:
-          - object
-          - "null"
-        status:
-          type: string
-          enum:
-          - UP
-          - DOWN
     LoggerLevel:
       title: LoggerLevel
       type: string
@@ -230,15 +204,41 @@ components:
       title: LoggerInfo
       type: object
       properties:
-        name:
-          type: string
         configuredLevel:
           $ref: "#/components/schemas/LoggerLevel"
         effectiveLevel:
           $ref: "#/components/schemas/LoggerLevel"
+        name:
+          type: string
+    HealthResponse:
+      type: object
+      properties:
+        checks:
+          type: array
+          items:
+            $ref: "#/components/schemas/HealthCheck"
+        status:
+          type: string
+          enum:
+          - UP
+          - DOWN
+    HealthCheck:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - UP
+          - DOWN
+        name:
+          type: string
+        data:
+          type:
+          - object
+          - "null"
 tags:
-- name: Car Resource
-  description: CRUD operations for the Car entity.
+- name: Logging Manager
+  description: Visualize and manage the log level of your loggers.
 paths:
   /entity/cars:
     get:
@@ -360,6 +360,67 @@ paths:
           description: Car successfully deleted
         "404":
           description: Car not found
+  /q/logging-manager:
+    summary: "Return info on all loggers, or a specific logger"
+    description: Logging Manager Loggers
+    get:
+      operationId: logging_manager_get_all
+      summary: Information on Logger(s)
+      description: Get information on all loggers or a specific logger.
+      tags:
+      - Logging Manager
+      parameters:
+      - name: loggerName
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LoggerInfo"
+        "404":
+          description: Not Found
+    post:
+      operationId: logging_manager_update
+      summary: Update log level
+      description: Update a log level for a certain logger
+      tags:
+      - Logging Manager
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                loggerName: {}
+                loggerLevel:
+                  $ref: "#/components/schemas/LoggerLevel"
+      responses:
+        "201":
+          description: Created
+  /q/logging-manager/levels:
+    description: All available levels
+    summary: Return all levels that is available
+    get:
+      description: This returns all possible log levels
+      operationId: logging_manager_levels
+      tags:
+      - Logging Manager
+      summary: Get all available levels
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LoggerLevel"
   /q/health:
     description: MicroProfile Health Endpoint
     summary: MicroProfile Health provides a way for your application to distribute
@@ -477,67 +538,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthResponse"
-  /q/logging-manager:
-    summary: "Return info on all loggers, or a specific logger"
-    description: Logging Manager Loggers
-    get:
-      operationId: logging_manager_get_all
-      summary: Information on Logger(s)
-      description: Get information on all loggers or a specific logger.
-      tags:
-      - logging-manager
-      parameters:
-      - name: loggerName
-        in: query
-        schema:
-          type: string
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/LoggerInfo"
-        "404":
-          description: Not Found
-    post:
-      operationId: logging_manager_update
-      summary: Update log level
-      description: Update a log level for a certain logger
-      tags:
-      - logging-manager
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              type: object
-              properties:
-                loggerLevel:
-                  $ref: "#/components/schemas/LoggerLevel"
-                loggerName: {}
-      responses:
-        "201":
-          description: Created
-  /q/logging-manager/levels:
-    description: All available levels
-    summary: Return all levels that is available
-    get:
-      description: This returns all possible log levels
-      operationId: logging_manager_levels
-      tags:
-      - logging-manager
-      summary: Get all available levels
-      responses:
-        "200":
-          description: Ok
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/LoggerLevel"
 info:
   title: Quarkus PrimeReact Monorepo
   version: 1.0.0

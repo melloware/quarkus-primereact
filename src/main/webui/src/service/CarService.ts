@@ -154,9 +154,9 @@ export const LoggerLevel = {
 } as const;
 
 export interface LoggerInfo {
-	name?: string;
 	configuredLevel?: LoggerLevel;
 	effectiveLevel?: LoggerLevel;
+	name?: string;
 }
 
 export type HealthResponseStatus = (typeof HealthResponseStatus)[keyof typeof HealthResponseStatus];
@@ -168,13 +168,9 @@ export const HealthResponseStatus = {
 } as const;
 
 export interface HealthResponse {
-	status?: HealthResponseStatus;
 	checks?: HealthCheck[];
+	status?: HealthResponseStatus;
 }
-
-export type HealthCheckDataAnyOf = { [key: string]: unknown };
-
-export type HealthCheckData = HealthCheckDataAnyOf | null;
 
 export type HealthCheckStatus = (typeof HealthCheckStatus)[keyof typeof HealthCheckStatus];
 
@@ -184,10 +180,14 @@ export const HealthCheckStatus = {
 	DOWN: 'DOWN'
 } as const;
 
+export type HealthCheckDataAnyOf = { [key: string]: unknown };
+
+export type HealthCheckData = HealthCheckDataAnyOf | null;
+
 export interface HealthCheck {
+	status?: HealthCheckStatus;
 	name?: string;
 	data?: HealthCheckData;
-	status?: HealthCheckStatus;
 }
 
 export type GetEntityCarsParams = {
@@ -199,12 +199,13 @@ export type LoggingManagerGetAllParams = {
 };
 
 export type LoggingManagerUpdateBody = {
-	loggerLevel?: LoggerLevel;
 	loggerName?: unknown;
+	loggerLevel?: LoggerLevel;
 };
 
 /**
- * @summary List
+ * Returns a paginated list of cars with optional filtering and sorting
+ * @summary List cars
  */
 export const useGetEntityCarsHook = () => {
 	const getEntityCars = useAxiosMutator<QueryResponseCar>();
@@ -221,7 +222,7 @@ export const getGetEntityCarsQueryKey = (params?: GetEntityCarsParams) => {
 	return [`/entity/cars`, ...(params ? [params] : [])] as const;
 };
 
-export const useGetEntityCarsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError = ErrorType<unknown>>(
+export const useGetEntityCarsQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError = ErrorType<void>>(
 	params?: GetEntityCarsParams,
 	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError, TData>> }
 ) => {
@@ -239,9 +240,9 @@ export const useGetEntityCarsQueryOptions = <TData = Awaited<ReturnType<ReturnTy
 };
 
 export type GetEntityCarsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>>;
-export type GetEntityCarsQueryError = ErrorType<unknown>;
+export type GetEntityCarsQueryError = ErrorType<void>;
 
-export function useGetEntityCars<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError = ErrorType<unknown>>(
+export function useGetEntityCars<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError = ErrorType<void>>(
 	params: undefined | GetEntityCarsParams,
 	options: {
 		query: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError, TData>> &
@@ -255,7 +256,7 @@ export function useGetEntityCars<TData = Awaited<ReturnType<ReturnType<typeof us
 			>;
 	}
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetEntityCars<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError = ErrorType<unknown>>(
+export function useGetEntityCars<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError = ErrorType<void>>(
 	params?: GetEntityCarsParams,
 	options?: {
 		query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError, TData>> &
@@ -269,15 +270,15 @@ export function useGetEntityCars<TData = Awaited<ReturnType<ReturnType<typeof us
 			>;
 	}
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetEntityCars<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError = ErrorType<unknown>>(
+export function useGetEntityCars<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError = ErrorType<void>>(
 	params?: GetEntityCarsParams,
 	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError, TData>> }
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
- * @summary List
+ * @summary List cars
  */
 
-export function useGetEntityCars<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError = ErrorType<unknown>>(
+export function useGetEntityCars<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError = ErrorType<void>>(
 	params?: GetEntityCarsParams,
 	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsHook>>>, TError, TData>> }
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
@@ -291,7 +292,8 @@ export function useGetEntityCars<TData = Awaited<ReturnType<ReturnType<typeof us
 }
 
 /**
- * @summary Create
+ * Creates a new car entry
+ * @summary Create a new car
  */
 export const usePostEntityCarsHook = () => {
 	const postEntityCars = useAxiosMutator<void>();
@@ -304,7 +306,7 @@ export const usePostEntityCarsHook = () => {
 	);
 };
 
-export const usePostEntityCarsMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const usePostEntityCarsMutationOptions = <TError = ErrorType<void>, TContext = unknown>(options?: {
 	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, TError, { data: Car }, TContext>;
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, TError, { data: Car }, TContext> => {
 	const mutationKey = ['postEntityCars'];
@@ -327,12 +329,12 @@ export const usePostEntityCarsMutationOptions = <TError = ErrorType<unknown>, TC
 
 export type PostEntityCarsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>>;
 export type PostEntityCarsMutationBody = Car;
-export type PostEntityCarsMutationError = ErrorType<unknown>;
+export type PostEntityCarsMutationError = ErrorType<void>;
 
 /**
- * @summary Create
+ * @summary Create a new car
  */
-export const usePostEntityCars = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const usePostEntityCars = <TError = ErrorType<void>, TContext = unknown>(options?: {
 	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, TError, { data: Car }, TContext>;
 }): UseMutationResult<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, TError, { data: Car }, TContext> => {
 	const mutationOptions = usePostEntityCarsMutationOptions(options);
@@ -341,7 +343,8 @@ export const usePostEntityCars = <TError = ErrorType<unknown>, TContext = unknow
 };
 
 /**
- * @summary Get Manufacturers
+ * Returns a list of distinct car manufacturers
+ * @summary Get all manufacturers
  */
 export const useGetEntityCarsManufacturersHook = () => {
 	const getEntityCarsManufacturers = useAxiosMutator<string[]>();
@@ -418,7 +421,7 @@ export function useGetEntityCarsManufacturers<
 	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsManufacturersHook>>>, TError, TData>>;
 }): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
- * @summary Get Manufacturers
+ * @summary Get all manufacturers
  */
 
 export function useGetEntityCarsManufacturers<
@@ -437,7 +440,8 @@ export function useGetEntityCarsManufacturers<
 }
 
 /**
- * @summary Update
+ * Updates an existing car based on ID
+ * @summary Update a car
  */
 export const usePutEntityCarsIdHook = () => {
 	const putEntityCarsId = useAxiosMutator<Car>();
@@ -450,7 +454,7 @@ export const usePutEntityCarsIdHook = () => {
 	);
 };
 
-export const usePutEntityCarsIdMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const usePutEntityCarsIdMutationOptions = <TError = ErrorType<void>, TContext = unknown>(options?: {
 	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, TError, { id: number; data: Car }, TContext>;
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, TError, { id: number; data: Car }, TContext> => {
 	const mutationKey = ['putEntityCarsId'];
@@ -473,12 +477,12 @@ export const usePutEntityCarsIdMutationOptions = <TError = ErrorType<unknown>, T
 
 export type PutEntityCarsIdMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>>;
 export type PutEntityCarsIdMutationBody = Car;
-export type PutEntityCarsIdMutationError = ErrorType<unknown>;
+export type PutEntityCarsIdMutationError = ErrorType<void>;
 
 /**
- * @summary Update
+ * @summary Update a car
  */
-export const usePutEntityCarsId = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const usePutEntityCarsId = <TError = ErrorType<void>, TContext = unknown>(options?: {
 	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, TError, { id: number; data: Car }, TContext>;
 }): UseMutationResult<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, TError, { id: number; data: Car }, TContext> => {
 	const mutationOptions = usePutEntityCarsIdMutationOptions(options);
@@ -487,7 +491,8 @@ export const usePutEntityCarsId = <TError = ErrorType<unknown>, TContext = unkno
 };
 
 /**
- * @summary Get Single
+ * Returns a car based on the provided ID
+ * @summary Get a car by ID
  */
 export const useGetEntityCarsIdHook = () => {
 	const getEntityCarsId = useAxiosMutator<Car>();
@@ -504,7 +509,7 @@ export const getGetEntityCarsIdQueryKey = (id: number) => {
 	return [`/entity/cars/${id}`] as const;
 };
 
-export const useGetEntityCarsIdQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError = ErrorType<unknown>>(
+export const useGetEntityCarsIdQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError = ErrorType<void>>(
 	id: number,
 	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError, TData>> }
 ) => {
@@ -524,9 +529,9 @@ export const useGetEntityCarsIdQueryOptions = <TData = Awaited<ReturnType<Return
 };
 
 export type GetEntityCarsIdQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>>;
-export type GetEntityCarsIdQueryError = ErrorType<unknown>;
+export type GetEntityCarsIdQueryError = ErrorType<void>;
 
-export function useGetEntityCarsId<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError = ErrorType<unknown>>(
+export function useGetEntityCarsId<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError = ErrorType<void>>(
 	id: number,
 	options: {
 		query: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError, TData>> &
@@ -540,7 +545,7 @@ export function useGetEntityCarsId<TData = Awaited<ReturnType<ReturnType<typeof 
 			>;
 	}
 ): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetEntityCarsId<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError = ErrorType<unknown>>(
+export function useGetEntityCarsId<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError = ErrorType<void>>(
 	id: number,
 	options?: {
 		query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError, TData>> &
@@ -554,15 +559,15 @@ export function useGetEntityCarsId<TData = Awaited<ReturnType<ReturnType<typeof 
 			>;
 	}
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useGetEntityCarsId<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError = ErrorType<unknown>>(
+export function useGetEntityCarsId<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError = ErrorType<void>>(
 	id: number,
 	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError, TData>> }
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 /**
- * @summary Get Single
+ * @summary Get a car by ID
  */
 
-export function useGetEntityCarsId<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError = ErrorType<unknown>>(
+export function useGetEntityCarsId<TData = Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError = ErrorType<void>>(
 	id: number,
 	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useGetEntityCarsIdHook>>>, TError, TData>> }
 ): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
@@ -576,7 +581,8 @@ export function useGetEntityCarsId<TData = Awaited<ReturnType<ReturnType<typeof 
 }
 
 /**
- * @summary Delete
+ * Deletes a car based on ID
+ * @summary Delete a car
  */
 export const useDeleteEntityCarsIdHook = () => {
 	const deleteEntityCarsId = useAxiosMutator<void>();
@@ -589,7 +595,7 @@ export const useDeleteEntityCarsIdHook = () => {
 	);
 };
 
-export const useDeleteEntityCarsIdMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteEntityCarsIdMutationOptions = <TError = ErrorType<void>, TContext = unknown>(options?: {
 	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, TError, { id: number }, TContext>;
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, TError, { id: number }, TContext> => {
 	const mutationKey = ['deleteEntityCarsId'];
@@ -612,12 +618,12 @@ export const useDeleteEntityCarsIdMutationOptions = <TError = ErrorType<unknown>
 
 export type DeleteEntityCarsIdMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>>;
 
-export type DeleteEntityCarsIdMutationError = ErrorType<unknown>;
+export type DeleteEntityCarsIdMutationError = ErrorType<void>;
 
 /**
- * @summary Delete
+ * @summary Delete a car
  */
-export const useDeleteEntityCarsId = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useDeleteEntityCarsId = <TError = ErrorType<void>, TContext = unknown>(options?: {
 	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, TError, { id: number }, TContext>;
 }): UseMutationResult<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, TError, { id: number }, TContext> => {
 	const mutationOptions = useDeleteEntityCarsIdMutationOptions(options);
@@ -723,11 +729,11 @@ export const useLoggingManagerUpdateHook = () => {
 	return useCallback(
 		(loggingManagerUpdateBody: LoggingManagerUpdateBody, signal?: AbortSignal) => {
 			const formUrlEncoded = new URLSearchParams();
-			if (loggingManagerUpdateBody.loggerLevel !== undefined) {
-				formUrlEncoded.append('loggerLevel', loggingManagerUpdateBody.loggerLevel);
-			}
 			if (loggingManagerUpdateBody.loggerName !== undefined) {
 				formUrlEncoded.append('loggerName', loggingManagerUpdateBody.loggerName);
+			}
+			if (loggingManagerUpdateBody.loggerLevel !== undefined) {
+				formUrlEncoded.append('loggerLevel', loggingManagerUpdateBody.loggerLevel);
 			}
 
 			return loggingManagerUpdate({
