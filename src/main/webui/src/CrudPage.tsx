@@ -94,7 +94,8 @@ const CrudPage = () => {
 				queryKey: ['list-cars', tableParams],
 				refetchOnWindowFocus: false,
 				retry: false,
-				gcTime: 0
+				gcTime: 0,
+				staleTime: 0
 			}
 		}
 	);

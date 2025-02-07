@@ -136,6 +136,12 @@ public class CarResource {
 		@APIResponse(responseCode = "400", description = "Invalid request format")
 	})
 	public QueryResponse<Car> list(@QueryParam("request") String lazyRequest) throws JsonProcessingException {
+		try {
+			// add a delay to simulate a slow response
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
+			// do nothing
+		}
 		final QueryResponse<Car> response = new QueryResponse<>();
 		if (lazyRequest == null || lazyRequest.isEmpty()) {
 			List<Car> results = Car.listAll(Sort.by("make"));
