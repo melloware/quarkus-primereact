@@ -24,6 +24,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -58,7 +59,7 @@ public class CarResource {
 	public Car getSingle(@PathParam("id") @Min(value = 0) Long id) {
 		Car entity = Car.findById(id);
 		if (entity == null) {
-			throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
+			throw new NotFoundException("Car with id of " + id + " does not exist.");
 		}
 		return entity;
 	}
@@ -98,7 +99,7 @@ public class CarResource {
 	public Car update(@PathParam("id") @Min(value = 0) Long id, @Valid Car car) {
 		Car entity = Car.findById(id);
 		if (entity == null) {
-			throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
+			throw new NotFoundException("Car with id of " + id + " does not exist.");
 		}
 
 		// would normally use ModelMapper here: https://modelmapper.org/
@@ -123,7 +124,7 @@ public class CarResource {
 	public Response delete(@PathParam("id") @Min(value = 0) Long id) {
 		Car entity = Car.findById(id);
 		if (entity == null) {
-			throw new WebApplicationException("Car with id of " + id + " does not exist.", Status.NOT_FOUND);
+			throw new NotFoundException("Car with id of " + id + " does not exist.");
 		}
 		entity.delete();
 		return Response.status(Status.NO_CONTENT).build();
