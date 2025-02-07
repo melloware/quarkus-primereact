@@ -1,12 +1,12 @@
 <div align="center">
-<img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webui/public/static/images/quarkus.svg" width="67" height="70" ><img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webui/public/static/images/plus-sign.svg" height="70" ><img src="https://github.com/melloware/quarkus-monorepo/blob/main/src/main/webui/public/static/images/primereact-dark.svg" height="70" >
+<img src="https://github.com/melloware/quarkus-primereact/blob/main/src/main/webui/public/static/images/quarkus.svg" width="67" height="70" ><img src="https://github.com/melloware/quarkus-primereact/blob/main/src/main/webui/public/static/images/plus-sign.svg" height="70" ><img src="https://github.com/melloware/quarkus-primereact/blob/main/src/main/webui/public/static/images/primereact-dark.svg" height="70" >
 
 # Quarkus PrimeReact
 </div>
 <br>
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
-[![Actions CI](https://img.shields.io/github/actions/workflow/status/melloware/quarkus-monorepo/build.yml?branch=main&logo=GitHub&style=for-the-badge)](https://github.com/melloware/quarkus-monorepo/actions/workflows/build.yml)
+[![Actions CI](https://img.shields.io/github/actions/workflow/status/melloware/quarkus-primereact/build.yml?branch=main&logo=GitHub&style=for-the-badge)](https://github.com/melloware/quarkus-primereact/actions/workflows/build.yml)
 [![Quarkus](https://img.shields.io/badge/quarkus-power-blue?logo=quarkus&style=for-the-badge)](https://github.com/quarkusio/quarkus)
 ![React.js](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Typescript](https://img.shields.io/badge/typescript-%23323330.svg?style=for-the-badge&logo=typescript&logoColor=%23F7DF1E) 
@@ -58,7 +58,7 @@ Hot reload works add a new REST endpoint and see it update in realtime. Try it!
 
 Now open your web browser to http://localhost:8080/ to see it in action.
 
-[![Quarkus Monorepo](https://github.com/melloware/quarkus-monorepo/blob/main/src/test/resources/quarkus-monorepo-screen.png)](https://github.com/melloware/quarkus-monorepo)
+[![Quarkus Monorepo](https://github.com/melloware/quarkus-primereact/blob/main/src/test/resources/quarkus-primereact-screen.png)](https://github.com/melloware/quarkus-primereact)
 
 ## Building
 
@@ -115,4 +115,8 @@ Please brace yourself: don't choke on that fresh cup of coffee you just got. Now
 
 Navigate to: <http://localhost:8080/index.html>
 
+## Code Generation
 
+This project uses [Orval](https://orval.dev/) to generate the TanStack Query client Typescript from the OpenAPI definition.
+
+[![Code Generation](https://github.com/melloware/quarkus-primereact/blob/main/src/test/resources/dev-flow.png)](https://github.com/melloware/quarkus-primereact)
