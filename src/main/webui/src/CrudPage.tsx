@@ -16,8 +16,18 @@ import { Tooltip } from 'primereact/tooltip';
 import { classNames } from 'primereact/utils';
 import React, { JSX, useEffect, useRef, useState } from 'react';
 import { Controller, ControllerFieldState, useForm } from 'react-hook-form';
+import useWebSocket from 'react-use-websocket';
 import { ErrorType } from './service/AxiosMutator';
-import { Car, useDeleteEntityCarsId, useGetEntityCars, useGetEntityCarsManufacturers, usePostEntityCars, usePutEntityCarsId } from './service/CarService';
+import {
+	Car,
+	SocketMessage,
+	SocketMessageType,
+	useDeleteEntityCarsId,
+	useGetEntityCars,
+	useGetEntityCarsManufacturers,
+	usePostEntityCars,
+	usePutEntityCarsId
+} from './service/CarService';
 
 /**
  * CRUD page demonstrating multiple TanStack Query and PrimeReact concepts such as lazy querying datable,
@@ -48,6 +58,9 @@ const CrudPage = () => {
 	const [editCarDialog, setEditCarDialog] = useState(false);
 	const [isMenuFilter, setMenuFilter] = useState(true);
 	const [isMultipleSort, setMultipleSort] = useState(true);
+
+	// socket
+	const { lastJsonMessage } = useWebSocket('ws://' + location.host + '/push/');
 
 	const menuFilters = {
 		vin: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
@@ -120,6 +133,21 @@ const CrudPage = () => {
 		}
 		setTableParams(newParams);
 	}, [isMenuFilter, isMultipleSort]);
+
+	useEffect(() => {
+		if (lastJsonMessage !== null) {
+			console.log(lastJsonMessage);
+			const socketMessage = lastJsonMessage as SocketMessage;
+			switch (socketMessage.type) {
+				case SocketMessageType.REFRESH_DATA:
+					queryClient.invalidateQueries({ queryKey: ['list-cars'] });
+					break;
+				case SocketMessageType.NOTIFICATION:
+					toast('warn', 'Notification', socketMessage.message);
+					break;
+			}
+		}
+	}, [lastJsonMessage]);
 
 	const onPage = (event: DataTableStateEvent) => {
 		setTableParams(event);

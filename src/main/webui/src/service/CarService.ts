@@ -133,74 +133,30 @@ export interface QueryResponseCar {
 	records?: Car[];
 }
 
-export type LoggerLevel = (typeof LoggerLevel)[keyof typeof LoggerLevel];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const LoggerLevel = {
-	OFF: 'OFF',
-	SEVERE: 'SEVERE',
-	ERROR: 'ERROR',
-	FATAL: 'FATAL',
-	WARNING: 'WARNING',
-	WARN: 'WARN',
-	INFO: 'INFO',
-	DEBUG: 'DEBUG',
-	TRACE: 'TRACE',
-	CONFIG: 'CONFIG',
-	FINE: 'FINE',
-	FINER: 'FINER',
-	FINEST: 'FINEST',
-	ALL: 'ALL'
-} as const;
-
-export interface LoggerInfo {
-	configuredLevel?: LoggerLevel;
-	effectiveLevel?: LoggerLevel;
-	name?: string;
+/**
+ * WebSocket message
+ */
+export interface SocketMessage {
+	/** Type of socket message */
+	type: SocketMessageType;
+	/** Optional message payload */
+	message?: string;
 }
 
-export type HealthResponseStatus = (typeof HealthResponseStatus)[keyof typeof HealthResponseStatus];
+export type SocketMessageType = (typeof SocketMessageType)[keyof typeof SocketMessageType];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export const HealthResponseStatus = {
-	UP: 'UP',
-	DOWN: 'DOWN'
+export const SocketMessageType = {
+	REFRESH_DATA: 'REFRESH_DATA',
+	NOTIFICATION: 'NOTIFICATION'
 } as const;
-
-export interface HealthResponse {
-	checks?: HealthCheck[];
-	status?: HealthResponseStatus;
-}
-
-export type HealthCheckStatus = (typeof HealthCheckStatus)[keyof typeof HealthCheckStatus];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const HealthCheckStatus = {
-	UP: 'UP',
-	DOWN: 'DOWN'
-} as const;
-
-export type HealthCheckDataAnyOf = { [key: string]: unknown };
-
-export type HealthCheckData = HealthCheckDataAnyOf | null;
-
-export interface HealthCheck {
-	status?: HealthCheckStatus;
-	name?: string;
-	data?: HealthCheckData;
-}
 
 export type GetEntityCarsParams = {
 	request?: string;
 };
 
-export type LoggingManagerGetAllParams = {
-	loggerName?: string;
-};
-
-export type LoggingManagerUpdateBody = {
-	loggerName?: unknown;
-	loggerLevel?: LoggerLevel;
+export type PostSocketNotifyParams = {
+	message?: string;
 };
 
 /**
@@ -632,620 +588,101 @@ export const useDeleteEntityCarsId = <TError = ErrorType<void>, TContext = unkno
 };
 
 /**
- * Get information on all loggers or a specific logger.
- * @summary Information on Logger(s)
+ * Pushes a notification message to all connected clients
+ * @summary Push notification message
  */
-export const useLoggingManagerGetAllHook = () => {
-	const loggingManagerGetAll = useAxiosMutator<LoggerInfo[]>();
+export const usePostSocketNotifyHook = () => {
+	const postSocketNotify = useAxiosMutator<void>();
 
 	return useCallback(
-		(params?: LoggingManagerGetAllParams, signal?: AbortSignal) => {
-			return loggingManagerGetAll({ url: `/q/logging-manager`, method: 'GET', params, signal });
+		(params?: PostSocketNotifyParams, signal?: AbortSignal) => {
+			return postSocketNotify({ url: `/socket/notify`, method: 'POST', params, signal });
 		},
-		[loggingManagerGetAll]
+		[postSocketNotify]
 	);
 };
 
-export const getLoggingManagerGetAllQueryKey = (params?: LoggingManagerGetAllParams) => {
-	return [`/q/logging-manager`, ...(params ? [params] : [])] as const;
-};
-
-export const useLoggingManagerGetAllQueryOptions = <TData = Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>, TError = ErrorType<void>>(
-	params?: LoggingManagerGetAllParams,
-	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>, TError, TData>> }
-) => {
-	const { query: queryOptions } = options ?? {};
-
-	const queryKey = queryOptions?.queryKey ?? getLoggingManagerGetAllQueryKey(params);
-
-	const loggingManagerGetAll = useLoggingManagerGetAllHook();
-
-	const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>> = ({ signal }) => loggingManagerGetAll(params, signal);
-
-	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>, TError, TData> & {
-		queryKey: DataTag<QueryKey, TData, TError>;
-	};
-};
-
-export type LoggingManagerGetAllQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>>;
-export type LoggingManagerGetAllQueryError = ErrorType<void>;
-
-export function useLoggingManagerGetAll<TData = Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>, TError = ErrorType<void>>(
-	params: undefined | LoggingManagerGetAllParams,
-	options: {
-		query: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>, TError, TData>> &
-			Pick<
-				DefinedInitialDataOptions<
-					Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>,
-					TError,
-					Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>
-				>,
-				'initialData'
-			>;
-	}
-): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useLoggingManagerGetAll<TData = Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>, TError = ErrorType<void>>(
-	params?: LoggingManagerGetAllParams,
-	options?: {
-		query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>, TError, TData>> &
-			Pick<
-				UndefinedInitialDataOptions<
-					Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>,
-					TError,
-					Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>
-				>,
-				'initialData'
-			>;
-	}
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useLoggingManagerGetAll<TData = Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>, TError = ErrorType<void>>(
-	params?: LoggingManagerGetAllParams,
-	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>, TError, TData>> }
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-/**
- * @summary Information on Logger(s)
- */
-
-export function useLoggingManagerGetAll<TData = Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>, TError = ErrorType<void>>(
-	params?: LoggingManagerGetAllParams,
-	options?: { query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerGetAllHook>>>, TError, TData>> }
-): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = useLoggingManagerGetAllQueryOptions(params, options);
-
-	const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-	query.queryKey = queryOptions.queryKey;
-
-	return query;
-}
-
-/**
- * Update a log level for a certain logger
- * @summary Update log level
- */
-export const useLoggingManagerUpdateHook = () => {
-	const loggingManagerUpdate = useAxiosMutator<void>();
-
-	return useCallback(
-		(loggingManagerUpdateBody: LoggingManagerUpdateBody, signal?: AbortSignal) => {
-			const formUrlEncoded = new URLSearchParams();
-			if (loggingManagerUpdateBody.loggerName !== undefined) {
-				formUrlEncoded.append('loggerName', loggingManagerUpdateBody.loggerName);
-			}
-			if (loggingManagerUpdateBody.loggerLevel !== undefined) {
-				formUrlEncoded.append('loggerLevel', loggingManagerUpdateBody.loggerLevel);
-			}
-
-			return loggingManagerUpdate({
-				url: `/q/logging-manager`,
-				method: 'POST',
-				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-				data: formUrlEncoded,
-				signal
-			});
-		},
-		[loggingManagerUpdate]
-	);
-};
-
-export const useLoggingManagerUpdateMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
-	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>, TError, { data: LoggingManagerUpdateBody }, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>, TError, { data: LoggingManagerUpdateBody }, TContext> => {
-	const mutationKey = ['loggingManagerUpdate'];
+export const usePostSocketNotifyMutationOptions = <TError = ErrorType<void>, TContext = unknown>(options?: {
+	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, TError, { params?: PostSocketNotifyParams }, TContext>;
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, TError, { params?: PostSocketNotifyParams }, TContext> => {
+	const mutationKey = ['postSocketNotify'];
 	const { mutation: mutationOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
 			: { ...options, mutation: { ...options.mutation, mutationKey } }
 		: { mutation: { mutationKey } };
 
-	const loggingManagerUpdate = useLoggingManagerUpdateHook();
+	const postSocketNotify = usePostSocketNotifyHook();
 
-	const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>, { data: LoggingManagerUpdateBody }> = (props) => {
-		const { data } = props ?? {};
+	const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, { params?: PostSocketNotifyParams }> = (props) => {
+		const { params } = props ?? {};
 
-		return loggingManagerUpdate(data);
+		return postSocketNotify(params);
 	};
 
 	return { mutationFn, ...mutationOptions };
 };
 
-export type LoggingManagerUpdateMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>>;
-export type LoggingManagerUpdateMutationBody = LoggingManagerUpdateBody;
-export type LoggingManagerUpdateMutationError = ErrorType<unknown>;
+export type PostSocketNotifyMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>>;
+
+export type PostSocketNotifyMutationError = ErrorType<void>;
 
 /**
- * @summary Update log level
+ * @summary Push notification message
  */
-export const useLoggingManagerUpdate = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
-	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>, TError, { data: LoggingManagerUpdateBody }, TContext>;
-}): UseMutationResult<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>, TError, { data: LoggingManagerUpdateBody }, TContext> => {
-	const mutationOptions = useLoggingManagerUpdateMutationOptions(options);
+export const usePostSocketNotify = <TError = ErrorType<void>, TContext = unknown>(options?: {
+	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, TError, { params?: PostSocketNotifyParams }, TContext>;
+}): UseMutationResult<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, TError, { params?: PostSocketNotifyParams }, TContext> => {
+	const mutationOptions = usePostSocketNotifyMutationOptions(options);
 
 	return useMutation(mutationOptions);
 };
 
 /**
- * This returns all possible log levels
- * @summary Get all available levels
+ * Pushes a UI refresh signal to all connected clients
+ * @summary Push a UI refresh signal
  */
-export const useLoggingManagerLevelsHook = () => {
-	const loggingManagerLevels = useAxiosMutator<LoggerLevel[]>();
+export const usePostSocketRefreshHook = () => {
+	const postSocketRefresh = useAxiosMutator<void>();
 
 	return useCallback(
 		(signal?: AbortSignal) => {
-			return loggingManagerLevels({ url: `/q/logging-manager/levels`, method: 'GET', signal });
+			return postSocketRefresh({ url: `/socket/refresh`, method: 'POST', signal });
 		},
-		[loggingManagerLevels]
+		[postSocketRefresh]
 	);
 };
 
-export const getLoggingManagerLevelsQueryKey = () => {
-	return [`/q/logging-manager/levels`] as const;
-};
+export const usePostSocketRefreshMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketRefreshHook>>>, TError, void, TContext>;
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketRefreshHook>>>, TError, void, TContext> => {
+	const mutationKey = ['postSocketRefresh'];
+	const { mutation: mutationOptions } = options
+		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey } };
 
-export const useLoggingManagerLevelsQueryOptions = <
-	TData = Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>,
-	TError = ErrorType<unknown>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>, TError, TData>>;
-}) => {
-	const { query: queryOptions } = options ?? {};
+	const postSocketRefresh = usePostSocketRefreshHook();
 
-	const queryKey = queryOptions?.queryKey ?? getLoggingManagerLevelsQueryKey();
-
-	const loggingManagerLevels = useLoggingManagerLevelsHook();
-
-	const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>> = ({ signal }) => loggingManagerLevels(signal);
-
-	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>, TError, TData> & {
-		queryKey: DataTag<QueryKey, TData, TError>;
+	const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof usePostSocketRefreshHook>>>, void> = () => {
+		return postSocketRefresh();
 	};
+
+	return { mutationFn, ...mutationOptions };
 };
 
-export type LoggingManagerLevelsQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>>;
-export type LoggingManagerLevelsQueryError = ErrorType<unknown>;
+export type PostSocketRefreshMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof usePostSocketRefreshHook>>>>;
 
-export function useLoggingManagerLevels<TData = Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>, TError = ErrorType<unknown>>(options: {
-	query: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>, TError, TData>> &
-		Pick<
-			DefinedInitialDataOptions<
-				Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>,
-				TError,
-				Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>
-			>,
-			'initialData'
-		>;
-}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useLoggingManagerLevels<TData = Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>, TError = ErrorType<unknown>>(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>, TError, TData>> &
-		Pick<
-			UndefinedInitialDataOptions<
-				Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>,
-				TError,
-				Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>
-			>,
-			'initialData'
-		>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useLoggingManagerLevels<TData = Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>, TError = ErrorType<unknown>>(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-/**
- * @summary Get all available levels
- */
-
-export function useLoggingManagerLevels<TData = Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>, TError = ErrorType<unknown>>(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerLevelsHook>>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = useLoggingManagerLevelsQueryOptions(options);
-
-	const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-	query.queryKey = queryOptions.queryKey;
-
-	return query;
-}
+export type PostSocketRefreshMutationError = ErrorType<unknown>;
 
 /**
- * Check the health of the application
- * @summary An aggregated view of the Liveness, Readiness and Startup of this application
+ * @summary Push a UI refresh signal
  */
-export const useMicroprofileHealthRootHook = () => {
-	const microprofileHealthRoot = useAxiosMutator<HealthResponse>();
+export const usePostSocketRefresh = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketRefreshHook>>>, TError, void, TContext>;
+}): UseMutationResult<Awaited<ReturnType<ReturnType<typeof usePostSocketRefreshHook>>>, TError, void, TContext> => {
+	const mutationOptions = usePostSocketRefreshMutationOptions(options);
 
-	return useCallback(
-		(signal?: AbortSignal) => {
-			return microprofileHealthRoot({ url: `/q/health`, method: 'GET', signal });
-		},
-		[microprofileHealthRoot]
-	);
+	return useMutation(mutationOptions);
 };
-
-export const getMicroprofileHealthRootQueryKey = () => {
-	return [`/q/health`] as const;
-};
-
-export const useMicroprofileHealthRootQueryOptions = <
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>, TError, TData>>;
-}) => {
-	const { query: queryOptions } = options ?? {};
-
-	const queryKey = queryOptions?.queryKey ?? getMicroprofileHealthRootQueryKey();
-
-	const microprofileHealthRoot = useMicroprofileHealthRootHook();
-
-	const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>> = ({ signal }) => microprofileHealthRoot(signal);
-
-	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>, TError, TData> & {
-		queryKey: DataTag<QueryKey, TData, TError>;
-	};
-};
-
-export type MicroprofileHealthRootQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>>;
-export type MicroprofileHealthRootQueryError = ErrorType<HealthResponse>;
-
-export function useMicroprofileHealthRoot<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>,
-	TError = ErrorType<HealthResponse>
->(options: {
-	query: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>, TError, TData>> &
-		Pick<
-			DefinedInitialDataOptions<
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>,
-				TError,
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>
-			>,
-			'initialData'
-		>;
-}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useMicroprofileHealthRoot<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>, TError, TData>> &
-		Pick<
-			UndefinedInitialDataOptions<
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>,
-				TError,
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>
-			>,
-			'initialData'
-		>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useMicroprofileHealthRoot<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-/**
- * @summary An aggregated view of the Liveness, Readiness and Startup of this application
- */
-
-export function useMicroprofileHealthRoot<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthRootHook>>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = useMicroprofileHealthRootQueryOptions(options);
-
-	const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-	query.queryKey = queryOptions.queryKey;
-
-	return query;
-}
-
-/**
- * Check the liveness of the application
- * @summary The Liveness check of this application
- */
-export const useMicroprofileHealthLivenessHook = () => {
-	const microprofileHealthLiveness = useAxiosMutator<HealthResponse>();
-
-	return useCallback(
-		(signal?: AbortSignal) => {
-			return microprofileHealthLiveness({ url: `/q/health/live`, method: 'GET', signal });
-		},
-		[microprofileHealthLiveness]
-	);
-};
-
-export const getMicroprofileHealthLivenessQueryKey = () => {
-	return [`/q/health/live`] as const;
-};
-
-export const useMicroprofileHealthLivenessQueryOptions = <
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>, TError, TData>>;
-}) => {
-	const { query: queryOptions } = options ?? {};
-
-	const queryKey = queryOptions?.queryKey ?? getMicroprofileHealthLivenessQueryKey();
-
-	const microprofileHealthLiveness = useMicroprofileHealthLivenessHook();
-
-	const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>> = ({ signal }) =>
-		microprofileHealthLiveness(signal);
-
-	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-		Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>,
-		TError,
-		TData
-	> & { queryKey: DataTag<QueryKey, TData, TError> };
-};
-
-export type MicroprofileHealthLivenessQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>>;
-export type MicroprofileHealthLivenessQueryError = ErrorType<HealthResponse>;
-
-export function useMicroprofileHealthLiveness<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>,
-	TError = ErrorType<HealthResponse>
->(options: {
-	query: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>, TError, TData>> &
-		Pick<
-			DefinedInitialDataOptions<
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>,
-				TError,
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>
-			>,
-			'initialData'
-		>;
-}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useMicroprofileHealthLiveness<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>, TError, TData>> &
-		Pick<
-			UndefinedInitialDataOptions<
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>,
-				TError,
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>
-			>,
-			'initialData'
-		>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useMicroprofileHealthLiveness<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-/**
- * @summary The Liveness check of this application
- */
-
-export function useMicroprofileHealthLiveness<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthLivenessHook>>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = useMicroprofileHealthLivenessQueryOptions(options);
-
-	const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-	query.queryKey = queryOptions.queryKey;
-
-	return query;
-}
-
-/**
- * Check the readiness of the application
- * @summary The Readiness check of this application
- */
-export const useMicroprofileHealthReadinessHook = () => {
-	const microprofileHealthReadiness = useAxiosMutator<HealthResponse>();
-
-	return useCallback(
-		(signal?: AbortSignal) => {
-			return microprofileHealthReadiness({ url: `/q/health/ready`, method: 'GET', signal });
-		},
-		[microprofileHealthReadiness]
-	);
-};
-
-export const getMicroprofileHealthReadinessQueryKey = () => {
-	return [`/q/health/ready`] as const;
-};
-
-export const useMicroprofileHealthReadinessQueryOptions = <
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>, TError, TData>>;
-}) => {
-	const { query: queryOptions } = options ?? {};
-
-	const queryKey = queryOptions?.queryKey ?? getMicroprofileHealthReadinessQueryKey();
-
-	const microprofileHealthReadiness = useMicroprofileHealthReadinessHook();
-
-	const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>> = ({ signal }) =>
-		microprofileHealthReadiness(signal);
-
-	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-		Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>,
-		TError,
-		TData
-	> & { queryKey: DataTag<QueryKey, TData, TError> };
-};
-
-export type MicroprofileHealthReadinessQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>>;
-export type MicroprofileHealthReadinessQueryError = ErrorType<HealthResponse>;
-
-export function useMicroprofileHealthReadiness<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>,
-	TError = ErrorType<HealthResponse>
->(options: {
-	query: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>, TError, TData>> &
-		Pick<
-			DefinedInitialDataOptions<
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>,
-				TError,
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>
-			>,
-			'initialData'
-		>;
-}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useMicroprofileHealthReadiness<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>, TError, TData>> &
-		Pick<
-			UndefinedInitialDataOptions<
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>,
-				TError,
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>
-			>,
-			'initialData'
-		>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useMicroprofileHealthReadiness<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-/**
- * @summary The Readiness check of this application
- */
-
-export function useMicroprofileHealthReadiness<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthReadinessHook>>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = useMicroprofileHealthReadinessQueryOptions(options);
-
-	const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-	query.queryKey = queryOptions.queryKey;
-
-	return query;
-}
-
-/**
- * Check the startup of the application
- * @summary The Startup check of this application
- */
-export const useMicroprofileHealthStartupHook = () => {
-	const microprofileHealthStartup = useAxiosMutator<HealthResponse>();
-
-	return useCallback(
-		(signal?: AbortSignal) => {
-			return microprofileHealthStartup({ url: `/q/health/started`, method: 'GET', signal });
-		},
-		[microprofileHealthStartup]
-	);
-};
-
-export const getMicroprofileHealthStartupQueryKey = () => {
-	return [`/q/health/started`] as const;
-};
-
-export const useMicroprofileHealthStartupQueryOptions = <
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>, TError, TData>>;
-}) => {
-	const { query: queryOptions } = options ?? {};
-
-	const queryKey = queryOptions?.queryKey ?? getMicroprofileHealthStartupQueryKey();
-
-	const microprofileHealthStartup = useMicroprofileHealthStartupHook();
-
-	const queryFn: QueryFunction<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>> = ({ signal }) => microprofileHealthStartup(signal);
-
-	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-		Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>,
-		TError,
-		TData
-	> & { queryKey: DataTag<QueryKey, TData, TError> };
-};
-
-export type MicroprofileHealthStartupQueryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>>;
-export type MicroprofileHealthStartupQueryError = ErrorType<HealthResponse>;
-
-export function useMicroprofileHealthStartup<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>,
-	TError = ErrorType<HealthResponse>
->(options: {
-	query: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>, TError, TData>> &
-		Pick<
-			DefinedInitialDataOptions<
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>,
-				TError,
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>
-			>,
-			'initialData'
-		>;
-}): DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useMicroprofileHealthStartup<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>, TError, TData>> &
-		Pick<
-			UndefinedInitialDataOptions<
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>,
-				TError,
-				Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>
-			>,
-			'initialData'
-		>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-export function useMicroprofileHealthStartup<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-/**
- * @summary The Startup check of this application
- */
-
-export function useMicroprofileHealthStartup<
-	TData = Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>,
-	TError = ErrorType<HealthResponse>
->(options?: {
-	query?: Partial<UseQueryOptions<Awaited<ReturnType<ReturnType<typeof useMicroprofileHealthStartupHook>>>, TError, TData>>;
-}): UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = useMicroprofileHealthStartupQueryOptions(options);
-
-	const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
-
-	query.queryKey = queryOptions.queryKey;
-
-	return query;
-}
