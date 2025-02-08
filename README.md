@@ -21,7 +21,8 @@ with a front-end based on React so you can play with it from your browser.
 
 While the code is surprisingly simple, under the hood this is using:
 
-- [Quarkus REST and WebSockets Next](https://quarkus.io/guides/rest-web-sockets-next) for REST API endpoints with OpenAPI documentation and real-time WebSocket communication
+- [Quarkus REST](https://quarkus.io/guides/rest) for REST API endpoints with OpenAPI documentation
+- [Quarkus WebSockets Next](https://quarkus.io/guides/websockets-next-tutorial) for real-time WebSocket communication
 - [Hibernate ORM with Panache](https://quarkus.io/guides/hibernate-orm-panache) to perform the CRUD operations on the database
 - [PostgreSQL](https://www.postgresql.org/) database; automatically starts an embedded DB
 - [Liquibase](https://www.liquibase.com/) to automatically update database
