@@ -9,9 +9,12 @@
 	<url>https://github.com/melloware/quarkus-monorepo</url>
 	<properties>
 		<quarkus.platform.version>3.18.2</quarkus.platform.version>
-		<quarkus-quinoa.version>2.5.1</quarkus-quinoa.version>
-		<quarkus-postrgres.version>0.3.1</quarkus-postrgres.version>
+		<quarkus.logmanager.version>3.3.2</quarkus.logmanager.version>
+		<quarkus.ngrok.version>1.6.0</quarkus.ngrok.version>
+		<quarkus.postrgres.version>0.3.1</quarkus.postrgres.version>
+		<quarkus.quinoa.version>2.5.1</quarkus.quinoa.version>
 		<lombok.version>1.18.36</lombok.version>
+		<!-- Plugins-->
 		<surefire-plugin.version>3.5.2</surefire-plugin.version>
 		<maven.compiler.release>17</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,12 +32,7 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
-		<!-- Quarkus: -->
-		<dependency>
-			<groupId>io.quarkiverse.quinoa</groupId>
-			<artifactId>quarkus-quinoa</artifactId>
-			<version>${quarkus-quinoa.version}</version>
-		</dependency>
+		<!-- Quarkus Core -->
 		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-rest-jackson</artifactId>
@@ -72,18 +70,29 @@
 			<artifactId>quarkus-liquibase</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.quarkiverse.embedded.postgresql</groupId>
-			<artifactId>quarkus-embedded-postgresql</artifactId>
-			<version>${quarkus-postrgres.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-jdbc-postgresql</artifactId>
 		</dependency>
+		<!-- Quarkiverse Extensions -->
+		<dependency>
+			<groupId>io.quarkiverse.quinoa</groupId>
+			<artifactId>quarkus-quinoa</artifactId>
+			<version>${quarkus.quinoa.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkiverse.embedded.postgresql</groupId>
+			<artifactId>quarkus-embedded-postgresql</artifactId>
+			<version>${quarkus.postrgres.version}</version>
+		</dependency>
+		<dependency>
+            <groupId>io.quarkiverse.ngrok</groupId>
+            <artifactId>quarkus-ngrok</artifactId>
+            <version>${quarkus.ngrok.version}</version>
+        </dependency>
 		<dependency>
 			<groupId>io.quarkiverse.loggingmanager</groupId>
 			<artifactId>quarkus-logging-manager</artifactId>
-			<version>3.3.2</version>
+			<version>${quarkus.logmanager.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<!-- Utilities: -->
@@ -131,10 +140,11 @@
 				<executions>
 					<execution>
 						<goals>
-							<goal>build</goal>
-							<goal>generate-code</goal>
-							<goal>generate-code-tests</goal>
-						</goals>
+                            <goal>build</goal>
+                            <goal>generate-code</goal>
+                            <goal>generate-code-tests</goal>
+                            <goal>native-image-agent</goal>
+                        </goals>
 					</execution>
 				</executions>
 			</plugin>
@@ -257,7 +267,7 @@
 									<arguments>
 										<argument>build</argument>
 										<argument>-f</argument>
-										<argument>src/main/docker/Dockerfile.native</argument>
+										<argument>src/main/docker/Dockerfile.native-micro</argument>
 										<argument>-t</argument>
 										<argument>melloware/${project.artifactId}:${project.version}</argument>
 										<argument>.</argument>
