@@ -87,6 +87,7 @@ public class SocketResource {
      * @param message The SocketMessage to send to all clients
      */
     private void sendMessage(SocketMessage message) {
+        LOG.infof("WebSocket: %s", message);
         try {
             // sleep to simulate time processing an event before publishing
             Thread.sleep(2000);

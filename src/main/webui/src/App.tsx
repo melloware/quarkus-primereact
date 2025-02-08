@@ -293,7 +293,7 @@ const App = () => {
 				<ul className={classNames('layout-topbar-menu lg:flex origin-top', { 'layout-topbar-menu-mobile-active': mobileTopbarMenuActive })}>
 					<li>
 						<a href="https://reactjs.org" target="_blank" rel="noreferrer">
-							<img src="static/images/react.svg" className="react-logo" alt="React JS" height="84" width="89" />
+							<img src="static/images/react.svg" className="react-logo" alt="React" height="84" width="89" />
 						</a>
 					</li>
 				</ul>
