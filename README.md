@@ -21,16 +21,16 @@ with a front-end based on React so you can play with it from your browser.
 
 While the code is surprisingly simple, under the hood this is using:
 
-- [Quarkus REST and WebSockets Next](https://quarkus.io/guides/rest-web-sockets-next) to expose the REST endpoints and documented with OpenAPI and websocket data
+- [Quarkus REST and WebSockets Next](https://quarkus.io/guides/rest-web-sockets-next) for REST API endpoints with OpenAPI documentation and real-time WebSocket communication
 - [Hibernate ORM with Panache](https://quarkus.io/guides/hibernate-orm-panache) to perform the CRUD operations on the database
 - [PostgreSQL](https://www.postgresql.org/) database; automatically starts an embedded DB
 - [Liquibase](https://www.liquibase.com/) to automatically update database
 - [Quinoa](https://github.com/quarkiverse/quarkus-quinoa) to handle allowing this monorepo to serve React and Java code
 - [React + PrimeReact](https://primereact.org/) for a top notch user interface including lazy datatable
-- [TanStack Query](https://tanstack.com/query/latest) for powerful asynchronous state management for TypeScript
-- [Orval](https://orval.dev/) to generate TanStack Query client Typescript from OpenAPI definition
 - [React Hook Forms](https://react-hook-form.com/) to validate user input data
 - [React Websocket](https://github.com/robtaussig/react-use-websocket) to handle websocket connections
+- [TanStack Query](https://tanstack.com/query/latest) for powerful asynchronous state management for TypeScript
+- [Orval](https://orval.dev/) to generate TanStack Query client Typescript from the OpenAPI definition
 
 ## Requirements
 
