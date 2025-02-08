@@ -21,24 +21,29 @@ with a front-end based on React so you can play with it from your browser.
 
 While the code is surprisingly simple, under the hood this is using:
 
-- RESTEasy to expose the REST endpoints and documented with OpenAPI
-- Hibernate ORM with Panache to perform the CRUD operations on the database
-- PostgreSQL database; automatically starts an embedded DB
+- [Quarkus REST and WebSockets Next](https://quarkus.io/guides/rest-web-sockets-next) to expose the REST endpoints and documented with OpenAPI and websocket data
+- [Hibernate ORM with Panache](https://quarkus.io/guides/hibernate-orm-panache) to perform the CRUD operations on the database
+- [PostgreSQL](https://www.postgresql.org/) database; automatically starts an embedded DB
 - [Liquibase](https://www.liquibase.com/) to automatically update database
 - [Quinoa](https://github.com/quarkiverse/quarkus-quinoa) to handle allowing this monorepo to serve React and Java code
 - [React + PrimeReact](https://primereact.org/) for a top notch user interface including lazy datatable
 - [TanStack Query](https://tanstack.com/query/latest) for powerful asynchronous state management for TypeScript
 - [Orval](https://orval.dev/) to generate TanStack Query client Typescript from OpenAPI definition
 - [React Hook Forms](https://react-hook-form.com/) to validate user input data
+- [React Websocket](https://github.com/robtaussig/react-use-websocket) to handle websocket connections
 
 ## Requirements
 
 To compile and run this demo you will need:
 
 - JDK 17+
-- Docker
 
-In addition, you will need either a PostgreSQL database, or Docker to run one.
+## Code Generation
+
+This project uses [Orval](https://orval.dev/) to generate the TanStack Query client Typescript from the OpenAPI definition.
+
+[![Code Generation](https://github.com/melloware/quarkus-primereact/blob/main/src/test/resources/dev-flow.png)](https://github.com/melloware/quarkus-primereact)
+
 
 ## Developing
 
@@ -115,8 +120,3 @@ Please brace yourself: don't choke on that fresh cup of coffee you just got. Now
 
 Navigate to: <http://localhost:8080/index.html>
 
-## Code Generation
-
-This project uses [Orval](https://orval.dev/) to generate the TanStack Query client Typescript from the OpenAPI definition.
-
-[![Code Generation](https://github.com/melloware/quarkus-primereact/blob/main/src/test/resources/dev-flow.png)](https://github.com/melloware/quarkus-primereact)
