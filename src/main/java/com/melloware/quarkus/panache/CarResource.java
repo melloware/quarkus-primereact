@@ -57,6 +57,7 @@ public class CarResource {
 		@APIResponse(responseCode = "404", description = "Car not found")
 	})
 	public Car getSingle(@PathParam("id") @Min(value = 0) Long id) {
+		LOG.infof("Get Car: %s", id);
 		Car entity = Car.findById(id);
 		if (entity == null) {
 			throw new NotFoundException("Car with id of " + id + " does not exist.");
@@ -69,8 +70,10 @@ public class CarResource {
 	@Operation(summary = "Get all manufacturers", description = "Returns a list of distinct car manufacturers")
 	@APIResponse(responseCode = "200", description = "Success")
 	public List<String> getManufacturers() {
+		LOG.infof("Get Unique Manufacturers...");
 		return Car.find("select distinct make from Car order by make").project(String.class).list();
 	}
+
 
 	@POST
 	@Transactional
@@ -80,6 +83,7 @@ public class CarResource {
 		@APIResponse(responseCode = "422", description = "Invalid car data provided")
 	})
 	public Response create(@Valid Car car) {
+		LOG.infof("Create Car: %s", car);
 		if (car.id != null) {
 			// 422 Unprocessable Entity
 			throw new WebApplicationException("Id was invalidly set on request.", 422);
@@ -97,9 +101,11 @@ public class CarResource {
 		@APIResponse(responseCode = "404", description = "Car not found")
 	})
 	public Car update(@PathParam("id") @Min(value = 0) Long id, @Valid Car car) {
+		LOG.infof("Update Car: %s", id);
 		Car entity = Car.findById(id);
 		if (entity == null) {
 			throw new NotFoundException("Car with id of " + id + " does not exist.");
+
 		}
 
 		// would normally use ModelMapper here: https://modelmapper.org/
@@ -122,6 +128,7 @@ public class CarResource {
 		@APIResponse(responseCode = "404", description = "Car not found")
 	})
 	public Response delete(@PathParam("id") @Min(value = 0) Long id) {
+		LOG.infof("Delete Car: %s", id);
 		Car entity = Car.findById(id);
 		if (entity == null) {
 			throw new NotFoundException("Car with id of " + id + " does not exist.");
