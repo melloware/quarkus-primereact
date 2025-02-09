@@ -23,10 +23,11 @@ While the code is surprisingly simple, under the hood this is using:
 
 - [Quarkus REST](https://quarkus.io/guides/rest) for REST API endpoints with OpenAPI documentation
 - [Quarkus WebSockets Next](https://quarkus.io/guides/websockets-next-tutorial) for real-time WebSocket communication
+- [Quarkus RESTEasy Problem](https://github.com/quarkiverse/quarkus-resteasy-problem) for consistent REST API error handling
+- [Quarkus Quinoa](https://github.com/quarkiverse/quarkus-quinoa) to handle allowing this monorepo to serve React and Java code
 - [Hibernate ORM with Panache](https://quarkus.io/guides/hibernate-orm-panache) to perform the CRUD operations on the database
 - [PostgreSQL](https://www.postgresql.org/) database; automatically starts an embedded DB
 - [Liquibase](https://www.liquibase.com/) to automatically update database
-- [Quinoa](https://github.com/quarkiverse/quarkus-quinoa) to handle allowing this monorepo to serve React and Java code
 - [React + PrimeReact](https://primereact.org/) for a top notch user interface including lazy datatable
 - [React Hook Forms](https://react-hook-form.com/) to validate user input data
 - [React Websocket](https://github.com/robtaussig/react-use-websocket) to handle websocket connections
