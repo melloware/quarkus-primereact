@@ -38,6 +38,7 @@ While the code is surprisingly simple, under the hood this is using:
 To compile and run this demo you will need:
 
 - JDK 17+
+- Apache Maven
 
 ## Code Generation
 
