@@ -68,7 +68,7 @@ Now open your web browser to http://localhost:8080/ to see it in action.
 
 ## Building
 
-### Run Quarkus in JVM mode
+### Run Quarkus PrimeReact in JVM mode
 
 When you're done iterating in developer mode, you can run the application as a
 conventional jar file.
@@ -76,46 +76,47 @@ conventional jar file.
 First compile it:
 
 ```bash
-$ ./mvnw package
+$ ./mvnw clean package
 ```
-
-Connection properties for the Agroal datasource are defined in the standard Quarkus configuration file,
-`src/main/resources/application.properties`.
 
 Then run it with:
 
 ```bash
 $ java -jar ./target/quarkus-app/quarkus-run.jar
 ```
+
+Or build it as a single executable JAR file (known as an uber-jar):
+
+```bash
+$ ./mvnw clean package -Dquarkus.package.type=uber-jar
+```
+
+Then run it with:
+
+```bash
+$ java -jar ./target/quarkus-primereact-{version}-runner.jar
+```
+
 Navigate to:
 <http://localhost:8080/>
 
-> :bulb:
-Have a look at how fast it boots. Or measure total native memory consumption...
 
-### Run Quarkus as a native application
+### Run Quarkus PrimeReact in Docker
 
-You can also create a native executable from this application without making any
-source code changes. A native executable removes the dependency on the JVM:
-everything needed to run the application on the target platform is included in
-the executable, allowing the application to run with minimal resource overhead.
-
-Compiling a native executable takes a bit longer, as GraalVM performs additional
-steps to remove unnecessary codepaths. Use the  `native` profile to compile a
-native executable:
+You can easily build a Docker image of this application with the following command:
 
 ```bash
-$ mvn -Pnative
+$ ./mvnw -Pdocker
 ```
 
-After getting a cup of coffee, you'll be able to run this binary directly where ${version} is the current project version:
+You will be able to run this binary directly where ${version} is the current project version:
 
 ```bash
 $ docker run -i --rm -p 8080:8080 melloware/quarkus-primereact:${version}
 ```
 
 > :bulb:
-Please brace yourself: don't choke on that fresh cup of coffee you just got. Now observe the time it took to boot, and remember: that time was mostly spent to generate the tables in your database and import the initial data.
+Now observe the time it took to boot, and remember: that time was mostly spent to generate the tables in your database and import the initial data.
 
 ## See it in your browser
 
