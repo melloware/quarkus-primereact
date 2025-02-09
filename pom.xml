@@ -12,7 +12,8 @@
 		<quarkus.platform.version>3.18.2</quarkus.platform.version>
 		<quarkus.logmanager.version>3.3.2</quarkus.logmanager.version>
 		<quarkus.ngrok.version>1.6.0</quarkus.ngrok.version>
-		<quarkus.postrgres.version>0.3.1</quarkus.postrgres.version>
+		<quarkus.postgresql.version>0.3.1</quarkus.postgresql.version>
+		<quarkus.rest-problem.version>3.15.0</quarkus.rest-problem.version>
 		<quarkus.quinoa.version>2.5.1</quarkus.quinoa.version>
 		<lombok.version>1.18.36</lombok.version>
 		<!-- Plugins-->
@@ -83,7 +84,7 @@
 		<dependency>
 			<groupId>io.quarkiverse.embedded.postgresql</groupId>
 			<artifactId>quarkus-embedded-postgresql</artifactId>
-			<version>${quarkus.postrgres.version}</version>
+			<version>${quarkus.postgresql.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.quarkiverse.ngrok</groupId>
@@ -95,6 +96,11 @@
 			<artifactId>quarkus-logging-manager</artifactId>
 			<version>${quarkus.logmanager.version}</version>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.quarkiverse.resteasy-problem</groupId>
+			<artifactId>quarkus-resteasy-problem</artifactId>
+			<version>${quarkus.rest-problem.version}</version>
 		</dependency>
 		<!-- Brotli4j Linux x86_64 is needed for Docker image build -->
 		<dependency>
