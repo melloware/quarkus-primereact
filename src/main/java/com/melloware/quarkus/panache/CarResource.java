@@ -137,6 +137,7 @@ public class CarResource {
 		@APIResponse(responseCode = "400", description = "Invalid request format")
 	})
 	public QueryResponse<Car> list(@QueryParam("request") String lazyRequest) throws JsonProcessingException {
+		LOG.debugf("List Cars: %s", lazyRequest);
 		try {
 			// add a delay to simulate a slow response
 			Thread.sleep(250);
@@ -152,7 +153,7 @@ public class CarResource {
 		}
 
 		final QueryRequest request = objectMapper.readValue(lazyRequest, QueryRequest.class);
-		LOG.info(request);
+		LOG.debug(request);
 
 		// sorts
 		final Sort sort = request.calculateSort();
