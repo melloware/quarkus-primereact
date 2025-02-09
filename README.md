@@ -113,7 +113,7 @@ $ ./mvnw -Pdocker
 You will be able to run this binary directly where ${version} is the current project version:
 
 ```bash
-$ docker run -i --rm -p 8080:8080 melloware/quarkus-primereact:${version}
+$ docker run -i --rm -p 8000:8000 melloware/quarkus-primereact:latest
 ```
 
 > :bulb:
