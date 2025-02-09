@@ -96,6 +96,7 @@
 			<version>${quarkus.logmanager.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- Brotli4j Linux x86_64 is needed for Docker image build -->
 		<dependency>
 			<groupId>com.aayushatharva.brotli4j</groupId>
 			<artifactId>native-linux-x86_64</artifactId>
