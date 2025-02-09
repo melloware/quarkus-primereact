@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.melloware</groupId>
 	<artifactId>quarkus-primereact</artifactId>
@@ -38,9 +39,9 @@
 			<artifactId>quarkus-rest-jackson</artifactId>
 		</dependency>
 		<dependency>
-           <groupId>io.quarkus</groupId>
-           <artifactId>quarkus-websockets-next</artifactId>
-        </dependency>
+			<groupId>io.quarkus</groupId>
+			<artifactId>quarkus-websockets-next</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-smallrye-openapi</artifactId>
@@ -85,15 +86,19 @@
 			<version>${quarkus.postrgres.version}</version>
 		</dependency>
 		<dependency>
-            <groupId>io.quarkiverse.ngrok</groupId>
-            <artifactId>quarkus-ngrok</artifactId>
-            <version>${quarkus.ngrok.version}</version>
-        </dependency>
+			<groupId>io.quarkiverse.ngrok</groupId>
+			<artifactId>quarkus-ngrok</artifactId>
+			<version>${quarkus.ngrok.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>io.quarkiverse.loggingmanager</groupId>
 			<artifactId>quarkus-logging-manager</artifactId>
 			<version>${quarkus.logmanager.version}</version>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.aayushatharva.brotli4j</groupId>
+			<artifactId>native-linux-x86_64</artifactId>
 		</dependency>
 		<!-- Utilities: -->
 		<dependency>
@@ -140,11 +145,11 @@
 				<executions>
 					<execution>
 						<goals>
-                            <goal>build</goal>
-                            <goal>generate-code</goal>
-                            <goal>generate-code-tests</goal>
-                            <goal>native-image-agent</goal>
-                        </goals>
+							<goal>build</goal>
+							<goal>generate-code</goal>
+							<goal>generate-code-tests</goal>
+							<goal>native-image-agent</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
