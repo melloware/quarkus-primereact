@@ -60,7 +60,7 @@ const CrudPage = () => {
 	const [isMultipleSort, setMultipleSort] = useState(true);
 
 	// socket
-	const { lastJsonMessage } = useWebSocket('ws://' + location.host + '/push/');
+	const { lastJsonMessage } = useWebSocket(`${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/push/`);
 
 	const menuFilters = {
 		vin: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
