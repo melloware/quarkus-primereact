@@ -42,7 +42,7 @@ To compile and run this demo you will need:
 
 ## Code Generation
 
-This project uses [Orval](https://orval.dev/) to generate the TanStack Query client Typescript from the OpenAPI definition.
+This project uses [Orval](https://orval.dev/) to generate the [TanStack Query](https://tanstack.com/query/latest) client Typescript from the OpenAPI definition.
 
 [![Code Generation](https://github.com/melloware/quarkus-primereact/blob/main/src/test/resources/dev-flow.png)](https://github.com/melloware/quarkus-primereact)
 
