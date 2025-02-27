@@ -250,6 +250,8 @@ paths:
           description: Car created successfully
         "422":
           description: Invalid car data provided
+        "400":
+          description: Bad Request
   /entity/cars/manufacturers:
     get:
       summary: Get all manufacturers
@@ -294,6 +296,8 @@ paths:
                 $ref: "#/components/schemas/Car"
         "404":
           description: Car not found
+        "400":
+          description: Bad Request
     get:
       summary: Get a car by ID
       description: Returns a car based on the provided ID

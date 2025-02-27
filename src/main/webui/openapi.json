@@ -278,6 +278,9 @@
           },
           "422" : {
             "description" : "Invalid car data provided"
+          },
+          "400" : {
+            "description" : "Bad Request"
           }
         }
       }
@@ -342,6 +345,9 @@
           },
           "404" : {
             "description" : "Car not found"
+          },
+          "400" : {
+            "description" : "Bad Request"
           }
         }
       },
