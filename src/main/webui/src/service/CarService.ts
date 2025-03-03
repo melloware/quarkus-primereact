@@ -254,7 +254,7 @@ export function useGetEntityCars<TData = Awaited<ReturnType<ReturnType<typeof us
  * @summary Create a new car
  */
 export const usePostEntityCarsHook = () => {
-	const postEntityCars = useAxiosMutator<void>();
+	const postEntityCars = useAxiosMutator<Car>();
 
 	return useCallback(
 		(car: Car, signal?: AbortSignal) => {

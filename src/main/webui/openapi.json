@@ -274,7 +274,14 @@
         },
         "responses" : {
           "201" : {
-            "description" : "Car created successfully"
+            "description" : "Car created successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Car"
+                }
+              }
+            }
           },
           "422" : {
             "description" : "Invalid car data provided"
