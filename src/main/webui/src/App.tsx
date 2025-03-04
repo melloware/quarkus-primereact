@@ -1,53 +1,4 @@
-import locale_ar_tn from 'primelocale/ar-tn.json';
-import locale_ar from 'primelocale/ar.json';
-import locale_bg from 'primelocale/bg.json';
-import locale_ca from 'primelocale/ca.json';
-import locale_ckb from 'primelocale/ckb.json';
-import locale_cs from 'primelocale/cs.json';
-import locale_da from 'primelocale/da.json';
-import locale_de_at from 'primelocale/de-at.json';
-import locale_de_ch from 'primelocale/de-ch.json';
-import locale_de from 'primelocale/de.json';
-import locale_el from 'primelocale/el.json';
-import locale_en_au from 'primelocale/en-au.json';
-import locale_en_gb from 'primelocale/en-gb.json';
-import locale_en from 'primelocale/en.json';
-import locale_es from 'primelocale/es.json';
-import locale_fa from 'primelocale/fa.json';
-import locale_fi from 'primelocale/fi.json';
-import locale_fr from 'primelocale/fr.json';
-import locale_he from 'primelocale/he.json';
-import locale_hi from 'primelocale/hi.json';
-import locale_hr from 'primelocale/hr.json';
-import locale_hu from 'primelocale/hu.json';
-import locale_id from 'primelocale/id.json';
-import locale_it from 'primelocale/it.json';
-import locale_ja from 'primelocale/ja.json';
-import locale_kk from 'primelocale/kk.json';
-import locale_km from 'primelocale/km.json';
-import locale_ko from 'primelocale/ko.json';
-import locale_ku from 'primelocale/ku.json';
-import locale_ky from 'primelocale/ky.json';
-import locale_lv from 'primelocale/lv.json';
-import locale_ms from 'primelocale/ms.json';
-import locale_nb_no from 'primelocale/nb-no.json';
-import locale_nl from 'primelocale/nl.json';
-import locale_pl from 'primelocale/pl.json';
-import locale_pt_br from 'primelocale/pt-br.json';
-import locale_pt from 'primelocale/pt.json';
-import locale_ro from 'primelocale/ro.json';
-import locale_ru from 'primelocale/ru.json';
-import locale_sk from 'primelocale/sk.json';
-import locale_sl from 'primelocale/sl.json';
-import locale_sr_rs from 'primelocale/sr-rs.json';
-import locale_sv from 'primelocale/sv.json';
-import locale_th from 'primelocale/th.json';
-import locale_tr from 'primelocale/tr.json';
-import locale_uk from 'primelocale/uk.json';
-import locale_uz from 'primelocale/uz.json';
-import locale_vi from 'primelocale/vi.json';
-import locale_zh_CN from 'primelocale/zh-CN.json';
-import locale_zh_TW from 'primelocale/zh-TW.json';
+import { all as locales } from 'primelocale';
 import { useMountEffect } from 'primereact/hooks';
 import { classNames, DomHandler } from 'primereact/utils';
 import React, { useEffect, useState } from 'react';
@@ -75,59 +26,6 @@ const App = () => {
 	const [mobileMenuActive, setMobileMenuActive] = useState(false);
 	const [mobileTopbarMenuActive, setMobileTopbarMenuActive] = useState(false);
 	const location = useLocation();
-
-	const localeMap = new Map<string, LocaleOptions>([
-		['ar-tn', locale_ar_tn['ar-tn']],
-		['ar', locale_ar['ar']],
-		['bg', locale_bg['bg']],
-		['ca', locale_ca['ca']],
-		['ckb', locale_ckb['ckb']],
-		['cs', locale_cs['cs']],
-		['da', locale_da['da']],
-		['de-at', locale_de_at['de-at']],
-		['de-ch', locale_de_ch['de-ch']],
-		['de', locale_de['de']],
-		['el', locale_el['el']],
-		['en-au', locale_en_au['en-au']],
-		['en-gb', locale_en_gb['en-gb']],
-		['en', locale_en['en']],
-		['es', locale_es['es']],
-		['fa', locale_fa['fa']],
-		['fi', locale_fi['fi']],
-		['fr', locale_fr['fr']],
-		['he', locale_he['he']],
-		['hi', locale_hi['hi']],
-		['hr', locale_hr['hr']],
-		['hu', locale_hu['hu']],
-		['id', locale_id['id']],
-		['it', locale_it['it']],
-		['ja', locale_ja['ja']],
-		['kk', locale_kk['kk']],
-		['km', locale_km['km']],
-		['ko', locale_ko['ko']],
-		['ku', locale_ku['ku']],
-		['ky', locale_ky['ky']],
-		['lv', locale_lv['lv']],
-		['ms', locale_ms['ms']],
-		['nb-no', locale_nb_no['nb-no']],
-		['nl', locale_nl['nl']],
-		['pl', locale_pl['pl']],
-		['pt-br', locale_pt_br['pt-br']],
-		['pt', locale_pt['pt']],
-		['ro', locale_ro['ro']],
-		['ru', locale_ru['ru']],
-		['sk', locale_sk['sk']],
-		['sl', locale_sl['sl']],
-		['sr-rs', locale_sr_rs['sr-rs']],
-		['sv', locale_sv['sv']],
-		['th', locale_th['th']],
-		['tr', locale_tr['tr']],
-		['uk', locale_uk['uk']],
-		['uz', locale_uz['uz']],
-		['vi', locale_vi['vi']],
-		['zh-cn', locale_zh_CN['zh-CN']],
-		['zh-tw', locale_zh_TW['zh-TW']]
-	]);
 
 	let menuClick = false;
 	let mobileTopbarMenuClick = false;
@@ -157,25 +55,20 @@ const App = () => {
 	});
 
 	const getClosestLocale = (browserLocale: string): LocaleOptions => {
-		let closest: LocaleOptions | undefined;
 		// First, try to find an exact match
-		if (localeMap.has(browserLocale.toLowerCase())) {
-			closest = localeMap.get(browserLocale.toLowerCase());
-			if (closest) {
-				return closest;
-			}
+		const normalizedLocale = browserLocale.toLowerCase();
+		if (normalizedLocale in locales) {
+			return locales[normalizedLocale as keyof typeof locales];
 		}
 
 		// If no exact match, try to find a match for the language part
 		const languagePart = browserLocale.split('-')[0];
-		for (const [key, value] of localeMap.entries()) {
-			if (key === languagePart) {
-				return value;
-			}
+		if (languagePart in locales) {
+			return locales[languagePart as keyof typeof locales];
 		}
 
 		// If still no match, return English as default
-		return localeMap.get('en')!;
+		return locales.en;
 	};
 
 	const onWrapperClick = (_event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
