@@ -20,6 +20,7 @@ import useWebSocket from 'react-use-websocket';
 import { ErrorType } from './service/AxiosMutator';
 import {
 	Car,
+	HttpProblem,
 	SocketMessage,
 	SocketMessageType,
 	useDeleteEntityCarsId,
@@ -221,8 +222,8 @@ const CrudPage = () => {
 						toast('success', 'Successful', `${car.year} ${car.make} ${car.model} Updated`);
 						queryClient.invalidateQueries({ queryKey: ['list-cars'] });
 					},
-					onError: (error: ErrorType<unknown>) => {
-						toast('error', 'Error', JSON.stringify(error.response?.data));
+					onError: (error: ErrorType<HttpProblem | void>) => {
+						toast('error', 'Error', error.response?.data?.detail || error.response?.data?.title || 'An unknown error occurred');
 					}
 				}
 			);
@@ -235,8 +236,8 @@ const CrudPage = () => {
 						toast('success', 'Successful', `${car.year} ${car.make} ${car.model} Created`);
 						queryClient.invalidateQueries({ queryKey: ['list-cars'] });
 					},
-					onError: (error: ErrorType<unknown>) => {
-						toast('error', 'Error', JSON.stringify(error.response?.data));
+					onError: (error: ErrorType<HttpProblem | void>) => {
+						toast('error', 'Error', error.response?.data?.detail || error.response?.data?.title || 'An unknown error occurred');
 					}
 				}
 			);
@@ -274,8 +275,8 @@ const CrudPage = () => {
 					toast('success', 'Successful', `${car.year} ${car.make} ${car.model} Deleted`);
 					queryClient.invalidateQueries({ queryKey: ['list-cars'] });
 				},
-				onError: (error: ErrorType<unknown>) => {
-					toast('error', 'Error', JSON.stringify(error.response?.data));
+				onError: (error: ErrorType<HttpProblem | void>) => {
+					toast('error', 'Error', error.response?.data?.detail || error.response?.data?.title || 'An unknown error occurred');
 				}
 			}
 		);
