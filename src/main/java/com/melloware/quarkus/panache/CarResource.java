@@ -132,7 +132,7 @@ public class CarResource {
 	public Response delete(@PathParam("id") @Min(value = 0) Long id) {
 		LOG.infof("Delete Car: %s", id);
 		Car entity = Car.findById(id);
-		if (entity != null) {
+		if (entity == null) {
 			throw new NotFoundException("Car with id of " + id + " does not exist.");
 		}
 		entity.delete();
