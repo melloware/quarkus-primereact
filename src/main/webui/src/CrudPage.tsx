@@ -307,7 +307,7 @@ const CrudPage = () => {
 				placeholder="dd-MMM-yy"
 				monthNavigator
 				yearNavigator
-				yearRange="2000:2050"
+				yearRange="1960:2050"
 			/>
 		);
 	};
