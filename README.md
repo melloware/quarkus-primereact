@@ -29,10 +29,11 @@ While the code is surprisingly simple, under the hood this is using:
 - [PostgreSQL](https://www.postgresql.org/) database; automatically starts an embedded DB
 - [Liquibase](https://www.liquibase.com/) to automatically update database
 - [React + PrimeReact](https://primereact.org/) for a top notch user interface including lazy datatable
-- [React Hook Forms](https://react-hook-form.com/) to validate user input data
 - [React Websocket](https://github.com/robtaussig/react-use-websocket) to handle websocket connections
+- [TanStack Forms](https://tanstack.com/form/latest) to validate user input data
 - [TanStack Query](https://tanstack.com/query/latest) for powerful asynchronous state management for TypeScript
 - [Orval](https://orval.dev/) to generate TanStack Query client Typescript from the OpenAPI definition
+- [Zod](https://zod.dev/) for TypeScript-first schema validation
 
 ## Requirements
 

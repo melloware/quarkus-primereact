@@ -31,32 +31,38 @@ export interface Car {
 	id?: number;
 	/**
 	 * VIN number
+	 * @maxLength 17
 	 * @pattern \S
 	 */
 	vin: string;
 	/**
 	 * Manufacturer
+	 * @maxLength 255
 	 * @pattern \S
 	 */
 	make: string;
 	/**
 	 * Model Number
+	 * @maxLength 255
 	 * @pattern \S
 	 */
 	model: string;
 	/**
 	 * Year of manufacture
 	 * @minimum 1960
+	 * @maximum 2050
 	 */
 	year: number;
 	/**
 	 * HTML color of the car
+	 * @maxLength 20
 	 * @pattern \S
 	 */
 	color: string;
 	/**
 	 * Price
 	 * @minimum 0
+	 * @maximum 250000
 	 */
 	price: number;
 	/** Modified time of the record */

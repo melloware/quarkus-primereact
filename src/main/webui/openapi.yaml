@@ -15,24 +15,28 @@ components:
           examples:
           - WVGEF9BP4DD085048
           pattern: \S
+          maxLength: 17
         make:
           type: string
           description: Manufacturer
           examples:
           - BMW
           pattern: \S
+          maxLength: 255
         model:
           type: string
           description: Model Number
           examples:
           - 330ix
           pattern: \S
+          maxLength: 255
         year:
           type: integer
           format: int32
           description: Year of manufacture
           examples:
           - 1974
+          maximum: 2050
           minimum: 1960
         color:
           type: string
@@ -40,11 +44,13 @@ components:
           examples:
           - 891d4c
           pattern: \S
+          maxLength: 20
         price:
           type: number
           description: Price
           examples:
           - 9999.99
+          maximum: 250000.00
           minimum: 0.00
         modifiedTime:
           description: Modified time of the record

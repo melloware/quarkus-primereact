@@ -1,3 +1,4 @@
+import { AnyFieldApi, useForm } from '@tanstack/react-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { FilterMatchMode, FilterOperator, SortOrder } from 'primereact/api';
 import { Button } from 'primereact/button';
@@ -14,9 +15,9 @@ import { Toast } from 'primereact/toast';
 import { Toolbar } from 'primereact/toolbar';
 import { Tooltip } from 'primereact/tooltip';
 import { classNames } from 'primereact/utils';
-import React, { JSX, useEffect, useRef, useState } from 'react';
-import { Controller, ControllerFieldState, useForm } from 'react-hook-form';
+import React, { useEffect, useRef, useState } from 'react';
 import useWebSocket from 'react-use-websocket';
+import { z } from 'zod';
 import { ErrorType } from './service/AxiosMutator';
 import {
 	Car,
@@ -29,6 +30,9 @@ import {
 	usePostEntityCars,
 	usePutEntityCarsId
 } from './service/CarService';
+import { postEntityCarsBody } from './service/CarService.zod';
+
+type CarInput = z.infer<typeof postEntityCarsBody>;
 
 /**
  * CRUD page demonstrating multiple TanStack Query and PrimeReact concepts such as lazy querying datable,
@@ -38,16 +42,25 @@ import {
  */
 const CrudPage = () => {
 	// form
-	const defaultValues = {
+	let defaultValues = {
+		id: undefined,
 		vin: '',
 		make: '',
 		model: '',
 		color: '',
 		year: 2022,
-		price: 0
-	} as Car;
-	const form = useForm({ defaultValues: defaultValues });
-	const errors = form.formState.errors;
+		price: 0,
+		modifiedTime: undefined
+	} as CarInput;
+	const form = useForm({
+		defaultValues: defaultValues,
+		validators: {
+			onChange: postEntityCarsBody
+		},
+		onSubmit: async ({ value }) => {
+			onSubmit(value);
+		}
+	});
 
 	// refs
 	const toastRef = useRef<Toast>(null);
@@ -186,32 +199,6 @@ const CrudPage = () => {
 		onReset(defaultValues);
 	};
 
-	const getFormErrorMessage = (fieldState: ControllerFieldState, fieldName?: string, max?: number, min?: number): JSX.Element | null => {
-		if (!fieldState || !fieldState.error) {
-			return null;
-		}
-		const name = fieldName ? fieldName.charAt(0).toUpperCase() + fieldName.slice(1) : '';
-		const error = fieldState.error;
-		let message;
-		switch (error.type) {
-			case 'required':
-				message = `${name} is required`;
-				break;
-			case 'min':
-				message = `${name} less than minimum allowed value of ${min}`;
-				break;
-			case 'max':
-				message = `${name} more than maximum allowed value of ${max}`;
-				break;
-			case 'maxLength':
-				message = `${name} more than maximum ${max} allowed characters`;
-				break;
-			default:
-				break;
-		}
-		return <small className="p-error">{message}</small>;
-	};
-
 	const onSubmit = (car: Car) => {
 		if (car.id) {
 			updateCarMutation.mutate(
@@ -244,15 +231,10 @@ const CrudPage = () => {
 		}
 	};
 
-	const onReset = (data: Car) => {
+	const onReset = (data: CarInput) => {
 		setCar(data);
 		form.reset(data, {
-			keepErrors: false,
-			keepDirty: false,
-			keepIsSubmitted: false,
-			keepTouched: false,
-			keepIsValid: false,
-			keepSubmitCount: false
+			keepDefaultValues: true
 		});
 	};
 
@@ -387,7 +369,7 @@ const CrudPage = () => {
 	return (
 		<div>
 			<div className="card">
-				<Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+				<Toolbar className="mb-4" start={leftToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
 
 				<DataTable
 					ref={datatable}
@@ -435,145 +417,157 @@ const CrudPage = () => {
 			</div>
 
 			<Dialog visible={editCarDialog} style={{ width: '450px' }} header="Car Details" modal onHide={hideEditDialog}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className="p-fluid">
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						e.stopPropagation();
+						form.handleSubmit();
+					}}
+					className="p-fluid"
+				>
 					<div className="field">
-						<Controller
-							name="vin"
-							control={form.control}
-							rules={{ required: 'VIN is required.', maxLength: 17 }}
-							render={({ field, fieldState }) => (
+						<form.Field name="vin">
+							{(field) => (
 								<>
-									<label htmlFor={field.name} className={classNames({ 'p-error': errors.vin })}>
+									<label htmlFor={field.name} className={classNames({ 'p-error': field.state.meta.errors.length > 0 })}>
 										VIN*
 									</label>
-									<InputText id={field.name} {...field} className={classNames({ 'p-invalid': fieldState.error })} autoComplete="off" />
-									{getFormErrorMessage(fieldState, field.name, 17)}
+									<InputText
+										id={field.name}
+										value={field.state.value}
+										onChange={(e) => field.handleChange(e.target.value)}
+										onBlur={field.handleBlur}
+										className={classNames({ 'p-invalid': field.state.meta.errors.length > 0 })}
+										autoComplete="off"
+									/>
+									<FieldInfo field={field} />
 								</>
 							)}
-						/>
+						</form.Field>
 					</div>
 					<div className="formgrid grid">
 						<div className="field col">
-							<Controller
-								name="make"
-								control={form.control}
-								rules={{ required: 'Make is required.' }}
-								render={({ field, fieldState }) => (
+							<form.Field name="make">
+								{(field) => (
 									<>
-										<label htmlFor={field.name} className={classNames({ 'p-error': errors.make })}>
+										<label htmlFor={field.name} className={classNames({ 'p-error': field.state.meta.errors.length > 0 })}>
 											Make*
 										</label>
 										<Dropdown
 											id={field.name}
 											options={queryManufacturers.data}
-											className={classNames({ 'p-invalid': fieldState.error })}
-											{...field}
-											onChange={(e) => field.onChange(e.value)}
-											focusInputRef={field.ref}
+											value={field.state.value}
+											onChange={(e) => field.handleChange(e.value)}
+											onBlur={field.handleBlur}
+											className={classNames({ 'p-invalid': field.state.meta.errors.length > 0 })}
 										/>
-										{getFormErrorMessage(fieldState, field.name)}
+										<FieldInfo field={field} />
 									</>
 								)}
-							/>
+							</form.Field>
 						</div>
 						<div className="field col">
-							<Controller
-								name="model"
-								control={form.control}
-								rules={{ required: 'Model is required.' }}
-								render={({ field, fieldState }) => (
+							<form.Field name="model">
+								{(field) => (
 									<>
-										<label htmlFor={field.name} className={classNames({ 'p-error': errors.model })}>
+										<label htmlFor={field.name} className={classNames({ 'p-error': field.state.meta.errors.length > 0 })}>
 											Model*
 										</label>
-										<InputText id={field.name} {...field} className={classNames({ 'p-invalid': fieldState.error })} />
-										{getFormErrorMessage(fieldState, field.name)}
+										<InputText
+											id={field.name}
+											value={field.state.value}
+											onChange={(e) => field.handleChange(e.target.value)}
+											onBlur={field.handleBlur}
+											className={classNames({ 'p-invalid': field.state.meta.errors.length > 0 })}
+										/>
+										<FieldInfo field={field} />
 									</>
 								)}
-							/>
+							</form.Field>
 						</div>
 					</div>
 					<div className="formgrid grid">
 						<div className="field col">
-							<Controller
-								name="year"
-								control={form.control}
-								rules={{ required: 'Year is required.', min: 1960, max: 2050 }}
-								render={({ field, fieldState }) => (
+							<form.Field name="year">
+								{(field) => (
 									<>
-										<label htmlFor={field.name} className={classNames({ 'p-error': errors.year })}>
+										<label htmlFor={field.name} className={classNames({ 'p-error': field.state.meta.errors.length > 0 })}>
 											Year*
 										</label>
 										<Calendar
 											dateFormat="yy"
-											inputClassName={classNames({ 'p-invalid': fieldState.error })}
+											inputClassName={classNames({ 'p-invalid': field.state.meta.errors.length > 0 })}
 											inputId={field.name}
-											inputRef={field.ref}
-											onBlur={field.onBlur}
-											onChange={(e) => field.onChange(e.value?.getFullYear())}
-											value={new Date(field.value, 1, 1)}
+											onBlur={field.handleBlur}
+											onChange={(e) => field.handleChange(e.value?.getFullYear() ?? 0)}
+											value={new Date(field.state.value, 1, 1)}
 											view="year"
 										/>
-										{getFormErrorMessage(fieldState, field.name, 2050, 1960)}
+										<FieldInfo field={field} />
 									</>
 								)}
-							/>
+							</form.Field>
 						</div>
 						<div className="field col">
-							<Controller
-								name="color"
-								control={form.control}
-								rules={{ required: 'Color is required.' }}
-								render={({ field, fieldState }) => (
+							<form.Field name="color">
+								{(field) => (
 									<>
-										<label htmlFor={field.name} className={classNames({ 'p-error': errors.color })}>
+										<label htmlFor={field.name} className={classNames({ 'p-error': field.state.meta.errors.length > 0 })}>
 											Color*
 										</label>
 										<ColorPicker
 											id={field.name}
-											{...field}
-											onChange={(e) => field.onChange(e.value as string)}
-											inputRef={field.ref}
-											className={classNames({ 'p-invalid': fieldState.error })}
+											value={field.state.value}
+											onChange={(e) => field.handleChange(e.value as string)}
+											onBlur={field.handleBlur}
+											className={classNames({ 'p-invalid': field.state.meta.errors.length > 0 })}
 											defaultColor="ffffff"
 										/>
-										{getFormErrorMessage(fieldState, field.name)}
+										<FieldInfo field={field} />
 									</>
 								)}
-							/>
+							</form.Field>
 						</div>
 					</div>
 
 					<div className="field">
-						<Controller
-							name="price"
-							control={form.control}
-							rules={{ required: 'Price is required.', min: 0, max: 250000 }}
-							render={({ field, fieldState }) => (
+						<form.Field name="price">
+							{(field) => (
 								<>
-									<label htmlFor={field.name} className={classNames({ 'p-error': errors.price })}>
+									<label htmlFor={field.name} className={classNames({ 'p-error': field.state.meta.errors.length > 0 })}>
 										Price*
 									</label>
 									<InputNumber
 										id={field.name}
-										inputRef={field.ref}
-										value={field.value}
-										onBlur={field.onBlur}
-										onValueChange={(e) => field.onChange(e.value as number)}
+										value={field.state.value}
+										onBlur={field.handleBlur}
+										onValueChange={(e) => field.handleChange(e.value as number)}
 										mode="currency"
 										currency="USD"
 										locale="en-US"
-										inputClassName={classNames({ 'p-invalid': fieldState.error })}
+										inputClassName={classNames({ 'p-invalid': field.state.meta.errors.length > 0 })}
 									/>
-									{getFormErrorMessage(fieldState, field.name, 250000, 0)}
+									<FieldInfo field={field} />
 								</>
 							)}
-						/>
+						</form.Field>
 					</div>
 
 					<div className="p-dialog-footer pb-0">
 						<Button label="Cancel" type="reset" icon="pi pi-times" className="p-button-text p-button-info" onClick={hideEditDialog} />
-						<Button label="Save" type="submit" icon="pi pi-check" className="p-button-text p-button-success" autoFocus />
+						<form.Subscribe
+							selector={(state) => [state.canSubmit, state.isSubmitting]}
+							children={([canSubmit, isSubmitting]) => (
+								<Button
+									label={isSubmitting ? '...' : 'Save'}
+									disabled={!canSubmit}
+									type="submit"
+									icon="pi pi-check"
+									className="p-button-text p-button-success"
+									autoFocus
+								/>
+							)}
+						/>
 					</div>
 				</form>
 			</Dialog>
@@ -605,5 +599,26 @@ const CrudPage = () => {
 		</div>
 	);
 };
+
+function FieldInfo({ field }: { field: AnyFieldApi }) {
+	if (!field || !field.state || !field.state.meta || !field.state.meta.errors.length) return null;
+	const error = field.state.meta.errors[0];
+	// Map error types to user-friendly messages
+	let message = '';
+	switch (error.code) {
+		case 'invalid_string':
+			message = `${error.path[0].charAt(0).toUpperCase() + error.path[0].slice(1)} is required`;
+			break;
+		default:
+			message = error.message;
+			break;
+	}
+	return (
+		<>
+			{field.state.meta.isTouched && field.state.meta.errors.length ? <small className="p-error">{message}</small> : null}
+			{field.state.meta.isValidating ? 'Validating...' : null}
+		</>
+	);
+}
 
 export default React.memo(CrudPage);
