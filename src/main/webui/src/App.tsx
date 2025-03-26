@@ -137,7 +137,7 @@ const App = () => {
 			items: [
 				{ label: 'Quarkus', icon: 'pi pi-fw pi-wifi', url: 'https://quarkus.io/', target: '_blank' },
 				{ label: 'Quinoa', icon: 'pi pi-fw pi-wifi', url: 'https://quarkiverse.github.io/quarkiverse-docs/quarkus-quinoa', target: '_blank' },
-				{ label: 'REST Problem', icon: 'pi pi-fw pi-wifi', url: 'https://github.com/quarkiverse/quarkus-resteasy-problem', target: '_blank' },
+				{ label: 'REST Problem', icon: 'pi pi-fw pi-wifi', url: 'https://github.com/melloware/quarkus-openapi-problem', target: '_blank' },
 				{ label: 'Hibernate/Panache', icon: 'pi pi-fw pi-database', url: 'https://quarkus.io/guides/hibernate-orm-panache', target: '_blank' },
 				{ label: 'PostgreSQL', icon: 'pi pi-fw pi-database', url: 'https://www.postgresql.org/', target: '_blank' },
 				{ label: 'Liquibase', icon: 'pi pi-fw pi-database', url: 'https://www.liquibase.com/', target: '_blank' },
