@@ -12,7 +12,7 @@ import { z as zod } from 'zod';
  * @summary List cars
  */
 export const getEntityCarsQueryParams = zod.object({
-	request: zod.string().optional()
+	request: zod.coerce.string().optional()
 });
 
 export const getEntityCarsResponseRecordsItemVinMax = 17;
@@ -36,34 +36,42 @@ export const getEntityCarsResponseRecordsItemPriceMax = 250000;
 
 export const getEntityCarsResponse = zod
 	.object({
-		totalRecords: zod.number().optional().describe('Total records available by this query criteria'),
+		totalRecords: zod.coerce.number().optional().describe('Total records available by this query criteria'),
 		records: zod
 			.array(
 				zod
 					.object({
-						id: zod.number().optional(),
-						vin: zod.string().max(getEntityCarsResponseRecordsItemVinMax).regex(getEntityCarsResponseRecordsItemVinRegExp).describe('VIN number'),
-						make: zod
+						id: zod.coerce.number().optional(),
+						vin: zod.coerce
+							.string()
+							.max(getEntityCarsResponseRecordsItemVinMax)
+							.regex(getEntityCarsResponseRecordsItemVinRegExp)
+							.describe('VIN number'),
+						make: zod.coerce
 							.string()
 							.max(getEntityCarsResponseRecordsItemMakeMax)
 							.regex(getEntityCarsResponseRecordsItemMakeRegExp)
 							.describe('Manufacturer'),
-						model: zod
+						model: zod.coerce
 							.string()
 							.max(getEntityCarsResponseRecordsItemModelMax)
 							.regex(getEntityCarsResponseRecordsItemModelRegExp)
 							.describe('Model Number'),
-						year: zod
+						year: zod.coerce
 							.number()
 							.min(getEntityCarsResponseRecordsItemYearMin)
 							.max(getEntityCarsResponseRecordsItemYearMax)
 							.describe('Year of manufacture'),
-						color: zod
+						color: zod.coerce
 							.string()
 							.max(getEntityCarsResponseRecordsItemColorMax)
 							.regex(getEntityCarsResponseRecordsItemColorRegExp)
 							.describe('HTML color of the car'),
-						price: zod.number().min(getEntityCarsResponseRecordsItemPriceMin).max(getEntityCarsResponseRecordsItemPriceMax).describe('Price'),
+						price: zod.coerce
+							.number()
+							.min(getEntityCarsResponseRecordsItemPriceMin)
+							.max(getEntityCarsResponseRecordsItemPriceMax)
+							.describe('Price'),
 						modifiedTime: zod.coerce.date().optional()
 					})
 					.describe('Entity that represents a car.')
@@ -98,13 +106,13 @@ export const postEntityCarsBodyPriceMax = 250000;
 
 export const postEntityCarsBody = zod
 	.object({
-		id: zod.number().optional(),
-		vin: zod.string().max(postEntityCarsBodyVinMax).regex(postEntityCarsBodyVinRegExp).describe('VIN number'),
-		make: zod.string().max(postEntityCarsBodyMakeMax).regex(postEntityCarsBodyMakeRegExp).describe('Manufacturer'),
-		model: zod.string().max(postEntityCarsBodyModelMax).regex(postEntityCarsBodyModelRegExp).describe('Model Number'),
-		year: zod.number().min(postEntityCarsBodyYearMin).max(postEntityCarsBodyYearMax).describe('Year of manufacture'),
-		color: zod.string().max(postEntityCarsBodyColorMax).regex(postEntityCarsBodyColorRegExp).describe('HTML color of the car'),
-		price: zod.number().min(postEntityCarsBodyPriceMin).max(postEntityCarsBodyPriceMax).describe('Price'),
+		id: zod.coerce.number().optional(),
+		vin: zod.coerce.string().max(postEntityCarsBodyVinMax).regex(postEntityCarsBodyVinRegExp).describe('VIN number'),
+		make: zod.coerce.string().max(postEntityCarsBodyMakeMax).regex(postEntityCarsBodyMakeRegExp).describe('Manufacturer'),
+		model: zod.coerce.string().max(postEntityCarsBodyModelMax).regex(postEntityCarsBodyModelRegExp).describe('Model Number'),
+		year: zod.coerce.number().min(postEntityCarsBodyYearMin).max(postEntityCarsBodyYearMax).describe('Year of manufacture'),
+		color: zod.coerce.string().max(postEntityCarsBodyColorMax).regex(postEntityCarsBodyColorRegExp).describe('HTML color of the car'),
+		price: zod.coerce.number().min(postEntityCarsBodyPriceMin).max(postEntityCarsBodyPriceMax).describe('Price'),
 		modifiedTime: zod.coerce.date().optional()
 	})
 	.describe('Entity that represents a car.');
@@ -113,7 +121,7 @@ export const postEntityCarsBody = zod
  * Returns a list of distinct car manufacturers
  * @summary Get all manufacturers
  */
-export const getEntityCarsManufacturersResponseItem = zod.string();
+export const getEntityCarsManufacturersResponseItem = zod.coerce.string();
 export const getEntityCarsManufacturersResponse = zod.array(getEntityCarsManufacturersResponseItem);
 
 /**
@@ -123,7 +131,7 @@ export const getEntityCarsManufacturersResponse = zod.array(getEntityCarsManufac
 export const putEntityCarsIdPathIdMin = 0;
 
 export const putEntityCarsIdParams = zod.object({
-	id: zod.number().min(putEntityCarsIdPathIdMin)
+	id: zod.coerce.number().min(putEntityCarsIdPathIdMin)
 });
 
 export const putEntityCarsIdBodyVinMax = 17;
@@ -147,13 +155,13 @@ export const putEntityCarsIdBodyPriceMax = 250000;
 
 export const putEntityCarsIdBody = zod
 	.object({
-		id: zod.number().optional(),
-		vin: zod.string().max(putEntityCarsIdBodyVinMax).regex(putEntityCarsIdBodyVinRegExp).describe('VIN number'),
-		make: zod.string().max(putEntityCarsIdBodyMakeMax).regex(putEntityCarsIdBodyMakeRegExp).describe('Manufacturer'),
-		model: zod.string().max(putEntityCarsIdBodyModelMax).regex(putEntityCarsIdBodyModelRegExp).describe('Model Number'),
-		year: zod.number().min(putEntityCarsIdBodyYearMin).max(putEntityCarsIdBodyYearMax).describe('Year of manufacture'),
-		color: zod.string().max(putEntityCarsIdBodyColorMax).regex(putEntityCarsIdBodyColorRegExp).describe('HTML color of the car'),
-		price: zod.number().min(putEntityCarsIdBodyPriceMin).max(putEntityCarsIdBodyPriceMax).describe('Price'),
+		id: zod.coerce.number().optional(),
+		vin: zod.coerce.string().max(putEntityCarsIdBodyVinMax).regex(putEntityCarsIdBodyVinRegExp).describe('VIN number'),
+		make: zod.coerce.string().max(putEntityCarsIdBodyMakeMax).regex(putEntityCarsIdBodyMakeRegExp).describe('Manufacturer'),
+		model: zod.coerce.string().max(putEntityCarsIdBodyModelMax).regex(putEntityCarsIdBodyModelRegExp).describe('Model Number'),
+		year: zod.coerce.number().min(putEntityCarsIdBodyYearMin).max(putEntityCarsIdBodyYearMax).describe('Year of manufacture'),
+		color: zod.coerce.string().max(putEntityCarsIdBodyColorMax).regex(putEntityCarsIdBodyColorRegExp).describe('HTML color of the car'),
+		price: zod.coerce.number().min(putEntityCarsIdBodyPriceMin).max(putEntityCarsIdBodyPriceMax).describe('Price'),
 		modifiedTime: zod.coerce.date().optional()
 	})
 	.describe('Entity that represents a car.');
@@ -179,13 +187,13 @@ export const putEntityCarsIdResponsePriceMax = 250000;
 
 export const putEntityCarsIdResponse = zod
 	.object({
-		id: zod.number().optional(),
-		vin: zod.string().max(putEntityCarsIdResponseVinMax).regex(putEntityCarsIdResponseVinRegExp).describe('VIN number'),
-		make: zod.string().max(putEntityCarsIdResponseMakeMax).regex(putEntityCarsIdResponseMakeRegExp).describe('Manufacturer'),
-		model: zod.string().max(putEntityCarsIdResponseModelMax).regex(putEntityCarsIdResponseModelRegExp).describe('Model Number'),
-		year: zod.number().min(putEntityCarsIdResponseYearMin).max(putEntityCarsIdResponseYearMax).describe('Year of manufacture'),
-		color: zod.string().max(putEntityCarsIdResponseColorMax).regex(putEntityCarsIdResponseColorRegExp).describe('HTML color of the car'),
-		price: zod.number().min(putEntityCarsIdResponsePriceMin).max(putEntityCarsIdResponsePriceMax).describe('Price'),
+		id: zod.coerce.number().optional(),
+		vin: zod.coerce.string().max(putEntityCarsIdResponseVinMax).regex(putEntityCarsIdResponseVinRegExp).describe('VIN number'),
+		make: zod.coerce.string().max(putEntityCarsIdResponseMakeMax).regex(putEntityCarsIdResponseMakeRegExp).describe('Manufacturer'),
+		model: zod.coerce.string().max(putEntityCarsIdResponseModelMax).regex(putEntityCarsIdResponseModelRegExp).describe('Model Number'),
+		year: zod.coerce.number().min(putEntityCarsIdResponseYearMin).max(putEntityCarsIdResponseYearMax).describe('Year of manufacture'),
+		color: zod.coerce.string().max(putEntityCarsIdResponseColorMax).regex(putEntityCarsIdResponseColorRegExp).describe('HTML color of the car'),
+		price: zod.coerce.number().min(putEntityCarsIdResponsePriceMin).max(putEntityCarsIdResponsePriceMax).describe('Price'),
 		modifiedTime: zod.coerce.date().optional()
 	})
 	.describe('Entity that represents a car.');
@@ -197,7 +205,7 @@ export const putEntityCarsIdResponse = zod
 export const getEntityCarsIdPathIdMin = 0;
 
 export const getEntityCarsIdParams = zod.object({
-	id: zod.number().min(getEntityCarsIdPathIdMin)
+	id: zod.coerce.number().min(getEntityCarsIdPathIdMin)
 });
 
 export const getEntityCarsIdResponseVinMax = 17;
@@ -221,13 +229,13 @@ export const getEntityCarsIdResponsePriceMax = 250000;
 
 export const getEntityCarsIdResponse = zod
 	.object({
-		id: zod.number().optional(),
-		vin: zod.string().max(getEntityCarsIdResponseVinMax).regex(getEntityCarsIdResponseVinRegExp).describe('VIN number'),
-		make: zod.string().max(getEntityCarsIdResponseMakeMax).regex(getEntityCarsIdResponseMakeRegExp).describe('Manufacturer'),
-		model: zod.string().max(getEntityCarsIdResponseModelMax).regex(getEntityCarsIdResponseModelRegExp).describe('Model Number'),
-		year: zod.number().min(getEntityCarsIdResponseYearMin).max(getEntityCarsIdResponseYearMax).describe('Year of manufacture'),
-		color: zod.string().max(getEntityCarsIdResponseColorMax).regex(getEntityCarsIdResponseColorRegExp).describe('HTML color of the car'),
-		price: zod.number().min(getEntityCarsIdResponsePriceMin).max(getEntityCarsIdResponsePriceMax).describe('Price'),
+		id: zod.coerce.number().optional(),
+		vin: zod.coerce.string().max(getEntityCarsIdResponseVinMax).regex(getEntityCarsIdResponseVinRegExp).describe('VIN number'),
+		make: zod.coerce.string().max(getEntityCarsIdResponseMakeMax).regex(getEntityCarsIdResponseMakeRegExp).describe('Manufacturer'),
+		model: zod.coerce.string().max(getEntityCarsIdResponseModelMax).regex(getEntityCarsIdResponseModelRegExp).describe('Model Number'),
+		year: zod.coerce.number().min(getEntityCarsIdResponseYearMin).max(getEntityCarsIdResponseYearMax).describe('Year of manufacture'),
+		color: zod.coerce.string().max(getEntityCarsIdResponseColorMax).regex(getEntityCarsIdResponseColorRegExp).describe('HTML color of the car'),
+		price: zod.coerce.number().min(getEntityCarsIdResponsePriceMin).max(getEntityCarsIdResponsePriceMax).describe('Price'),
 		modifiedTime: zod.coerce.date().optional()
 	})
 	.describe('Entity that represents a car.');
@@ -239,7 +247,7 @@ export const getEntityCarsIdResponse = zod
 export const deleteEntityCarsIdPathIdMin = 0;
 
 export const deleteEntityCarsIdParams = zod.object({
-	id: zod.number().min(deleteEntityCarsIdPathIdMin)
+	id: zod.coerce.number().min(deleteEntityCarsIdPathIdMin)
 });
 
 /**
@@ -247,5 +255,5 @@ export const deleteEntityCarsIdParams = zod.object({
  * @summary Push notification message
  */
 export const postSocketNotifyQueryParams = zod.object({
-	message: zod.string().optional()
+	message: zod.coerce.string().optional()
 });

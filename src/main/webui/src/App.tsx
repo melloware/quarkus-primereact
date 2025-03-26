@@ -149,11 +149,12 @@ const App = () => {
 			label: 'Client Docs',
 			items: [
 				{ label: 'React', icon: 'pi pi-fw pi-globe', url: 'https://reactjs.org/', target: '_blank' },
-				{ label: 'React Hook Form', icon: 'pi pi-fw pi-verified', url: 'https://react-hook-form.com/', target: '_blank' },
 				{ label: 'React WebSocket', icon: 'pi pi-fw pi-wave-pulse', url: 'https://github.com/robtaussig/react-use-websocket', target: '_blank' },
 				{ label: 'PrimeReact', icon: 'pi pi-fw pi-prime', url: 'https://primefaces.org/primereact/', target: '_blank' },
-				{ label: 'TanStack Query', icon: 'pi pi-fw pi-tag', url: 'https://tanstack.com/query/v4/', target: '_blank' },
-				{ label: 'Orval', icon: 'pi pi-fw pi-tag', url: 'https://orval.dev/', target: '_blank' }
+				{ label: 'TanStack Form', icon: 'pi pi-fw pi-verified', url: 'https://tanstack.com/form/latest', target: '_blank' },
+				{ label: 'TanStack Query', icon: 'pi pi-fw pi-tag', url: 'https://tanstack.com/query/latest', target: '_blank' },
+				{ label: 'Orval', icon: 'pi pi-fw pi-tag', url: 'https://orval.dev/', target: '_blank' },
+				{ label: 'Zod', icon: 'pi pi-fw pi-verified', url: 'https://zod.dev/', target: '_blank' }
 			]
 		}
 	] as AppMenuItem[];

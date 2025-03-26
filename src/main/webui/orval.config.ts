@@ -28,9 +28,12 @@ module.exports = {
 				useDates: true,
 				zod: {
 					coerce: {
-						response: ['date'],
-						body: ['date']
-					}
+						response: true,
+						query: true,
+						param: true,
+						header: true,
+						body: true
+					},
 				}
 			}
 		},
