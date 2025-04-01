@@ -15,7 +15,7 @@
 		<quarkus.postgresql.version>0.3.1</quarkus.postgresql.version>
 		<quarkus.rest-problem.version>0.0.1</quarkus.rest-problem.version>
 		<quarkus.quinoa.version>2.5.1</quarkus.quinoa.version>
-		<lombok.version>1.18.36</lombok.version>
+		<lombok.version>1.18.38</lombok.version>
 		<!-- Plugins-->
 		<surefire-plugin.version>3.5.2</surefire-plugin.version>
 		<maven.compiler.release>17</maven.compiler.release>
