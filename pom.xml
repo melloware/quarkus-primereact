@@ -17,7 +17,7 @@
 		<quarkus.quinoa.version>2.5.1</quarkus.quinoa.version>
 		<lombok.version>1.18.36</lombok.version>
 		<!-- Plugins-->
-		<surefire-plugin.version>3.5.2</surefire-plugin.version>
+		<surefire-plugin.version>3.5.3</surefire-plugin.version>
 		<maven.compiler.release>17</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
