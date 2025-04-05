@@ -75,30 +75,31 @@ components:
           examples:
           - equals
     HttpProblem:
-      description: HTTP Problem Response according to RFC 9457
+      description: HTTP Problem Response according to RFC9457 & RFC7807
+      additionalProperties: true
       type: object
       properties:
         type:
           type: string
           format: uri
-          description: A URI reference that identifies the problem type
+          description: A optional URI reference that identifies the problem type
           examples:
-          - https://example.com/errors/validation
+          - https://example.com/errors/not-found
         title:
           type: string
-          description: "A short, human-readable summary of the problem type"
+          description: "A optional, short, human-readable summary of the problem type"
           examples:
-          - Not Found Error
+          - Not Found
         status:
           type: integer
           format: int32
           description: The HTTP status code for this occurrence of the problem
           examples:
-          - 400
+          - 404
         detail:
           type: string
-          description: A human-readable explanation specific to this occurrence of
-            the problem
+          description: A optional human-readable explanation specific to this occurrence
+            of the problem
           examples:
           - Record not found
         instance:
@@ -108,23 +109,46 @@ components:
             the problem
           examples:
           - https://api.example.com/errors/123
-        context:
-          type: object
-          additionalProperties: {}
-          description: Additional parameters providing more details about the problem
+    HttpValidationProblem:
+      description: HTTP Validation Problem Response according to RFC9457 & RFC7807
+      additionalProperties: true
+      type: object
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A optional URI reference that identifies the problem type
           examples:
-          - timestamp: 2024-03-20T10:00:00Z
-            traceId: 550e8400-e29b-41d4-a716-446655440000
-        errors:
+          - https://example.com/errors/not-found
+        title:
+          type: string
+          description: "A optional, short, human-readable summary of the problem type"
+          examples:
+          - Not Found
+        status:
+          type: integer
+          format: int32
+          description: The HTTP status code for this occurrence of the problem
+          examples:
+          - 404
+        detail:
+          type: string
+          description: A optional human-readable explanation specific to this occurrence
+            of the problem
+          examples:
+          - Record not found
+        instance:
+          type: string
+          format: uri
+          description: A URI reference that identifies the specific occurrence of
+            the problem
+          examples:
+          - https://api.example.com/errors/123
+        violations:
           type: array
           items:
             $ref: "#/components/schemas/Violation"
           description: List of validation constraint violations that occurred
-        cause:
-          description: "Original cause of error, only set when forwarding an underlying\
-            \ problem"
-          type: object
-          $ref: "#/components/schemas/HttpProblem"
     Instant:
       type: string
       format: date-time
@@ -269,22 +293,22 @@ components:
       type: object
       description: Validation constraint violation details
       properties:
-        pointer:
+        field:
           type: string
-          description: The field that failed validation
+          description: The field for which the validation failed
           examples:
           - "#/profile/email"
         in:
           type: string
-          description: "Location where the validation error occurred such as query,\
-            \ path, header, form, body"
+          description: "Part of the http request where the validation error occurred\
+            \ such as query, path, header, form, body"
           examples:
           - query
           - path
           - header
           - form
           - body
-        detail:
+        message:
           type: string
           description: Description of the validation error
           examples:
@@ -337,14 +361,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Car"
+        "400":
+          description: Invalid request format
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/HttpProblem"
         "422":
           description: Invalid car data provided
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/HttpProblem"
-        "400":
-          description: Bad Request
   /entity/cars/manufacturers:
     get:
       summary: Get all manufacturers
@@ -387,14 +415,24 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Car"
+        "400":
+          description: Invalid request format
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/HttpProblem"
         "404":
           description: Car not found
           content:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/HttpProblem"
-        "400":
-          description: Bad Request
+        "422":
+          description: Invalid car data provided
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/HttpProblem"
     get:
       summary: Get a car by ID
       description: Returns a car based on the provided ID

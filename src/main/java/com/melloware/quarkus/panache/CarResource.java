@@ -82,6 +82,7 @@ public class CarResource {
 	@Operation(summary = "Create a new car", description = "Creates a new car entry")
 	@APIResponses({
 		@APIResponse(responseCode = "201", description = "Car created successfully" ,content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
+		@APIResponse(responseCode = "400", description = "Invalid request format"),
 		@APIResponse(responseCode = "422", description = "Invalid car data provided")
 	})
 	public Response create(@Valid Car car) {
@@ -100,7 +101,9 @@ public class CarResource {
 	@Operation(summary = "Update a car", description = "Updates an existing car based on ID")
 	@APIResponses({
 		@APIResponse(responseCode = "200", description = "Car updated successfully"),
-		@APIResponse(responseCode = "404", description = "Car not found")
+		@APIResponse(responseCode = "400", description = "Invalid request format"),
+		@APIResponse(responseCode = "404", description = "Car not found"),
+		@APIResponse(responseCode = "422", description = "Invalid car data provided")
 	})
 	public Car update(@PathParam("id") @Min(value = 0) Long id, @Valid Car car) {
 		LOG.infof("Update Car: %s", id);
@@ -136,7 +139,7 @@ public class CarResource {
 			throw new NotFoundException("Car with id of " + id + " does not exist.");
 		}
 		entity.delete();
-		return Response.status(Status.NO_CONTENT).build();
+		return Response.noContent().build();
 	}
 
 	@GET

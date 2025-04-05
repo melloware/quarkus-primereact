@@ -22,8 +22,8 @@ with a front-end based on React so you can play with it from your browser.
 While the code is surprisingly simple, under the hood this is using:
 
 - [Quarkus REST](https://quarkus.io/guides/rest) for REST API endpoints with OpenAPI documentation
+- [Quarkus REST Problem](https://github.com/quarkiverse/quarkus-resteasy-problem) for consistent REST API error handling
 - [Quarkus WebSockets Next](https://quarkus.io/guides/websockets-next-tutorial) for real-time WebSocket communication
-- [Quarkus OpenAPI Problem](https://github.com/melloware/quarkus-openapi-problem) for consistent REST API error handling
 - [Quarkus Quinoa](https://github.com/quarkiverse/quarkus-quinoa) to handle allowing this monorepo to serve React and Java code
 - [Hibernate ORM with Panache](https://quarkus.io/guides/hibernate-orm-panache) to perform the CRUD operations on the database
 - [PostgreSQL](https://www.postgresql.org/) database; automatically starts an embedded DB

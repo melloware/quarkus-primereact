@@ -9,11 +9,11 @@
 	<description>Quarkus monorepo demonstrating Panache REST server with PrimeReact UI client</description>
 	<url>https://github.com/melloware/quarkus-monorepo</url>
 	<properties>
-		<quarkus.platform.version>3.21.0</quarkus.platform.version>
+		<quarkus.platform.version>3.21.1</quarkus.platform.version>
 		<quarkus.logmanager.version>3.3.2</quarkus.logmanager.version>
 		<quarkus.ngrok.version>1.6.0</quarkus.ngrok.version>
 		<quarkus.postgresql.version>0.3.1</quarkus.postgresql.version>
-		<quarkus.rest-problem.version>0.0.1</quarkus.rest-problem.version>
+		<quarkus.rest-problem.version>3.20.0</quarkus.rest-problem.version>
 		<quarkus.quinoa.version>2.5.3</quarkus.quinoa.version>
 		<lombok.version>1.18.38</lombok.version>
 		<!-- Plugins-->
@@ -98,8 +98,8 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.melloware.openapi-problem</groupId>
-			<artifactId>quarkus-openapi-problem</artifactId>
+			<groupId>io.quarkiverse.resteasy-problem</groupId>
+			<artifactId>quarkus-resteasy-problem</artifactId>
 			<version>${quarkus.rest-problem.version}</version>
 		</dependency>
 		<!-- Brotli4j Linux x86_64 is needed for Docker image build -->
