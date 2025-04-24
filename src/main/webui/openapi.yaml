@@ -75,7 +75,7 @@ components:
           examples:
           - equals
     HttpProblem:
-      description: HTTP Problem Response according to RFC9457 & RFC7807
+      description: HTTP Problem Response according to RFC9457 and RFC7807
       additionalProperties: true
       type: object
       properties:
@@ -110,7 +110,7 @@ components:
           examples:
           - https://api.example.com/errors/123
     HttpValidationProblem:
-      description: HTTP Validation Problem Response according to RFC9457 & RFC7807
+      description: HTTP Validation Problem Response according to RFC9457 and RFC7807
       additionalProperties: true
       type: object
       properties:

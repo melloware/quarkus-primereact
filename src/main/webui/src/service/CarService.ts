@@ -78,7 +78,7 @@ export interface FilterConstraint {
 }
 
 /**
- * HTTP Problem Response according to RFC9457 & RFC7807
+ * HTTP Problem Response according to RFC9457 and RFC7807
  */
 export interface HttpProblem {
 	/** A optional URI reference that identifies the problem type */
@@ -95,7 +95,7 @@ export interface HttpProblem {
 }
 
 /**
- * HTTP Validation Problem Response according to RFC9457 & RFC7807
+ * HTTP Validation Problem Response according to RFC9457 and RFC7807
  */
 export interface HttpValidationProblem {
 	/** A optional URI reference that identifies the problem type */
