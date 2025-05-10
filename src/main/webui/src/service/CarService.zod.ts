@@ -257,3 +257,112 @@ export const deleteEntityCarsIdParams = zod.object({
 export const postSocketNotifyQueryParams = zod.object({
 	message: zod.coerce.string().optional()
 });
+
+/**
+ * Get information on all loggers or a specific logger.
+ * @summary Information on Logger(s)
+ */
+export const loggingManagerGetAllQueryParams = zod.object({
+	loggerName: zod.coerce.string().optional()
+});
+
+export const loggingManagerGetAllResponseItem = zod.object({
+	configuredLevel: zod
+		.enum(['OFF', 'SEVERE', 'ERROR', 'FATAL', 'WARNING', 'WARN', 'INFO', 'DEBUG', 'TRACE', 'CONFIG', 'FINE', 'FINER', 'FINEST', 'ALL'])
+		.optional(),
+	effectiveLevel: zod
+		.enum(['OFF', 'SEVERE', 'ERROR', 'FATAL', 'WARNING', 'WARN', 'INFO', 'DEBUG', 'TRACE', 'CONFIG', 'FINE', 'FINER', 'FINEST', 'ALL'])
+		.optional(),
+	name: zod.coerce.string().optional()
+});
+export const loggingManagerGetAllResponse = zod.array(loggingManagerGetAllResponseItem);
+
+/**
+ * This returns all possible log levels
+ * @summary Get all available levels
+ */
+export const loggingManagerLevelsResponseItem = zod.enum([
+	'OFF',
+	'SEVERE',
+	'ERROR',
+	'FATAL',
+	'WARNING',
+	'WARN',
+	'INFO',
+	'DEBUG',
+	'TRACE',
+	'CONFIG',
+	'FINE',
+	'FINER',
+	'FINEST',
+	'ALL'
+]);
+export const loggingManagerLevelsResponse = zod.array(loggingManagerLevelsResponseItem);
+
+/**
+ * Check the health of the application
+ * @summary An aggregated view of the Liveness, Readiness and Startup of this application
+ */
+export const microprofileHealthRootResponse = zod.object({
+	checks: zod
+		.array(
+			zod.object({
+				data: zod.object({}).nullish(),
+				name: zod.coerce.string().optional(),
+				status: zod.enum(['UP', 'DOWN']).optional()
+			})
+		)
+		.optional(),
+	status: zod.enum(['UP', 'DOWN']).optional()
+});
+
+/**
+ * Check the liveness of the application
+ * @summary The Liveness check of this application
+ */
+export const microprofileHealthLivenessResponse = zod.object({
+	checks: zod
+		.array(
+			zod.object({
+				data: zod.object({}).nullish(),
+				name: zod.coerce.string().optional(),
+				status: zod.enum(['UP', 'DOWN']).optional()
+			})
+		)
+		.optional(),
+	status: zod.enum(['UP', 'DOWN']).optional()
+});
+
+/**
+ * Check the readiness of the application
+ * @summary The Readiness check of this application
+ */
+export const microprofileHealthReadinessResponse = zod.object({
+	checks: zod
+		.array(
+			zod.object({
+				data: zod.object({}).nullish(),
+				name: zod.coerce.string().optional(),
+				status: zod.enum(['UP', 'DOWN']).optional()
+			})
+		)
+		.optional(),
+	status: zod.enum(['UP', 'DOWN']).optional()
+});
+
+/**
+ * Check the startup of the application
+ * @summary The Startup check of this application
+ */
+export const microprofileHealthStartupResponse = zod.object({
+	checks: zod
+		.array(
+			zod.object({
+				data: zod.object({}).nullish(),
+				name: zod.coerce.string().optional(),
+				status: zod.enum(['UP', 'DOWN']).optional()
+			})
+		)
+		.optional(),
+	status: zod.enum(['UP', 'DOWN']).optional()
+});

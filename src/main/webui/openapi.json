@@ -323,6 +323,56 @@
             "examples" : [ "Invalid email format" ]
           }
         }
+      },
+      "LoggerLevel" : {
+        "title" : "LoggerLevel",
+        "type" : "string",
+        "enum" : [ "OFF", "SEVERE", "ERROR", "FATAL", "WARNING", "WARN", "INFO", "DEBUG", "TRACE", "CONFIG", "FINE", "FINER", "FINEST", "ALL" ]
+      },
+      "LoggerInfo" : {
+        "title" : "LoggerInfo",
+        "type" : "object",
+        "properties" : {
+          "configuredLevel" : {
+            "$ref" : "#/components/schemas/LoggerLevel"
+          },
+          "effectiveLevel" : {
+            "$ref" : "#/components/schemas/LoggerLevel"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      },
+      "HealthResponse" : {
+        "type" : "object",
+        "properties" : {
+          "checks" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/HealthCheck"
+            }
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "UP", "DOWN" ]
+          }
+        }
+      },
+      "HealthCheck" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : [ "object", "null" ]
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "UP", "DOWN" ]
+          }
+        }
       }
     }
   },
@@ -332,6 +382,12 @@
   }, {
     "name" : "WebSocket Resource",
     "description" : "WebSocket operations."
+  }, {
+    "name" : "Logging Manager",
+    "description" : "Visualize and manage the log level of your loggers."
+  }, {
+    "name" : "MicroProfile Health",
+    "description" : "Check the health of the application"
   } ],
   "paths" : {
     "/entity/cars" : {
@@ -612,6 +668,260 @@
         "responses" : {
           "201" : {
             "description" : "Refresh UI message sent successfully"
+          }
+        }
+      }
+    },
+    "/q/logging-manager" : {
+      "summary" : "Return info on all loggers, or a specific logger",
+      "description" : "Logging Manager Loggers",
+      "get" : {
+        "operationId" : "logging_manager_get_all",
+        "summary" : "Information on Logger(s)",
+        "description" : "Get information on all loggers or a specific logger.",
+        "tags" : [ "Logging Manager" ],
+        "parameters" : [ {
+          "name" : "loggerName",
+          "in" : "query",
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/LoggerInfo"
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      },
+      "post" : {
+        "operationId" : "logging_manager_update",
+        "summary" : "Update log level",
+        "description" : "Update a log level for a certain logger",
+        "tags" : [ "Logging Manager" ],
+        "requestBody" : {
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "loggerName" : { },
+                  "loggerLevel" : {
+                    "$ref" : "#/components/schemas/LoggerLevel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/q/logging-manager/levels" : {
+      "description" : "All available levels",
+      "summary" : "Return all levels that is available",
+      "get" : {
+        "description" : "This returns all possible log levels",
+        "operationId" : "logging_manager_levels",
+        "tags" : [ "Logging Manager" ],
+        "summary" : "Get all available levels",
+        "responses" : {
+          "200" : {
+            "description" : "Ok",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/LoggerLevel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/q/health" : {
+      "description" : "MicroProfile Health Endpoint",
+      "summary" : "MicroProfile Health provides a way for your application to distribute information about its healthiness state to state whether or not it is able to function properly",
+      "get" : {
+        "operationId" : "microprofile_health_root",
+        "description" : "Check the health of the application",
+        "tags" : [ "MicroProfile Health" ],
+        "summary" : "An aggregated view of the Liveness, Readiness and Startup of this application",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service Unavailable",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/q/health/live" : {
+      "description" : "MicroProfile Health - Liveness Endpoint",
+      "summary" : "Liveness checks are utilized to tell whether the application should be restarted",
+      "get" : {
+        "operationId" : "microprofile_health_liveness",
+        "description" : "Check the liveness of the application",
+        "tags" : [ "MicroProfile Health" ],
+        "summary" : "The Liveness check of this application",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service Unavailable",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/q/health/ready" : {
+      "description" : "MicroProfile Health - Readiness Endpoint",
+      "summary" : "Readiness checks are used to tell whether the application is able to process requests",
+      "get" : {
+        "operationId" : "microprofile_health_readiness",
+        "description" : "Check the readiness of the application",
+        "tags" : [ "MicroProfile Health" ],
+        "summary" : "The Readiness check of this application",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service Unavailable",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/q/health/started" : {
+      "description" : "MicroProfile Health - Startup Endpoint",
+      "summary" : "Startup checks are an used to tell when the application has started",
+      "get" : {
+        "operationId" : "microprofile_health_startup",
+        "description" : "Check the startup of the application",
+        "tags" : [ "MicroProfile Health" ],
+        "summary" : "The Startup check of this application",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Service Unavailable",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Internal Server Error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HealthResponse"
+                }
+              }
+            }
           }
         }
       }
