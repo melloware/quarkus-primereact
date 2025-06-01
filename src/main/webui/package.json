@@ -38,7 +38,7 @@
 		"core-js": "3.42.0",
 		"cross-env": "^7.0.3",
 		"eslint-config-prettier": "10.1.5",
-		"eslint-plugin-prettier": "5.4.0",
+		"eslint-plugin-prettier": "5.4.1",
 		"orval": "7.9.0",
 		"prettier": "3.5.3",
 		"react-refresh": "0.17.0",
