@@ -30,7 +30,7 @@
 		"@farmfe/core": "1.7.5",
 		"@farmfe/plugin-react": "1.2.6",
 		"@farmfe/plugin-sass": "1.1.0",
-		"@types/node": "22.15.24",
+		"@types/node": "22.15.29",
 		"@types/react": "19.1.6",
 		"@types/react-dom": "19.1.5",
 		"@types/react-router-dom": "5.3.3",
