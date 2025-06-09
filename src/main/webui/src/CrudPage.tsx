@@ -74,7 +74,23 @@ const CrudPage = () => {
 	const [isMultipleSort, setMultipleSort] = useState(true);
 
 	// socket
-	const { lastJsonMessage } = useWebSocket(`${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/push/`);
+	const { lastJsonMessage } = useWebSocket(`${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/push/`, {
+		shouldReconnect: (event: WebSocketEventMap['close']) => {
+			console.log('WebSocket closed. Reconnecting...', event);
+			return true;
+		},
+		reconnectAttempts: 99,
+		reconnectInterval: (lastAttemptNumber: number) => {
+			console.log('WebSocket reconnecting...', lastAttemptNumber);
+			const baseDelay = 1000; // 1 second
+			const maxDelay = 30000; // 30 seconds
+
+			// Exponential backoff with jitter
+			const expDelay = Math.min(baseDelay * Math.pow(2, lastAttemptNumber), maxDelay);
+			const jitter = Math.random() * 1000; // add up to 1s of random jitter
+			return expDelay + jitter;
+		}
+	});
 
 	const menuFilters = {
 		vin: { operator: FilterOperator.OR, constraints: [{ value: '', matchMode: FilterMatchMode.CONTAINS }] },
