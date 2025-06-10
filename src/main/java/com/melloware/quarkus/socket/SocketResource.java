@@ -1,10 +1,13 @@
 package com.melloware.quarkus.socket;
 
+import java.util.UUID;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.slf4j.MDC;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.quarkus.websockets.next.OpenConnections;
@@ -23,7 +26,8 @@ import lombok.extern.jbosslog.JBossLog;
 
 /**
  * REST resource for WebSocket operations.
- * Provides endpoints for sending notifications and refresh signals to connected clients.
+ * Provides endpoints for sending notifications and refresh signals to connected
+ * clients.
  */
 @Path("socket")
 @ApplicationScoped
@@ -37,7 +41,7 @@ public class SocketResource {
     /** Connection manager for WebSocket clients */
     @Inject
     OpenConnections connections;
-    
+
     /**
      * Pushes a notification message to all connected WebSocket clients.
      *
@@ -47,20 +51,21 @@ public class SocketResource {
      */
     @Path("notify")
     @POST
-	@Operation(summary = "Push notification message", description = "Pushes a notification message to all connected clients")
-	@APIResponses({
-		@APIResponse(responseCode = "201", description = "Notification message sent successfully"),
-		@APIResponse(responseCode = "422", description = "Message cannot be null or blank")
-	})
-	public Response notify(@QueryParam("message") String message) {
-		if (StringUtils.isBlank(message)) {
-			// 422 Unprocessable Entity
-			throw new WebApplicationException("Id was invalidly set on request.", 422);
-		}
-        SocketMessage pushMessage = new SocketMessage(SocketMessageType.NOTIFICATION, message);
+    @Operation(summary = "Push notification message", description = "Pushes a notification message to all connected clients")
+    @APIResponses({
+            @APIResponse(responseCode = "201", description = "Notification message sent successfully"),
+            @APIResponse(responseCode = "422", description = "Message cannot be null or blank")
+    })
+    public Response notify(@QueryParam("message") String message) {
+        if (StringUtils.isBlank(message)) {
+            // 422 Unprocessable Entity
+            throw new WebApplicationException("Id was invalidly set on request.", 422);
+        }
+        SocketMessage pushMessage = SocketMessage.builder().id(UUID.randomUUID().toString())
+                .type(SocketMessageType.NOTIFICATION).message(message).context(MDC.getCopyOfContextMap()).build();
         sendMessage(pushMessage);
-		return Response.ok(pushMessage).status(Status.CREATED).build();
-	}
+        return Response.ok(pushMessage).status(Status.CREATED).build();
+    }
 
     /**
      * Pushes a refresh signal to all connected WebSocket clients.
@@ -70,15 +75,16 @@ public class SocketResource {
      */
     @Path("refresh")
     @POST
-	@Operation(summary = "Push a UI refresh signal", description = "Pushes a UI refresh signal to all connected clients")
-	@APIResponses({
-		@APIResponse(responseCode = "201", description = "Refresh UI message sent successfully"),
-	})
-	public Response refresh() {
-        SocketMessage pushMessage = new SocketMessage(SocketMessageType.REFRESH_DATA, null);
+    @Operation(summary = "Push a UI refresh signal", description = "Pushes a UI refresh signal to all connected clients")
+    @APIResponses({
+            @APIResponse(responseCode = "201", description = "Refresh UI message sent successfully"),
+    })
+    public Response refresh() {
+        SocketMessage pushMessage = SocketMessage.builder().id(UUID.randomUUID().toString())
+                .type(SocketMessageType.REFRESH_DATA).context(MDC.getCopyOfContextMap()).build();
         sendMessage(pushMessage);
-		return Response.ok(pushMessage).status(Status.CREATED).build();
-	}
+        return Response.ok(pushMessage).status(Status.CREATED).build();
+    }
 
     /**
      * Helper method to send a message to all connected WebSocket clients.

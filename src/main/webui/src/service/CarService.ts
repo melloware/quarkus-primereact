@@ -179,13 +179,24 @@ export interface QueryResponseCar {
 }
 
 /**
- * WebSocket message
+ * Additional context information for the message
+ */
+export type SocketMessageContext = { [key: string]: string };
+
+/**
+ * WebSocket message for real-time updates
  */
 export interface SocketMessage {
+	/** Unique identifier for the message */
+	id?: string;
+	/** UTC timestamp of when the message was created */
+	timestamp?: ZonedDateTime;
 	/** Type of socket message */
 	type: SocketMessageType;
 	/** Optional message payload */
 	message?: string;
+	/** Additional context information for the message */
+	context?: SocketMessageContext;
 }
 
 export type SocketMessageType = (typeof SocketMessageType)[keyof typeof SocketMessageType];
@@ -207,6 +218,8 @@ export interface Violation {
 	/** Description of the validation error */
 	message?: string;
 }
+
+export type ZonedDateTime = Date;
 
 export type LoggerLevel = (typeof LoggerLevel)[keyof typeof LoggerLevel];
 

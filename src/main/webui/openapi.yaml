@@ -264,11 +264,20 @@ components:
             $ref: "#/components/schemas/Car"
           description: "Records for this set of pagination, sorting, filtering."
     SocketMessage:
-      description: WebSocket message
+      description: WebSocket message for real-time updates
       type: object
-      required:
-      - type
       properties:
+        id:
+          type: string
+          description: Unique identifier for the message
+          examples:
+          - 03001000c0020000
+        timestamp:
+          description: UTC timestamp of when the message was created
+          type: string
+          examples:
+          - 2024-03-20T10:30:00Z
+          $ref: "#/components/schemas/ZonedDateTime"
         type:
           description: Type of socket message
           type: string
@@ -284,6 +293,16 @@ components:
           examples:
           - User connected
           - Please refresh your data
+        context:
+          type: object
+          additionalProperties:
+            type: string
+          description: Additional context information for the message
+          examples:
+          - source: system
+            priority: high
+      required:
+      - type
     SocketMessageType:
       type: string
       enum:
@@ -313,6 +332,11 @@ components:
           description: Description of the validation error
           examples:
           - Invalid email format
+    ZonedDateTime:
+      type: string
+      format: date-time
+      examples:
+      - 2022-03-10T12:15:50-04:00
     LoggerLevel:
       title: LoggerLevel
       type: string
