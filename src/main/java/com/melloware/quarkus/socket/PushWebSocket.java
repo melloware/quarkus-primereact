@@ -7,8 +7,10 @@ import io.quarkus.websockets.next.OnError;
 import io.quarkus.websockets.next.OnOpen;
 import io.quarkus.websockets.next.OnPingMessage;
 import io.quarkus.websockets.next.OnPongMessage;
+import io.quarkus.websockets.next.OnTextMessage;
 import io.quarkus.websockets.next.WebSocket;
 import io.quarkus.websockets.next.WebSocketConnection;
+import io.smallrye.common.annotation.RunOnVirtualThread;
 import io.vertx.core.buffer.Buffer;
 import jakarta.inject.Inject;
 import lombok.extern.jbosslog.JBossLog;
@@ -30,7 +32,8 @@ public class PushWebSocket {
     /**
      * Handles new WebSocket connections.
      */
-    @OnOpen       
+    @OnOpen  
+    @RunOnVirtualThread     
     public void onOpen(WebSocketConnection connection) {
         LOG.infof("Websocket connection opened: %s", connection.id());
     }
@@ -38,24 +41,35 @@ public class PushWebSocket {
     /**
      * Handles WebSocket disconnections.
      */
-    @OnClose                    
+    @OnClose      
+    @RunOnVirtualThread              
     public void onClose(WebSocketConnection connection) {
         LOG.infof("Websocket connection closed: %s", connection.id());
     }
 
+    @OnTextMessage(broadcast = false)  
+    @RunOnVirtualThread
+    public String onMessage(String message) {
+        LOG.infof("Websocket message received: %s", message);
+        return "pong";
+    }
+
     @OnPingMessage
+    @RunOnVirtualThread
     void ping(Buffer data) {
-        // an incoming ping that will automatically receive a pong
-        LOG.debugf("Websocket Ping received: %s", data);
+        // an incoming ping data frame that will automatically receive a pong data frame
+        LOG.infof("Websocket Ping received: %s", data);
     }
 
     @OnPongMessage
+    @RunOnVirtualThread
     void pong(Buffer data) {
-        // an incoming pong in response to the last ping sent
-        LOG.debugf("Websocket Pong received: %s", data);
+        // an incoming pong data frame in response to the last ping data frame sent
+        LOG.infof("Websocket Pong received: %s", data);
     }
 
     @OnError
+    @RunOnVirtualThread
     public String onException(Exception e) {
         LOG.errorf("Websocket Exception: %s", ExceptionUtils.getRootCauseMessage(e));
         return "Error";

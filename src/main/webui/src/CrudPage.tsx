@@ -89,6 +89,12 @@ const CrudPage = () => {
 			const expDelay = Math.min(baseDelay * Math.pow(2, lastAttemptNumber), maxDelay);
 			const jitter = Math.random() * 1000; // add up to 1s of random jitter
 			return expDelay + jitter;
+		},
+		heartbeat: {
+			message: 'ping',
+			returnMessage: 'pong',
+			timeout: 10000,
+			interval: 5000
 		}
 	});
 
