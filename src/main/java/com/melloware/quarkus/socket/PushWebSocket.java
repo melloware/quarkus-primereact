@@ -47,32 +47,64 @@ public class PushWebSocket {
         LOG.infof("Websocket connection closed: %s", connection.id());
     }
 
+    /**
+     * Handles incoming text messages from WebSocket clients.
+     * Processes JS "ping" messages and returns appropriate "pong" responses.
+     *
+     * @param message The text message received from the client
+     * @return A response message to be sent back to the client
+     */
     @OnTextMessage(broadcast = false)  
     @RunOnVirtualThread
     public String onMessage(String message) {
-        LOG.infof("Websocket message received: %s", message);
-        return "pong";
+        if ("ping".equals(message)) {
+            log.debugf("Websocket Ping message received: %s", message);
+            return "pong";
+        }
+        log.infof("Websocket message received: %s", message);
+        return message;
     }
 
+    /**
+     * Handles incoming ping messages from WebSocket clients.
+     * Automatically responds with a pong message.
+     *
+     * @param data The ping message data received from the client
+     * @see https://datatracker.ietf.org/doc/html/rfc6455#section-5.5.2
+     */
     @OnPingMessage
     @RunOnVirtualThread
     void ping(Buffer data) {
-        // an incoming ping data frame that will automatically receive a pong data frame
-        LOG.infof("Websocket Ping received: %s", data);
+        // an incoming ping data frame that will automatically receive a pong
+        log.debugf("Websocket Ping received: %s", data);
     }
 
+    /**
+     * Handles incoming pong data frame messages from WebSocket clients.
+     * These are responses to previously sent ping messages.
+     *
+     * @param data The pong message data received from the client
+     * @see https://datatracker.ietf.org/doc/html/rfc6455#section-5.5.2
+     */
     @OnPongMessage
     @RunOnVirtualThread
     void pong(Buffer data) {
-        // an incoming pong data frame in response to the last ping data frame sent
-        LOG.infof("Websocket Pong received: %s", data);
+        // an incoming pong data frame in response to the last ping sent
+        log.debugf("Websocket Pong received: %s", data);
     }
 
+    /**
+     * Handles WebSocket errors and exceptions.
+     * Logs the root cause of the exception and returns an error message.
+     *
+     * @param e The exception that occurred
+     * @return An error message to be sent back to the client
+     */
     @OnError
     @RunOnVirtualThread
     public String onException(Exception e) {
-        LOG.errorf("Websocket Exception: %s", ExceptionUtils.getRootCauseMessage(e));
+        // Handles Exception and all subclasses except for IOException.
+        log.errorf("Websocket Exception: %s", ExceptionUtils.getRootCauseMessage(e));
         return "Error";
     }
- 
 }
