@@ -13,7 +13,7 @@ import io.quarkus.websockets.next.WebSocketConnection;
 import io.smallrye.common.annotation.RunOnVirtualThread;
 import io.vertx.core.buffer.Buffer;
 import jakarta.inject.Inject;
-import lombok.extern.jbosslog.JBossLog;
+import lombok.extern.jbosslog.JBossLog; 
 
 /**
  * WebSocket endpoint for push notifications.
@@ -58,10 +58,10 @@ public class PushWebSocket {
     @RunOnVirtualThread
     public String onMessage(String message) {
         if ("ping".equals(message)) {
-            log.debugf("Websocket Ping message received: %s", message);
+            LOG.debugf("Websocket Ping message received: %s", message);
             return "pong";
         }
-        log.infof("Websocket message received: %s", message);
+        LOG.infof("Websocket message received: %s", message);
         return message;
     }
 
@@ -76,7 +76,7 @@ public class PushWebSocket {
     @RunOnVirtualThread
     void ping(Buffer data) {
         // an incoming ping data frame that will automatically receive a pong
-        log.debugf("Websocket Ping received: %s", data);
+        LOG.debugf("Websocket Ping received: %s", data);
     }
 
     /**
@@ -90,7 +90,7 @@ public class PushWebSocket {
     @RunOnVirtualThread
     void pong(Buffer data) {
         // an incoming pong data frame in response to the last ping sent
-        log.debugf("Websocket Pong received: %s", data);
+        LOG.debugf("Websocket Pong received: %s", data);
     }
 
     /**
@@ -104,7 +104,7 @@ public class PushWebSocket {
     @RunOnVirtualThread
     public String onException(Exception e) {
         // Handles Exception and all subclasses except for IOException.
-        log.errorf("Websocket Exception: %s", ExceptionUtils.getRootCauseMessage(e));
+        LOG.errorf("Websocket Exception: %s", ExceptionUtils.getRootCauseMessage(e));
         return "Error";
     }
 }
