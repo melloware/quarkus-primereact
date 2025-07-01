@@ -26,7 +26,7 @@
 	},
 	"devDependencies": {
 		"@farmfe/cli": "1.0.5",
-		"@farmfe/core": "1.7.7",
+		"@farmfe/core": "1.7.8",
 		"@farmfe/plugin-react": "1.2.6",
 		"@farmfe/plugin-sass": "1.1.0",
 		"@tanstack/react-query-devtools": "5.81.5",
