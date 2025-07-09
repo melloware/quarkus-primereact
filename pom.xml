@@ -70,7 +70,6 @@
 		<dependency>
 			<groupId>io.quarkus</groupId>
 			<artifactId>quarkus-liquibase</artifactId>
-			<version>999-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>io.quarkus</groupId>
