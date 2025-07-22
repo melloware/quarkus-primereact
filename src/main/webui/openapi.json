@@ -744,7 +744,9 @@
               "schema" : {
                 "type" : "object",
                 "properties" : {
-                  "loggerName" : { },
+                  "loggerName" : {
+                    "type" : "string"
+                  },
                   "loggerLevel" : {
                     "$ref" : "#/components/schemas/LoggerLevel"
                   }

@@ -291,7 +291,7 @@ export type LoggingManagerGetAllParams = {
 };
 
 export type LoggingManagerUpdateBody = {
-	loggerName?: unknown;
+	loggerName?: string;
 	loggerLevel?: LoggerLevel;
 };
 
