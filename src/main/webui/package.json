@@ -22,7 +22,7 @@
 		"react-router-dom": "7.7.1",
 		"react-transition-group": "4.4.5",
 		"react-use-websocket": "4.13.0",
-		"zod": "4.0.10"
+		"zod": "4.0.14"
 	},
 	"devDependencies": {
 		"@farmfe/cli": "1.0.5",
