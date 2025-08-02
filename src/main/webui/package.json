@@ -29,7 +29,7 @@
 		"@farmfe/core": "1.7.10",
 		"@farmfe/plugin-react": "1.2.6",
 		"@farmfe/plugin-sass": "1.1.0",
-		"@tanstack/react-query-devtools": "5.83.0",
+		"@tanstack/react-query-devtools": "5.84.1",
 		"@types/node": "24.1.0",
 		"@types/react": "19.1.8",
 		"@types/react-dom": "19.1.6",
