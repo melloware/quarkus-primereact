@@ -293,6 +293,8 @@ export type LoggingManagerGetAllParams = {
 export type LoggingManagerUpdateBody = {
 	loggerName?: string;
 	loggerLevel?: LoggerLevel;
+	/** Duration in seconds, used only if temporary=true */
+	duration?: number;
 };
 
 /**
@@ -927,11 +929,11 @@ export function useLoggingManagerGetAll<TData = Awaited<ReturnType<ReturnType<ty
 }
 
 /**
- * Update a log level for a certain logger
+ * Update a log level for a certain logger. Use query param `temporary=true` for temporary level.
  * @summary Update log level
  */
 export const useLoggingManagerUpdateHook = () => {
-	const loggingManagerUpdate = useAxiosMutator<null>();
+	const loggingManagerUpdate = useAxiosMutator<null | null>();
 
 	return useCallback(
 		(loggingManagerUpdateBody: LoggingManagerUpdateBody, signal?: AbortSignal) => {
@@ -941,6 +943,9 @@ export const useLoggingManagerUpdateHook = () => {
 			}
 			if (loggingManagerUpdateBody.loggerLevel !== undefined) {
 				formUrlEncoded.append(`loggerLevel`, loggingManagerUpdateBody.loggerLevel);
+			}
+			if (loggingManagerUpdateBody.duration !== undefined) {
+				formUrlEncoded.append(`duration`, loggingManagerUpdateBody.duration.toString());
 			}
 
 			return loggingManagerUpdate({
@@ -955,7 +960,7 @@ export const useLoggingManagerUpdateHook = () => {
 	);
 };
 
-export const useLoggingManagerUpdateMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
+export const useLoggingManagerUpdateMutationOptions = <TError = ErrorType<null | null>, TContext = unknown>(options?: {
 	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>, TError, { data: LoggingManagerUpdateBody }, TContext>;
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>, TError, { data: LoggingManagerUpdateBody }, TContext> => {
 	const mutationKey = ['loggingManagerUpdate'];
@@ -978,12 +983,12 @@ export const useLoggingManagerUpdateMutationOptions = <TError = ErrorType<unknow
 
 export type LoggingManagerUpdateMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>>;
 export type LoggingManagerUpdateMutationBody = LoggingManagerUpdateBody;
-export type LoggingManagerUpdateMutationError = ErrorType<unknown>;
+export type LoggingManagerUpdateMutationError = ErrorType<null | null>;
 
 /**
  * @summary Update log level
  */
-export const useLoggingManagerUpdate = <TError = ErrorType<unknown>, TContext = unknown>(
+export const useLoggingManagerUpdate = <TError = ErrorType<null | null>, TContext = unknown>(
 	options?: {
 		mutation?: UseMutationOptions<
 			Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>,

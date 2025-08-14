@@ -55,10 +55,16 @@ const CrudPage = () => {
 	const form = useForm({
 		defaultValues: defaultValues,
 		validators: {
-			onChange: postEntityCarsBody
+			onChange: ({ value }) => {
+				const result = postEntityCarsBody.safeParse(value);
+				if (!result.success) {
+					return result.error.issues;
+				}
+				return undefined;
+			}
 		},
 		onSubmit: async ({ value }) => {
-			onSubmit(value);
+			onSubmit(value as Car);
 		}
 	});
 
@@ -67,7 +73,7 @@ const CrudPage = () => {
 	const datatable = useRef<DataTable<Car[]>>(null);
 
 	// state
-	const [car, setCar] = useState<Car>(defaultValues);
+	const [car, setCar] = useState<Car>(defaultValues as Car);
 	const [deleteCarDialog, setDeleteCarDialog] = useState(false);
 	const [editCarDialog, setEditCarDialog] = useState(false);
 	const [isMenuFilter, setMenuFilter] = useState(true);
@@ -254,7 +260,7 @@ const CrudPage = () => {
 	};
 
 	const onReset = (data: CarInput) => {
-		setCar(data);
+		setCar(data as Car);
 		form.reset(data, {
 			keepDefaultValues: true
 		});
@@ -262,7 +268,7 @@ const CrudPage = () => {
 
 	const editCar = (car: Car) => {
 		setEditCarDialog(true);
-		onReset({ ...car });
+		onReset({ ...car } as CarInput);
 	};
 
 	const createCar = () => {

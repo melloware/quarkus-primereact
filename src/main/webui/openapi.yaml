@@ -620,7 +620,8 @@ paths:
     post:
       operationId: logging_manager_update
       summary: Update log level
-      description: Update a log level for a certain logger
+      description: Update a log level for a certain logger. Use query param `temporary=true`
+        for temporary level.
       tags:
       - Logging Manager
       requestBody:
@@ -633,9 +634,18 @@ paths:
                   type: string
                 loggerLevel:
                   $ref: "#/components/schemas/LoggerLevel"
+                duration:
+                  type: integer
+                  description: "Duration in seconds, used only if temporary=true"
       responses:
         "201":
           description: Created
+        "200":
+          description: Log level already set
+        "400":
+          description: Invalid request
+        "404":
+          description: Logger not found
   /q/logging-manager/levels:
     description: All available levels
     summary: Return all levels that is available
