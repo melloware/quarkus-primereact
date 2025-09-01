@@ -55,13 +55,7 @@ const CrudPage = () => {
 	const form = useForm({
 		defaultValues: defaultValues,
 		validators: {
-			onChange: ({ value }) => {
-				const result = postEntityCarsBody.safeParse(value);
-				if (!result.success) {
-					return result.error.issues;
-				}
-				return undefined;
-			}
+			onChange: postEntityCarsBody
 		},
 		onSubmit: async ({ value }) => {
 			onSubmit(value as Car);
