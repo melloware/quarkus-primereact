@@ -624,6 +624,13 @@ paths:
         for temporary level.
       tags:
       - Logging Manager
+      parameters:
+      - name: temporary
+        in: query
+        description: Used to set the log level temporarily
+        schema:
+          type: boolean
+        required: false
       requestBody:
         content:
           application/x-www-form-urlencoded:
