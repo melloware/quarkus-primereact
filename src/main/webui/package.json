@@ -30,7 +30,7 @@
 		"@farmfe/plugin-react": "1.2.6",
 		"@farmfe/plugin-sass": "1.1.0",
 		"@tanstack/react-query-devtools": "5.90.2",
-		"@types/node": "24.5.2",
+		"@types/node": "24.6.1",
 		"@types/react": "19.1.14",
 		"@types/react-dom": "19.1.9",
 		"@types/react-router-dom": "5.3.3",
