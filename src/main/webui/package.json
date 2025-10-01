@@ -42,7 +42,7 @@
 		"orval": "7.13.0",
 		"prettier": "3.6.2",
 		"react-refresh": "0.17.0",
-		"typescript": "5.9.2"
+		"typescript": "5.9.3"
 	},
 	"scripts": {
 		"format": "prettier --write \"{src,__tests__}/**/*.{ts,tsx}\"",
