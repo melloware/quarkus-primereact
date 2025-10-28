@@ -3,6 +3,7 @@ module.exports = {
 		output: {
 			target: 'src/service/CarService.ts',
 			client: 'react-query',
+			httpClient: 'axios',
 			mock: false,
 			prettier: false,
 			override: {

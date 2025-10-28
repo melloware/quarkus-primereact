@@ -39,7 +39,7 @@
 		"cross-env": "10.1.0",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-prettier": "5.5.4",
-		"orval": "7.15.0",
+		"orval": "8.0.0-rc.0",
 		"prettier": "3.6.2",
 		"react-refresh": "0.18.0",
 		"typescript": "5.9.3"
@@ -48,9 +48,9 @@
 		"format": "prettier --write \"{src,__tests__}/**/*.{ts,tsx}\"",
 		"codegen": "orval && npm run format",
 		"start": "npm run dev",
-		"dev": "npm run codegen && set FARM_CONFIG_FORMAT=cjs && farm start",
-		"build": "npm run codegen && set FARM_CONFIG_FORMAT=cjs && farm build",
-		"preview": "set FARM_CONFIG_FORMAT=cjs && farm preview",
+		"dev": "npm run codegen && farm start",
+		"build": "npm run codegen && farm build",
+		"preview": "farm preview",
 		"clean": "farm clean"
 	}
 }
