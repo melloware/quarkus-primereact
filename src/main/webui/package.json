@@ -25,7 +25,7 @@
 		"zod": "4.1.12"
 	},
 	"devDependencies": {
-		"@farmfe/cli": "^1.0.2",
+		"@farmfe/cli": "^1.0.5",
 		"@farmfe/core": "1.7.11",
 		"@farmfe/plugin-react": "1.2.6",
 		"@farmfe/plugin-sass": "1.1.0",
