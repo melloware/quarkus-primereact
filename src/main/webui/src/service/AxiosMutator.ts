@@ -4,17 +4,7 @@ export const AXIOS_INSTANCE = Axios.create({ baseURL: process.env.VITE_REACT_APP
 
 export const useAxiosMutator = <T>(): ((config: RawAxiosRequestConfig) => Promise<T>) => {
 	return (config: RawAxiosRequestConfig) => {
-		const source = Axios.CancelToken.source();
-		const promise = AXIOS_INSTANCE({
-			...config,
-			cancelToken: source.token
-		}).then(({ data }) => data);
-
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		promise.cancel = () => {
-			source.cancel('Query was cancelled by React Query!');
-		};
+		const promise = AXIOS_INSTANCE({ ...config }).then(({ data }) => data);
 
 		return promise;
 	};
