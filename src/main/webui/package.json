@@ -10,19 +10,19 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"@tanstack/react-form": "1.27.1",
+		"@tanstack/react-form": "1.27.5",
 		"@tanstack/react-query": "5.90.12",
 		"axios": "1.13.2",
 		"primeflex": "4.0.0",
 		"primeicons": "7.0.0",
 		"primelocale": "2.2.3",
 		"primereact": "10.9.7",
-		"react": "19.2.1",
-		"react-dom": "19.2.1",
-		"react-router-dom": "7.10.1",
+		"react": "19.2.3",
+		"react-dom": "19.2.3",
+		"react-router-dom": "7.11.0",
 		"react-transition-group": "4.4.5",
 		"react-use-websocket": "4.13.0",
-		"zod": "4.1.13"
+		"zod": "4.2.1"
 	},
 	"devDependencies": {
 		"@farmfe/cli": "1.0.5",
@@ -30,7 +30,7 @@
 		"@farmfe/plugin-react": "1.2.6",
 		"@farmfe/plugin-sass": "1.1.0",
 		"@tanstack/react-query-devtools": "5.91.1",
-		"@types/node": "24.10.1",
+		"@types/node": "25.0.3",
 		"@types/react": "19.2.7",
 		"@types/react-dom": "19.2.3",
 		"@types/react-router-dom": "5.3.3",
@@ -39,7 +39,7 @@
 		"cross-env": "10.1.0",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-prettier": "5.5.4",
-		"orval": "8.0.0-rc.3",
+		"orval": "8.0.0-rc.4",
 		"prettier": "3.7.4",
 		"react-refresh": "0.18.0",
 		"typescript": "5.9.3"

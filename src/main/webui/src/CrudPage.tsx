@@ -30,9 +30,9 @@ import {
 	usePostEntityCars,
 	usePutEntityCarsId
 } from './service/CarService';
-import { postEntityCarsBody } from './service/CarService.zod';
+import { PostEntityCarsBody } from './service/CarService.zod';
 
-type CarInput = z.infer<typeof postEntityCarsBody>;
+type CarInput = z.infer<typeof PostEntityCarsBody>;
 
 /**
  * CRUD page demonstrating multiple TanStack Query and PrimeReact concepts such as lazy querying datable,
@@ -55,7 +55,7 @@ const CrudPage = () => {
 	const form = useForm({
 		defaultValues: defaultValues,
 		validators: {
-			onChange: postEntityCarsBody
+			onChange: PostEntityCarsBody,
 		},
 		onSubmit: async ({ value }) => {
 			onSubmit(value as Car);
@@ -438,7 +438,7 @@ const CrudPage = () => {
 				</DataTable>
 			</div>
 
-			<Dialog visible={editCarDialog} style={{ width: '450px' }} header="Car Details" modal onHide={hideEditDialog}>
+			<Dialog visible={editCarDialog} style={{ width: '500px' }} header="Car Details" modal onHide={hideEditDialog}>
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
