@@ -55,7 +55,7 @@ const CrudPage = () => {
 	const form = useForm({
 		defaultValues: defaultValues,
 		validators: {
-			onChange: PostEntityCarsBody,
+			onChange: PostEntityCarsBody
 		},
 		onSubmit: async ({ value }) => {
 			onSubmit(value as Car);
