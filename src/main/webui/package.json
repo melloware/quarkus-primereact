@@ -19,10 +19,10 @@
 		"primereact": "10.9.7",
 		"react": "19.2.3",
 		"react-dom": "19.2.3",
-		"react-router-dom": "7.11.0",
+		"react-router-dom": "7.12.0",
 		"react-transition-group": "4.4.5",
 		"react-use-websocket": "4.13.0",
-		"zod": "4.3.4"
+		"zod": "4.3.5"
 	},
 	"devDependencies": {
 		"@farmfe/cli": "1.0.5",
@@ -30,8 +30,8 @@
 		"@farmfe/plugin-react": "1.2.6",
 		"@farmfe/plugin-sass": "1.1.0",
 		"@tanstack/react-query-devtools": "5.91.2",
-		"@types/node": "25.0.3",
-		"@types/react": "19.2.7",
+		"@types/node": "25.0.6",
+		"@types/react": "19.2.8",
 		"@types/react-dom": "19.2.3",
 		"@types/react-router-dom": "5.3.3",
 		"@types/react-transition-group": "4.4.12",
@@ -39,7 +39,7 @@
 		"cross-env": "10.1.0",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-prettier": "5.5.4",
-		"orval": "8.0.0-rc.5",
+		"orval": "8.0.0-rc.6",
 		"prettier": "3.7.4",
 		"react-refresh": "0.18.0",
 		"typescript": "5.9.3"
