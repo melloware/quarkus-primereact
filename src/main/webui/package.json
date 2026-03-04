@@ -39,7 +39,7 @@
 		"cross-env": "10.1.0",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-prettier": "5.5.5",
-		"orval": "8.5.1",
+		"orval": "8.5.2",
 		"prettier": "3.8.1",
 		"react-refresh": "0.18.0",
 		"typescript": "5.9.3"
