@@ -10,16 +10,16 @@
 	},
 	"license": "MIT",
 	"dependencies": {
-		"@tanstack/react-form": "1.28.5",
-		"@tanstack/react-query": "5.91.2",
-		"axios": "1.13.6",
+		"@tanstack/react-form": "1.28.6",
+		"@tanstack/react-query": "5.96.1",
+		"axios": "1.14.0",
 		"primeflex": "4.0.0",
 		"primeicons": "7.0.0",
 		"primelocale": "2.3.1",
 		"primereact": "10.9.7",
 		"react": "19.2.4",
 		"react-dom": "19.2.4",
-		"react-router-dom": "7.13.1",
+		"react-router-dom": "7.13.2",
 		"react-transition-group": "4.4.5",
 		"react-use-websocket": "4.13.0",
 		"zod": "4.3.6"
@@ -29,7 +29,7 @@
 		"@farmfe/core": "1.7.11",
 		"@farmfe/plugin-react": "1.2.6",
 		"@farmfe/plugin-sass": "1.1.0",
-		"@tanstack/react-query-devtools": "5.91.3",
+		"@tanstack/react-query-devtools": "5.96.1",
 		"@types/node": "25.5.0",
 		"@types/react": "19.2.14",
 		"@types/react-dom": "19.2.3",
@@ -42,7 +42,7 @@
 		"orval": "8.6.2",
 		"prettier": "3.8.1",
 		"react-refresh": "0.18.0",
-		"typescript": "5.9.3"
+		"typescript": "6.0.2"
 	},
 	"scripts": {
 		"format": "prettier --write \"{src,__tests__}/**/*.{ts,tsx}\"",
