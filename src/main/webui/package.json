@@ -11,8 +11,8 @@
 	"license": "MIT",
 	"dependencies": {
 		"@tanstack/react-form": "1.29.1",
-		"@tanstack/react-query": "5.100.7",
-		"axios": "1.15.2",
+		"@tanstack/react-query": "5.100.9",
+		"axios": "1.16.0",
 		"primeflex": "4.0.0",
 		"primeicons": "7.0.0",
 		"primelocale": "2.3.1",
@@ -22,14 +22,11 @@
 		"react-router-dom": "7.14.2",
 		"react-transition-group": "4.4.5",
 		"react-use-websocket": "4.13.0",
-		"zod": "4.4.1"
+		"zod": "4.4.3"
 	},
 	"devDependencies": {
-		"@farmfe/cli": "1.0.5",
-		"@farmfe/core": "1.7.11",
-		"@farmfe/plugin-react": "1.2.6",
-		"@farmfe/plugin-sass": "1.1.0",
-		"@tanstack/react-query-devtools": "5.100.7",
+		"@vitejs/plugin-react": "6.0.1",
+		"@tanstack/react-query-devtools": "5.100.9",
 		"@types/node": "25.6.0",
 		"@types/react": "19.2.14",
 		"@types/react-dom": "19.2.3",
@@ -39,18 +36,19 @@
 		"cross-env": "10.1.0",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-prettier": "5.5.5",
-		"orval": "8.9.0",
+		"orval": "8.9.1",
 		"prettier": "3.8.3",
-		"react-refresh": "0.18.0",
-		"typescript": "6.0.3"
+		"sass": "1.99.0",
+		"typescript": "6.0.3",
+		"vite": "8.0.10"
 	},
 	"scripts": {
 		"format": "prettier --write \"{src,__tests__}/**/*.{ts,tsx}\"",
 		"codegen": "orval && npm run format",
 		"start": "npm run dev",
-		"dev": "npm run codegen && farm start",
-		"build": "npm run codegen && farm build",
-		"preview": "farm preview",
-		"clean": "farm clean"
+		"dev": "npm run codegen && vite",
+		"build": "npm run codegen && vite build",
+		"preview": "vite preview",
+		"clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\""
 	}
 }
