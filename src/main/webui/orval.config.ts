@@ -11,9 +11,6 @@ module.exports = {
 				mutator: {
 					path: 'src/service/AxiosMutator.ts',
 					name: 'useAxiosMutator'
-				},
-				query: {
-					useQuery: true
 				}
 			}
 		},
