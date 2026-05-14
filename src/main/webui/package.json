@@ -1,6 +1,6 @@
 {
 	"name": "quarkus-primereact",
-	"version": "10.9.7",
+	"version": "10.9.8",
 	"description": "Quarkus monorepo demonstrating Quarkus REST server with PrimeReact UI client.",
 	"homepage": ".",
 	"private": false,
@@ -12,14 +12,14 @@
 	"dependencies": {
 		"@tanstack/react-form": "1.32.0",
 		"@tanstack/react-query": "5.100.10",
-		"axios": "1.16.0",
+		"axios": "1.16.1",
 		"primeflex": "4.0.0",
 		"primeicons": "7.0.0",
-		"primelocale": "2.3.1",
-		"primereact": "10.9.7",
+		"primelocale": "2.3.2",
+		"primereact": "10.9.8",
 		"react": "19.2.6",
 		"react-dom": "19.2.6",
-		"react-router-dom": "7.15.0",
+		"react-router-dom": "7.15.1",
 		"react-transition-group": "4.4.5",
 		"react-use-websocket": "4.13.0",
 		"zod": "4.4.3"
@@ -27,7 +27,7 @@
 	"devDependencies": {
 		"@vitejs/plugin-react": "6.0.1",
 		"@tanstack/react-query-devtools": "5.100.10",
-		"@types/node": "25.7.0",
+		"@types/node": "25.8.0",
 		"@types/react": "19.2.14",
 		"@types/react-dom": "19.2.3",
 		"@types/react-router-dom": "5.3.3",
@@ -40,7 +40,7 @@
 		"prettier": "3.8.3",
 		"sass": "1.99.0",
 		"typescript": "6.0.3",
-		"vite": "8.0.12"
+		"vite": "8.0.13"
 	},
 	"scripts": {
 		"format": "prettier --write \"{src,__tests__}/**/*.{ts,tsx}\"",
