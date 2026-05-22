@@ -11,7 +11,7 @@
 	"license": "MIT",
 	"dependencies": {
 		"@tanstack/react-form": "1.32.0",
-		"@tanstack/react-query": "5.100.10",
+		"@tanstack/react-query": "5.100.11",
 		"axios": "1.16.1",
 		"primeflex": "4.0.0",
 		"primeicons": "7.0.0",
@@ -26,9 +26,9 @@
 	},
 	"devDependencies": {
 		"@vitejs/plugin-react": "6.0.2",
-		"@tanstack/react-query-devtools": "5.100.10",
-		"@types/node": "25.8.0",
-		"@types/react": "19.2.14",
+		"@tanstack/react-query-devtools": "5.100.11",
+		"@types/node": "25.9.1",
+		"@types/react": "19.2.15",
 		"@types/react-dom": "19.2.3",
 		"@types/react-router-dom": "5.3.3",
 		"@types/react-transition-group": "4.4.12",
@@ -36,11 +36,11 @@
 		"cross-env": "10.1.0",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-plugin-prettier": "5.5.5",
-		"orval": "8.11.0",
+		"orval": "8.12.3",
 		"prettier": "3.8.3",
-		"sass": "1.99.0",
+		"sass": "1.100.0",
 		"typescript": "6.0.3",
-		"vite": "8.0.13"
+		"vite": "8.0.14"
 	},
 	"scripts": {
 		"format": "prettier --write \"{src,__tests__}/**/*.{ts,tsx}\"",
