@@ -32,6 +32,7 @@ module.exports = {
 						header: true,
 						body: true
 					},
+					generateReusableSchemas: true,
 				}
 			}
 		},
