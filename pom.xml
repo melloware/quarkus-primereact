@@ -9,7 +9,7 @@
 	<description>Quarkus monorepo demonstrating Panache REST server with PrimeReact UI client</description>
 	<url>https://github.com/melloware/quarkus-monorepo</url>
 	<properties>
-		<quarkus.platform.version>3.35.4</quarkus.platform.version>
+		<quarkus.platform.version>3.36.0</quarkus.platform.version>
 		<quarkus.logmanager.version>3.4.2</quarkus.logmanager.version>
 		<quarkus.ngrok.version>1.8.0</quarkus.ngrok.version>
 		<quarkus.postgresql.version>0.8.0</quarkus.postgresql.version>
