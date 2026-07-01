@@ -19,7 +19,7 @@
 		"primereact": "10.9.8",
 		"react": "19.2.7",
 		"react-dom": "19.2.7",
-		"react-router-dom": "7.18.0",
+		"react-router-dom": "7.18.1",
 		"react-transition-group": "4.4.5",
 		"react-use-websocket": "4.13.0",
 		"zod": "4.4.3"
