@@ -32,7 +32,7 @@ While the code is surprisingly simple, under the hood this is using:
 - [Hibernate ORM with Panache](https://quarkus.io/guides/hibernate-orm-panache) to perform the CRUD operations on the database
 - [PostgreSQL](https://www.postgresql.org/) database; automatically starts an embedded DB
 - [Liquibase](https://www.liquibase.com/) to automatically update database
-- [React + ManteUI](https://mantle-ui.github.io/mantle-ui/) for a top notch user interface including lazy datatable
+- [React + MantleUI](https://mantle-ui.github.io/mantle-ui/) for a top notch user interface including lazy datatable
 - [React Websocket](https://github.com/robtaussig/react-use-websocket) to handle websocket connections
 - [TanStack Form](https://tanstack.com/form/latest) to validate user input data
 - [TanStack Query](https://tanstack.com/query/latest) for powerful asynchronous state management for TypeScript
