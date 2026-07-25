@@ -2,7 +2,7 @@
   <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
     <img src="https://raw.githubusercontent.com/quarkiverse/.github/main/assets/images/quarkus.svg" alt="Quarkus logo" style="height: 70px; width: auto;">
     <img src="https://raw.githubusercontent.com/quarkiverse/.github/main/assets/images/plus-sign.svg" alt="Plus sign" style="height: 70px; width: auto;">
-    <img src="https://raw.githubusercontent.com/melloware/quarkus-primereact/main/src/main/webui/public/static/images/primereact-dark.svg" alt="mDNS logo" style="height: 70px; width: auto;">
+    <img src="https://github.com/Mantle-UI/mantle-ui/raw/main/public/images/mantle-logo-text.png" alt="mDNS logo" style="height: 70px; width: auto;">
   </div>
 
   <h1>Quarkus PrimeReact</h1>
