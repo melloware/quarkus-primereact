@@ -5,7 +5,7 @@
     <img src="https://github.com/Mantle-UI/mantle-ui/raw/main/public/images/mantle-logo-text.png" alt="mDNS logo" style="height: 70px; width: auto;">
   </div>
 
-  <h1>Quarkus PrimeReact</h1>
+  <h1>Quarkus MantleUI</h1>
 </div>
 <br>
 
@@ -32,7 +32,7 @@ While the code is surprisingly simple, under the hood this is using:
 - [Hibernate ORM with Panache](https://quarkus.io/guides/hibernate-orm-panache) to perform the CRUD operations on the database
 - [PostgreSQL](https://www.postgresql.org/) database; automatically starts an embedded DB
 - [Liquibase](https://www.liquibase.com/) to automatically update database
-- [React + PrimeReact](https://primereact.org/) for a top notch user interface including lazy datatable
+- [React + ManteUI](https://mantle-ui.github.io/mantle-ui/) for a top notch user interface including lazy datatable
 - [React Websocket](https://github.com/robtaussig/react-use-websocket) to handle websocket connections
 - [TanStack Form](https://tanstack.com/form/latest) to validate user input data
 - [TanStack Query](https://tanstack.com/query/latest) for powerful asynchronous state management for TypeScript
@@ -75,7 +75,7 @@ Now open your web browser to http://localhost:8080/ to see it in action.
 
 ## Building
 
-### Run Quarkus PrimeReact in JVM mode
+### Run Quarkus MantleUI in JVM mode
 
 When you're done iterating in developer mode, you can run the application as a
 conventional jar file.
@@ -108,7 +108,7 @@ Navigate to:
 <http://localhost:8080/>
 
 
-### Run Quarkus PrimeReact in Docker
+### Run Quarkus MantleUI in Docker
 
 You can easily build a Docker image of this application with the following command:
 
