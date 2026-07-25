@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { PrimeReactProvider } from 'primereact/api';
+import { MantleProvider } from '@mantle-ui/react/api';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
@@ -16,9 +16,9 @@ root.render(
 	<React.StrictMode>
 		<HashRouter>
 			<QueryClientProvider client={queryClient}>
-				<PrimeReactProvider>
+				<MantleProvider>
 					<App />
-				</PrimeReactProvider>
+				</MantleProvider>
 				<ReactQueryDevtools initialIsOpen={false} />
 			</QueryClientProvider>
 		</HashRouter>

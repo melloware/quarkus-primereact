@@ -1,7 +1,7 @@
 {
-	"name": "quarkus-primereact",
-	"version": "10.9.8",
-	"description": "Quarkus monorepo demonstrating Quarkus REST server with PrimeReact UI client.",
+	"name": "quarkus-mantleui",
+	"version": "10.10.7",
+	"description": "Quarkus monorepo demonstrating Quarkus REST server with Mantle UI client.",
 	"homepage": ".",
 	"private": false,
 	"repository": {
@@ -10,13 +10,13 @@
 	},
 	"license": "MIT",
 	"dependencies": {
+		"@mantle-ui/react": "10.10.7",
 		"@tanstack/react-form": "1.33.2",
 		"@tanstack/react-query": "5.101.4",
 		"axios": "1.18.1",
 		"primeflex": "4.0.0",
 		"primeicons": "7.0.0",
 		"primelocale": "2.4.0",
-		"primereact": "10.9.8",
 		"react": "19.2.8",
 		"react-dom": "19.2.8",
 		"react-router-dom": "7.18.1",

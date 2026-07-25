@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Badge } from 'primereact/badge';
-import { Ripple } from 'primereact/ripple';
-import { classNames } from 'primereact/utils';
+import { Badge } from '@mantle-ui/react/badge';
+import { Ripple } from '@mantle-ui/react/ripple';
+import { classNames } from '@mantle-ui/react/utils';
 import React, { KeyboardEvent, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';

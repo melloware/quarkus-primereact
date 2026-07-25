@@ -2,11 +2,11 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.melloware</groupId>
-	<artifactId>quarkus-primereact</artifactId>
-	<version>10.9.8</version>
+	<artifactId>quarkus-mantleui</artifactId>
+	<version>10.10.7</version>
 	<packaging>quarkus</packaging>
-	<name>Quarkus PrimeReact</name>
-	<description>Quarkus monorepo demonstrating Panache REST server with PrimeReact UI client</description>
+	<name>Quarkus MantleUI</name>
+	<description>Quarkus monorepo demonstrating Panache REST server with Mantle UI client</description>
 	<url>https://github.com/melloware/quarkus-monorepo</url>
 	<properties>
 		<quarkus.platform.version>3.37.4</quarkus.platform.version>

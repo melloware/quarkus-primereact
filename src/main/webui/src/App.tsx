@@ -1,6 +1,6 @@
 import { all as locales } from 'primelocale';
-import { useMountEffect } from 'primereact/hooks';
-import { classNames, DomHandler } from 'primereact/utils';
+import { useMountEffect } from '@mantle-ui/react/hooks';
+import { classNames, DomHandler } from '@mantle-ui/react/utils';
 import React, { useEffect, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
@@ -10,9 +10,8 @@ import CrudPage from './CrudPage';
 
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
-import { addLocale, locale, LocaleOptions } from 'primereact/api';
-import 'primereact/resources/primereact.min.css';
-import 'primereact/resources/themes/lara-dark-blue/theme.css';
+import { addLocale, locale, LocaleOptions } from '@mantle-ui/react/api';
+import '@mantle-ui/react/resources/themes/lara-dark-blue/theme.css';
 import './App.css';
 import './assets/layout/layout.scss';
 

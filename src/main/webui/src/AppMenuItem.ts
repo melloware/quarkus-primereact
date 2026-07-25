@@ -1,4 +1,4 @@
-import type { MenuItem } from 'primereact/menuitem';
+import type { MenuItem } from '@mantle-ui/react/menuitem';
 import { To } from 'react-router-dom';
 
 export interface AppMenuItemClickParams {
