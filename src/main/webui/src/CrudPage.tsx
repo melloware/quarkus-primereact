@@ -323,14 +323,14 @@ const CrudPage = () => {
 		return (
 			<div>
 				<Button
-					icon="pi pi-pencil"
+					icon="mi mi-pencil"
 					className={editClassName}
 					onClick={() => editCar(item)}
 					data-pr-tooltip="Edit car"
 					aria-label={`Edit ${item.make} ${item.model}`}
 				/>
 				<Button
-					icon="pi pi-trash"
+					icon="mi mi-trash"
 					className={deleteClassName}
 					onClick={() => confirmDeleteCar(item)}
 					data-pr-tooltip="Delete car"
@@ -342,14 +342,14 @@ const CrudPage = () => {
 
 	const deleteCarDialogFooter = (
 		<div>
-			<Button label="No" icon="pi pi-times" className="p-button-text p-button-info" onClick={hideDeleteCarDialog} autoFocus />
-			<Button label="Yes" icon="pi pi-check" className="p-button-text p-button-danger" onClick={deleteCar} />
+			<Button label="No" icon="mi mi-times" className="p-button-text p-button-info" onClick={hideDeleteCarDialog} autoFocus />
+			<Button label="Yes" icon="mi mi-check" className="p-button-text p-button-danger" onClick={deleteCar} />
 		</div>
 	);
 
 	const leftToolbarTemplate = (
 		<div>
-			<Button label="New" icon="pi pi-plus" className="p-button-success mr-2 action" onClick={createCar} data-pr-tooltip="Create new car" />
+			<Button label="New" icon="mi mi-plus" className="p-button-success mr-2 action" onClick={createCar} data-pr-tooltip="Create new car" />
 		</div>
 	);
 	const rightToolbarTemplate = (
@@ -384,7 +384,7 @@ const CrudPage = () => {
 					setMenuFilter(e.value!);
 				}}
 			/>
-			<Button label="Export" icon="pi pi-download" className="action" onClick={exportCSV} data-pr-tooltip="Export to CSV" />
+			<Button label="Export" icon="mi mi-download" className="action" onClick={exportCSV} data-pr-tooltip="Export to CSV" />
 		</div>
 	);
 
@@ -576,7 +576,7 @@ const CrudPage = () => {
 					</div>
 
 					<div className="p-dialog-footer pb-0">
-						<Button label="Cancel" type="reset" icon="pi pi-times" className="p-button-text p-button-info" onClick={hideEditDialog} />
+						<Button label="Cancel" type="reset" icon="mi mi-times" className="p-button-text p-button-info" onClick={hideEditDialog} />
 						<form.Subscribe
 							selector={(state) => [state.canSubmit, state.isSubmitting]}
 							children={([canSubmit, isSubmitting]) => (
@@ -584,7 +584,7 @@ const CrudPage = () => {
 									label={isSubmitting ? '...' : 'Save'}
 									disabled={!canSubmit}
 									type="submit"
-									icon="pi pi-check"
+									icon="mi mi-check"
 									className="p-button-text p-button-success"
 									autoFocus
 								/>
@@ -603,7 +603,7 @@ const CrudPage = () => {
 				onHide={hideDeleteCarDialog}
 			>
 				<div className="confirmation-content">
-					<i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+					<i className="mi mi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
 					{car && (
 						<span>
 							Are you sure you want to delete{' '}

@@ -52,7 +52,7 @@ const AppSubmenu = (props: {
 	};
 
 	const renderLinkContent = (item: AppMenuItem) => {
-		const submenuIcon = item.items && <i className="pi pi-fw pi-angle-down menuitem-toggle-icon"></i>;
+		const submenuIcon = item.items && <i className="mi mi-fw mi-angle-down menuitem-toggle-icon"></i>;
 		const badge = item.badge && <Badge value={item.badge} />;
 
 		return (

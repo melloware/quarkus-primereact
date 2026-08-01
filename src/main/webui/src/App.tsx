@@ -8,8 +8,8 @@ import { AppMenu } from './AppMenu';
 import { AppMenuItem, AppMenuItemClickParams } from './AppMenuItem';
 import CrudPage from './CrudPage';
 
-import 'primeflex/primeflex.css';
-import 'primeicons/primeicons.css';
+import '@mantle-ui/flex/mantleflex.css';
+import '@mantle-ui/icons/mantleicons.css';
 import { addLocale, locale, LocaleOptions } from '@mantle-ui/react/api';
 import '@mantle-ui/react/resources/themes/lara-dark-blue/theme.css';
 import './App.css';
@@ -129,31 +129,31 @@ const App = () => {
 	const menu = [
 		{
 			label: 'Application',
-			items: [{ label: 'CRUD', icon: 'pi pi-fw pi-home', to: '/' }]
+			items: [{ label: 'CRUD', icon: 'mi mi-fw mi-home', to: '/' }]
 		},
 		{
 			label: 'Server Docs',
 			items: [
-				{ label: 'Quarkus', icon: 'pi pi-fw pi-wifi', url: 'https://quarkus.io/', target: '_blank' },
-				{ label: 'Quinoa', icon: 'pi pi-fw pi-wifi', url: 'https://quarkiverse.github.io/quarkiverse-docs/quarkus-quinoa', target: '_blank' },
-				{ label: 'REST Problem', icon: 'pi pi-fw pi-wifi', url: 'https://github.com/quarkiverse/quarkus-resteasy-problem', target: '_blank' },
-				{ label: 'Hibernate/Panache', icon: 'pi pi-fw pi-database', url: 'https://quarkus.io/guides/hibernate-orm-panache', target: '_blank' },
-				{ label: 'PostgreSQL', icon: 'pi pi-fw pi-database', url: 'https://www.postgresql.org/', target: '_blank' },
-				{ label: 'Liquibase', icon: 'pi pi-fw pi-database', url: 'https://www.liquibase.com/', target: '_blank' },
-				{ label: 'OpenAPI', icon: 'pi pi-fw pi-tag', url: 'https://www.openapis.org/', target: '_blank' },
-				{ label: 'WebSockets Next', icon: 'pi pi-fw pi-wave-pulse', url: 'https://quarkus.io/guides/websockets-next-tutorial', target: '_blank' }
+				{ label: 'Quarkus', icon: 'mi mi-fw mi-wifi', url: 'https://quarkus.io/', target: '_blank' },
+				{ label: 'Quinoa', icon: 'mi mi-fw mi-wifi', url: 'https://quarkiverse.github.io/quarkiverse-docs/quarkus-quinoa', target: '_blank' },
+				{ label: 'REST Problem', icon: 'mi mi-fw mi-wifi', url: 'https://github.com/quarkiverse/quarkus-resteasy-problem', target: '_blank' },
+				{ label: 'Hibernate/Panache', icon: 'mi mi-fw mi-database', url: 'https://quarkus.io/guides/hibernate-orm-panache', target: '_blank' },
+				{ label: 'PostgreSQL', icon: 'mi mi-fw mi-database', url: 'https://www.postgresql.org/', target: '_blank' },
+				{ label: 'Liquibase', icon: 'mi mi-fw mi-database', url: 'https://www.liquibase.com/', target: '_blank' },
+				{ label: 'OpenAPI', icon: 'mi mi-fw mi-tag', url: 'https://www.openapis.org/', target: '_blank' },
+				{ label: 'WebSockets Next', icon: 'mi mi-fw mi-wave-pulse', url: 'https://quarkus.io/guides/websockets-next-tutorial', target: '_blank' }
 			]
 		},
 		{
 			label: 'Client Docs',
 			items: [
-				{ label: 'React', icon: 'pi pi-fw pi-globe', url: 'https://reactjs.org/', target: '_blank' },
-				{ label: 'React WebSocket', icon: 'pi pi-fw pi-wave-pulse', url: 'https://github.com/robtaussig/react-use-websocket', target: '_blank' },
-				{ label: 'PrimeReact', icon: 'pi pi-fw pi-prime', url: 'https://primefaces.org/primereact/', target: '_blank' },
-				{ label: 'TanStack Form', icon: 'pi pi-fw pi-verified', url: 'https://tanstack.com/form/latest', target: '_blank' },
-				{ label: 'TanStack Query', icon: 'pi pi-fw pi-tag', url: 'https://tanstack.com/query/latest', target: '_blank' },
-				{ label: 'Orval', icon: 'pi pi-fw pi-tag', url: 'https://orval.dev/', target: '_blank' },
-				{ label: 'Zod', icon: 'pi pi-fw pi-verified', url: 'https://zod.dev/', target: '_blank' }
+				{ label: 'React', icon: 'mi mi-fw mi-globe', url: 'https://reactjs.org/', target: '_blank' },
+				{ label: 'React WebSocket', icon: 'mi mi-fw mi-wave-pulse', url: 'https://github.com/robtaussig/react-use-websocket', target: '_blank' },
+				{ label: 'PrimeReact', icon: 'mi mi-fw mi-prime', url: 'https://primefaces.org/primereact/', target: '_blank' },
+				{ label: 'TanStack Form', icon: 'mi mi-fw mi-verified', url: 'https://tanstack.com/form/latest', target: '_blank' },
+				{ label: 'TanStack Query', icon: 'mi mi-fw mi-tag', url: 'https://tanstack.com/query/latest', target: '_blank' },
+				{ label: 'Orval', icon: 'mi mi-fw mi-tag', url: 'https://orval.dev/', target: '_blank' },
+				{ label: 'Zod', icon: 'mi mi-fw mi-verified', url: 'https://zod.dev/', target: '_blank' }
 			]
 		}
 	] as AppMenuItem[];
@@ -178,11 +178,11 @@ const App = () => {
 				</Link>
 
 				<button type="button" className="p-link layout-menu-button layout-topbar-button" onClick={onToggleMenuClick} aria-label="Appliction Menu">
-					<i className="pi pi-bars" />
+					<i className="mi mi-bars" />
 				</button>
 
 				<button type="button" className="p-link layout-topbar-menu-button layout-topbar-button" onClick={onMobileTopbarMenuClick}>
-					<i className="pi pi-ellipsis-v" />
+					<i className="mi mi-ellipsis-v" />
 				</button>
 				<ul className={classNames('layout-topbar-menu lg:flex origin-top', { 'layout-topbar-menu-mobile-active': mobileTopbarMenuActive })}>
 					<li>
