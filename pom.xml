@@ -9,12 +9,12 @@
 	<description>Quarkus monorepo demonstrating Panache REST server with Mantle UI client</description>
 	<url>https://github.com/melloware/quarkus-monorepo</url>
 	<properties>
-		<quarkus.platform.version>3.38.0</quarkus.platform.version>
+		<quarkus.platform.version>3.38.1</quarkus.platform.version>
 		<quarkus.logmanager.version>3.4.2</quarkus.logmanager.version>
 		<quarkus.ngrok.version>1.8.0</quarkus.ngrok.version>
 		<quarkus.postgresql.version>0.8.0</quarkus.postgresql.version>
 		<quarkus.http-problem.version>3.38.1</quarkus.http-problem.version>
-		<quarkus.quinoa.version>2.8.3</quarkus.quinoa.version>
+		<quarkus.quinoa.version>2.8.4</quarkus.quinoa.version>
 		<lombok.version>1.18.46</lombok.version>
 		<!-- Plugins-->
 		<surefire-plugin.version>3.5.6</surefire-plugin.version>
@@ -105,7 +105,6 @@
 		<dependency>
 			<groupId>io.quarkiverse.httpproblem</groupId>
 			<artifactId>quarkus-http-problem</artifactId>
-			<version>${quarkus.http-problem.version}</version>
 		</dependency>
 		<!-- Brotli4j Linux x86_64 is needed for Docker image build -->
 		<dependency>
