@@ -149,7 +149,7 @@ const App = () => {
 			items: [
 				{ label: 'React', icon: 'mi mi-fw mi-globe', url: 'https://reactjs.org/', target: '_blank' },
 				{ label: 'React WebSocket', icon: 'mi mi-fw mi-wave-pulse', url: 'https://github.com/robtaussig/react-use-websocket', target: '_blank' },
-				{ label: 'PrimeReact', icon: 'mi mi-fw mi-prime', url: 'https://primefaces.org/primereact/', target: '_blank' },
+				{ label: 'MantleUI', icon: 'mi mi-fw mi-prime', url: 'https://mantle-ui.github.io/mantle-ui/', target: '_blank' },
 				{ label: 'TanStack Form', icon: 'mi mi-fw mi-verified', url: 'https://tanstack.com/form/latest', target: '_blank' },
 				{ label: 'TanStack Query', icon: 'mi mi-fw mi-tag', url: 'https://tanstack.com/query/latest', target: '_blank' },
 				{ label: 'Orval', icon: 'mi mi-fw mi-tag', url: 'https://orval.dev/', target: '_blank' },
