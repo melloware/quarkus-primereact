@@ -422,10 +422,12 @@ export const usePostEntityCarsHook = () => {
 	);
 };
 
+export const getPostEntityCarsMutationKey = () => ['postEntityCars'] as const;
+
 export const usePostEntityCarsMutationOptions = <TError = ErrorType<HttpProblem>, TContext = unknown>(options?: {
-	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, TError, { data: Car }, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, TError, { data: Car }, TContext> => {
-	const mutationKey = ['postEntityCars'];
+	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, TError, PostEntityCarsMutationVariables, TContext>;
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, TError, PostEntityCarsMutationVariables, TContext> => {
+	const mutationKey = getPostEntityCarsMutationKey();
 	const { mutation: mutationOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
@@ -434,7 +436,7 @@ export const usePostEntityCarsMutationOptions = <TError = ErrorType<HttpProblem>
 
 	const postEntityCars = usePostEntityCarsHook();
 
-	const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, { data: Car }> = (props) => {
+	const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, PostEntityCarsMutationVariables> = (props) => {
 		const { data } = props ?? {};
 
 		return postEntityCars(data);
@@ -446,14 +448,17 @@ export const usePostEntityCarsMutationOptions = <TError = ErrorType<HttpProblem>
 export type PostEntityCarsMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>>;
 export type PostEntityCarsMutationBody = Car;
 export type PostEntityCarsMutationError = ErrorType<HttpProblem>;
+export type PostEntityCarsMutationVariables = { data: Car };
 
 /**
  * @summary Create a new car
  */
 export const usePostEntityCars = <TError = ErrorType<HttpProblem>, TContext = unknown>(
-	options?: { mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, TError, { data: Car }, TContext> },
+	options?: {
+		mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, TError, PostEntityCarsMutationVariables, TContext>;
+	},
 	queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, TError, { data: Car }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<ReturnType<typeof usePostEntityCarsHook>>>, TError, PostEntityCarsMutationVariables, TContext> => {
 	return useMutation(usePostEntityCarsMutationOptions(options), queryClient);
 };
 
@@ -563,10 +568,12 @@ export const usePutEntityCarsIdHook = () => {
 	);
 };
 
+export const getPutEntityCarsIdMutationKey = () => ['putEntityCarsId'] as const;
+
 export const usePutEntityCarsIdMutationOptions = <TError = ErrorType<HttpProblem>, TContext = unknown>(options?: {
-	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, TError, { id: number; data: Car }, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, TError, { id: number; data: Car }, TContext> => {
-	const mutationKey = ['putEntityCarsId'];
+	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, TError, PutEntityCarsIdMutationVariables, TContext>;
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, TError, PutEntityCarsIdMutationVariables, TContext> => {
+	const mutationKey = getPutEntityCarsIdMutationKey();
 	const { mutation: mutationOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
@@ -575,7 +582,7 @@ export const usePutEntityCarsIdMutationOptions = <TError = ErrorType<HttpProblem
 
 	const putEntityCarsId = usePutEntityCarsIdHook();
 
-	const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, { id: number; data: Car }> = (props) => {
+	const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, PutEntityCarsIdMutationVariables> = (props) => {
 		const { id, data } = props ?? {};
 
 		return putEntityCarsId(id, data);
@@ -587,14 +594,17 @@ export const usePutEntityCarsIdMutationOptions = <TError = ErrorType<HttpProblem
 export type PutEntityCarsIdMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>>;
 export type PutEntityCarsIdMutationBody = Car;
 export type PutEntityCarsIdMutationError = ErrorType<HttpProblem>;
+export type PutEntityCarsIdMutationVariables = { id: number; data: Car };
 
 /**
  * @summary Update a car
  */
 export const usePutEntityCarsId = <TError = ErrorType<HttpProblem>, TContext = unknown>(
-	options?: { mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, TError, { id: number; data: Car }, TContext> },
+	options?: {
+		mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, TError, PutEntityCarsIdMutationVariables, TContext>;
+	},
 	queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, TError, { id: number; data: Car }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<ReturnType<typeof usePutEntityCarsIdHook>>>, TError, PutEntityCarsIdMutationVariables, TContext> => {
 	return useMutation(usePutEntityCarsIdMutationOptions(options), queryClient);
 };
 
@@ -705,10 +715,12 @@ export const useDeleteEntityCarsIdHook = () => {
 	);
 };
 
+export const getDeleteEntityCarsIdMutationKey = () => ['deleteEntityCarsId'] as const;
+
 export const useDeleteEntityCarsIdMutationOptions = <TError = ErrorType<HttpProblem>, TContext = unknown>(options?: {
-	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, TError, { id: number }, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, TError, { id: number }, TContext> => {
-	const mutationKey = ['deleteEntityCarsId'];
+	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, TError, DeleteEntityCarsIdMutationVariables, TContext>;
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, TError, DeleteEntityCarsIdMutationVariables, TContext> => {
+	const mutationKey = getDeleteEntityCarsIdMutationKey();
 	const { mutation: mutationOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
@@ -717,7 +729,7 @@ export const useDeleteEntityCarsIdMutationOptions = <TError = ErrorType<HttpProb
 
 	const deleteEntityCarsId = useDeleteEntityCarsIdHook();
 
-	const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, { id: number }> = (props) => {
+	const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, DeleteEntityCarsIdMutationVariables> = (props) => {
 		const { id } = props ?? {};
 
 		return deleteEntityCarsId(id);
@@ -729,14 +741,17 @@ export const useDeleteEntityCarsIdMutationOptions = <TError = ErrorType<HttpProb
 export type DeleteEntityCarsIdMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>>;
 
 export type DeleteEntityCarsIdMutationError = ErrorType<HttpProblem>;
+export type DeleteEntityCarsIdMutationVariables = { id: number };
 
 /**
  * @summary Delete a car
  */
 export const useDeleteEntityCarsId = <TError = ErrorType<HttpProblem>, TContext = unknown>(
-	options?: { mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, TError, { id: number }, TContext> },
+	options?: {
+		mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, TError, DeleteEntityCarsIdMutationVariables, TContext>;
+	},
 	queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, TError, { id: number }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<ReturnType<typeof useDeleteEntityCarsIdHook>>>, TError, DeleteEntityCarsIdMutationVariables, TContext> => {
 	return useMutation(useDeleteEntityCarsIdMutationOptions(options), queryClient);
 };
 
@@ -755,10 +770,12 @@ export const usePostSocketNotifyHook = () => {
 	);
 };
 
+export const getPostSocketNotifyMutationKey = () => ['postSocketNotify'] as const;
+
 export const usePostSocketNotifyMutationOptions = <TError = ErrorType<HttpProblem>, TContext = unknown>(options?: {
-	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, TError, { params?: PostSocketNotifyParams }, TContext>;
-}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, TError, { params?: PostSocketNotifyParams }, TContext> => {
-	const mutationKey = ['postSocketNotify'];
+	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, TError, PostSocketNotifyMutationVariables, TContext>;
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, TError, PostSocketNotifyMutationVariables, TContext> => {
+	const mutationKey = getPostSocketNotifyMutationKey();
 	const { mutation: mutationOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
@@ -767,7 +784,7 @@ export const usePostSocketNotifyMutationOptions = <TError = ErrorType<HttpProble
 
 	const postSocketNotify = usePostSocketNotifyHook();
 
-	const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, { params?: PostSocketNotifyParams }> = (props) => {
+	const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, PostSocketNotifyMutationVariables> = (props) => {
 		const { params } = props ?? {};
 
 		return postSocketNotify(params);
@@ -779,16 +796,17 @@ export const usePostSocketNotifyMutationOptions = <TError = ErrorType<HttpProble
 export type PostSocketNotifyMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>>;
 
 export type PostSocketNotifyMutationError = ErrorType<HttpProblem>;
+export type PostSocketNotifyMutationVariables = { params?: PostSocketNotifyParams };
 
 /**
  * @summary Push notification message
  */
 export const usePostSocketNotify = <TError = ErrorType<HttpProblem>, TContext = unknown>(
 	options?: {
-		mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, TError, { params?: PostSocketNotifyParams }, TContext>;
+		mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, TError, PostSocketNotifyMutationVariables, TContext>;
 	},
 	queryClient?: QueryClient
-): UseMutationResult<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, TError, { params?: PostSocketNotifyParams }, TContext> => {
+): UseMutationResult<Awaited<ReturnType<ReturnType<typeof usePostSocketNotifyHook>>>, TError, PostSocketNotifyMutationVariables, TContext> => {
 	return useMutation(usePostSocketNotifyMutationOptions(options), queryClient);
 };
 
@@ -807,10 +825,12 @@ export const usePostSocketRefreshHook = () => {
 	);
 };
 
+export const getPostSocketRefreshMutationKey = () => ['postSocketRefresh'] as const;
+
 export const usePostSocketRefreshMutationOptions = <TError = ErrorType<unknown>, TContext = unknown>(options?: {
 	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketRefreshHook>>>, TError, void, TContext>;
 }): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof usePostSocketRefreshHook>>>, TError, void, TContext> => {
-	const mutationKey = ['postSocketRefresh'];
+	const mutationKey = getPostSocketRefreshMutationKey();
 	const { mutation: mutationOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
@@ -963,20 +983,12 @@ export const useLoggingManagerUpdateHook = () => {
 	);
 };
 
+export const getLoggingManagerUpdateMutationKey = () => ['loggingManagerUpdate'] as const;
+
 export const useLoggingManagerUpdateMutationOptions = <TError = ErrorType<void>, TContext = unknown>(options?: {
-	mutation?: UseMutationOptions<
-		Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>,
-		TError,
-		{ data?: LoggingManagerUpdateBody; params?: LoggingManagerUpdateParams },
-		TContext
-	>;
-}): UseMutationOptions<
-	Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>,
-	TError,
-	{ data?: LoggingManagerUpdateBody; params?: LoggingManagerUpdateParams },
-	TContext
-> => {
-	const mutationKey = ['loggingManagerUpdate'];
+	mutation?: UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>, TError, LoggingManagerUpdateMutationVariables, TContext>;
+}): UseMutationOptions<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>, TError, LoggingManagerUpdateMutationVariables, TContext> => {
+	const mutationKey = getLoggingManagerUpdateMutationKey();
 	const { mutation: mutationOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
@@ -985,10 +997,9 @@ export const useLoggingManagerUpdateMutationOptions = <TError = ErrorType<void>,
 
 	const loggingManagerUpdate = useLoggingManagerUpdateHook();
 
-	const mutationFn: MutationFunction<
-		Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>,
-		{ data?: LoggingManagerUpdateBody; params?: LoggingManagerUpdateParams }
-	> = (props) => {
+	const mutationFn: MutationFunction<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>, LoggingManagerUpdateMutationVariables> = (
+		props
+	) => {
 		const { data, params } = props ?? {};
 
 		return loggingManagerUpdate(data, params);
@@ -1000,6 +1011,7 @@ export const useLoggingManagerUpdateMutationOptions = <TError = ErrorType<void>,
 export type LoggingManagerUpdateMutationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>>;
 export type LoggingManagerUpdateMutationBody = LoggingManagerUpdateBody | undefined;
 export type LoggingManagerUpdateMutationError = ErrorType<void>;
+export type LoggingManagerUpdateMutationVariables = { data?: LoggingManagerUpdateBody; params?: LoggingManagerUpdateParams };
 
 /**
  * @summary Update log level
@@ -1009,17 +1021,12 @@ export const useLoggingManagerUpdate = <TError = ErrorType<void>, TContext = unk
 		mutation?: UseMutationOptions<
 			Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>,
 			TError,
-			{ data?: LoggingManagerUpdateBody; params?: LoggingManagerUpdateParams },
+			LoggingManagerUpdateMutationVariables,
 			TContext
 		>;
 	},
 	queryClient?: QueryClient
-): UseMutationResult<
-	Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>,
-	TError,
-	{ data?: LoggingManagerUpdateBody; params?: LoggingManagerUpdateParams },
-	TContext
-> => {
+): UseMutationResult<Awaited<ReturnType<ReturnType<typeof useLoggingManagerUpdateHook>>>, TError, LoggingManagerUpdateMutationVariables, TContext> => {
 	return useMutation(useLoggingManagerUpdateMutationOptions(options), queryClient);
 };
 
