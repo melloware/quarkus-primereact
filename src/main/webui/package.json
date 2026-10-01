@@ -25,7 +25,7 @@
 		"zod": "4.6.1"
 	},
 	"devDependencies": {
-		"@tanstack/react-query-devtools": "5.102.8",
+		"@tanstack/react-query-devtools": "5.104.0",
 		"@types/node": "26.4.0",
 		"@types/react": "19.3.0",
 		"@types/react-dom": "19.3.0",
