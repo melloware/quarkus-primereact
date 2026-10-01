@@ -14,7 +14,7 @@
 		"@mantle-ui/icons": "^7.1.1",
 		"@mantle-ui/react": "10.11.0",
 		"@tanstack/react-form": "1.33.5",
-		"@tanstack/react-query": "5.102.8",
+		"@tanstack/react-query": "5.104.0",
 		"axios": "1.20.0",
 		"primelocale": "2.5.0",
 		"react": "19.3.0",
