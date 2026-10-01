@@ -14,7 +14,7 @@
 		<quarkus.ngrok.version>1.8.0</quarkus.ngrok.version>
 		<quarkus.postgresql.version>0.8.0</quarkus.postgresql.version>
 		<quarkus.http-problem.version>3.38.1</quarkus.http-problem.version>
-		<quarkus.quinoa.version>2.9.0</quarkus.quinoa.version>
+		<quarkus.quinoa.version>2.9.1</quarkus.quinoa.version>
 		<lombok.version>1.18.48</lombok.version>
 		<!-- Plugins-->
 		<surefire-plugin.version>3.6.0</surefire-plugin.version>
